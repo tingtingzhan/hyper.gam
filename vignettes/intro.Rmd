@@ -1,0 +1,139 @@
+---
+title: "Generalized Additive Model with Matrix Predictor"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{intro}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+library(knitr)
+opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+options(rmarkdown.html_vignette.check_title = FALSE)
+```
+
+# Introduction
+
+This vignette documents ...
+
+## Note to Users
+
+Examples in this vignette require that the `search` path has
+
+```{r setup}
+library(hyper.gam)
+library(groupedHyperframe)
+library(survival)
+```
+
+## List of Terms and Abbreviations
+
+```{r echo = FALSE, results = 'asis'}
+c(
+#  '`abs`', 'Absolute value', '`base::abs`',
+  '`coxph`', 'Cox model', '`survival::coxph`',
+#  '`factor`', 'Factor, or categorical variable', '`base::factor`',
+#  '`function`', 'R function', '``base::`function` ``',
+#  '`groupedHyperframe`', 'Grouped hyper data frame', ' https://CRAN.R-project.org/package=groupedHyperframe',
+#  '`head`', 'First parts of an object', 'Generic `utils::head`; Dispatch `utils:::head.default`',
+  '`htmlwidget`', 'HTML Widgets', 'R package [**`htmlwidgets`**](https://CRAN.R-project.org/package=htmlwidgets), [**`plotly`**](https://CRAN.R-project.org/package=plotly)',
+#  '`levels`', 'Levels of a `factor`', '`base::levels`',
+#  '`listof`', 'List of objects (of same class)', '`stats::listof`',
+#  '', 'Logistic regression model', '`stats::glm(., family = binomial(\'logit\'))`',
+#  '`matrix`', 'Matrix', '`base::matrix`',
+  '`PFS`', 'Progression/recurrence free survival', 'https://en.wikipedia.org/wiki/Progression-free_survival'
+#  '`predict`', 'Model prediction', 'Generic `stats::predict`. Dispatches `maxEff::predict.add_num`; `maxEff::predict.add_dummy`',
+#  '`quantile`', 'Quantile', '`stats::quantile`',
+#  '`rpart`', 'Recursive partitioning and regression trees', '`rpart::rpart`',
+#  '`S3`', '`R`\'s simplest object oriented system', 'https://adv-r.hadley.nz/s3.html',
+#  '`sort_by`', 'Sort an object by some criterion', 'Generic `base::sort_by`. Dispatch `maxEff::sort_by.add_`',
+#  '`partition`', 'Stratified partition', '`maxEff::statusPartition`, `caret::createDataPartition`', 
+#  '`subset`', 'Subsets of object by conditions', 'Generic `base::subset`. Dispatch `maxEff::subset.add_dummy`',
+#  '`Surv`', 'Survival object', '`survival::Surv`',
+#  '`update`', 'Update and re-fit a model call', 'Generic `stats::update`'
+) |>
+  matrix(nrow = 3L, dimnames = list(c('Term / Abbreviation', 'Description', 'Reference'), NULL)) |>
+  t.default() |>
+  as.data.frame.matrix() |> 
+  kable()
+```
+
+
+# Data Preparation
+
+Data preparation
+
+```{r}
+s = Ki67 |>
+  within.data.frame(expr = {
+    Ki67 = log1p(Ki67)
+    PFS = Surv(time = recfreesurv_mon, event = recurrence)
+  }) |>
+  as.groupedHyperframe(group = ~ patientID/tissueID) |>
+  aggregate_quantile(by = ~ patientID, probs = seq.int(from = .01, to = .99, by = .01))
+```
+
+Users are encouraged to learn more about functions `grouped_ppp()` and `aggregate_quantile()` from **Introduction** vignettes of package [**`groupedHyperframe`**](https://CRAN.R-project.org/package=groupedHyperframe) and **`maxEff`**.
+
+```{r eval = FALSE}
+devtools::install_github('tingtingzhan/maxEff', build_vignettes = TRUE)
+vignette('intro', package = 'maxEff')
+```
+
+
+```{r}
+m0 = hyper_gam(PFS ~ Ki67.quantile, data = s)
+```
+
+
+
+
+Function `integrandSurface()` creates .. an `htmlwidget` object using package **`plotly`**.
+```{r eval=FALSE}
+integrandSurface(m0)
+#integrandSurface(m0, newdata = s_1)
+```
+
+
+```{r}
+m1 = hyper_gam(PFS ~ Ki67.quantile, data = s, nonlinear = TRUE)
+```
+
+```{r eval=FALSE}
+integrandSurface(m1)
+#integrandSurface(m1, newdata = s_1)
+```
+
+```{r eval = FALSE}
+integrandSurface(m0, m1)
+```
+
+
+```{r}
+#fr = sign_adjust(m0)
+#predict(m0, newdata = s_1)
+m0 |> predict_k_fold.hyper_gam(k = 10L)
+persp(m0)
+```
+
+
+
+
+```{r}
+set.seed(145); pred1 = m1 |> predict_k_fold.hyper_gam(k = 10L)
+
+pred1 |> with.default(expr = boxplot(est ~ fold))
+pred1 |> with.default(expr = boxplot(est.k ~ fold)) 
+pred1 |> with.default(expr = boxplot(est.global ~ fold)) 
+table(pred1$signadj)
+
+s. = data.frame(s, pred1[c('est', 'est.k', 'est.global')])
+
+coxph(PFS ~ est, data = s.) |> summary()
+coxph(PFS ~ est.k, data = s.) |> summary()
+coxph(PFS ~ est.global, data = s.) |> summary()
+```
