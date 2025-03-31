@@ -1,5 +1,5 @@
 ---
-title: "Generalized Additive Model with Matrix Predictor"
+title: "Generalized Additive Model with Hyper-Column Predictor"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{intro}
@@ -18,7 +18,8 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 
 # Introduction
 
-This vignette documents ...
+This vignette of package **`hyper.gam`** ([Github](https://github.com/tingtingzhan/hyper.gam),
+[RPubs](https://rpubs.com/tingtingzhan/hyper_gam)) documents ...
 
 ## Note to Users
 
@@ -30,7 +31,7 @@ library(groupedHyperframe)
 library(survival)
 ```
 
-## List of Terms and Abbreviations
+## Terms and Abbreviations
 
 ```{r echo = FALSE, results = 'asis'}
 c(
@@ -46,13 +47,9 @@ c(
 #  '', 'Logistic regression model', '`stats::glm(., family = binomial(\'logit\'))`',
 #  '`matrix`', 'Matrix', '`base::matrix`',
   '`PFS`', 'Progression/recurrence free survival', 'https://en.wikipedia.org/wiki/Progression-free_survival'
-#  '`predict`', 'Model prediction', 'Generic `stats::predict`. Dispatches `maxEff::predict.add_num`; `maxEff::predict.add_dummy`',
 #  '`quantile`', 'Quantile', '`stats::quantile`',
 #  '`rpart`', 'Recursive partitioning and regression trees', '`rpart::rpart`',
 #  '`S3`', '`R`\'s simplest object oriented system', 'https://adv-r.hadley.nz/s3.html',
-#  '`sort_by`', 'Sort an object by some criterion', 'Generic `base::sort_by`. Dispatch `maxEff::sort_by.add_`',
-#  '`partition`', 'Stratified partition', '`maxEff::statusPartition`, `caret::createDataPartition`', 
-#  '`subset`', 'Subsets of object by conditions', 'Generic `base::subset`. Dispatch `maxEff::subset.add_dummy`',
 #  '`Surv`', 'Survival object', '`survival::Surv`',
 #  '`update`', 'Update and re-fit a model call', 'Generic `stats::update`'
 ) |>
@@ -63,52 +60,56 @@ c(
 ```
 
 
+
+## Acknowledgement
+
+This work supported by NCI R01CA222847 ([I. Chervoneva](https://orcid.org/0000-0002-9104-4505), [T. Zhan](https://orcid.org/0000-0001-9971-4844), and [H. Rui](https://orcid.org/0000-0002-8778-261X)) and R01CA253977 (H. Rui and I. Chervoneva). 
+
+
+
+
 # Data Preparation
 
 Data preparation
 
 ```{r}
+data(Ki67, package = 'groupedHyperframe')
+Ki67
+```
+
+```{r}
 s = Ki67 |>
-  within.data.frame(expr = {
-    Ki67 = log1p(Ki67)
-    PFS = Surv(time = recfreesurv_mon, event = recurrence)
-  }) |>
-  as.groupedHyperframe(group = ~ patientID/tissueID) |>
   aggregate_quantile(by = ~ patientID, probs = seq.int(from = .01, to = .99, by = .01))
+s |> head()
 ```
 
-Users are encouraged to learn more about functions `grouped_ppp()` and `aggregate_quantile()` from **Introduction** vignettes of package [**`groupedHyperframe`**](https://CRAN.R-project.org/package=groupedHyperframe) and **`maxEff`**.
-
-```{r eval = FALSE}
-devtools::install_github('tingtingzhan/maxEff', build_vignettes = TRUE)
-vignette('intro', package = 'maxEff')
-```
+Users are encouraged to learn more about `groupedHyperframe` class and function `aggregate_quantile()` from package **`groupedHyperframe`** [vignettes](https://rpubs.com/tingtingzhan/groupedHyperframe).
 
 
 ```{r}
-m0 = hyper_gam(PFS ~ Ki67.quantile, data = s)
+m0 = hyper_gam(PFS ~ logKi67.quantile, data = s)
 ```
 
 
 
 
 Function `integrandSurface()` creates .. an `htmlwidget` object using package **`plotly`**.
-```{r eval=FALSE}
+```{r}
 integrandSurface(m0)
 #integrandSurface(m0, newdata = s_1)
 ```
 
 
 ```{r}
-m1 = hyper_gam(PFS ~ Ki67.quantile, data = s, nonlinear = TRUE)
+m1 = hyper_gam(PFS ~ logKi67.quantile, data = s, nonlinear = TRUE)
 ```
 
-```{r eval=FALSE}
+```{r}
 integrandSurface(m1)
 #integrandSurface(m1, newdata = s_1)
 ```
 
-```{r eval = FALSE}
+```{r}
 integrandSurface(m0, m1)
 ```
 

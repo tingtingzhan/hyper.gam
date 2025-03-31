@@ -16,6 +16,8 @@
 #' 
 #' Function [integrandSurface] ..
 #' 
+#' @import groupedHyperframe
+#' 
 '_PACKAGE'
 
 

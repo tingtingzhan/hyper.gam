@@ -3,12 +3,13 @@ Type: Package
 Title: Generalized Additive Models with Hypercolumn
 Version: 0.1.0
 Date: 2025-01-17
-Description: gam_matrix.
+Description: hyper.gam.
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Encoding: UTF-8
 License: GPL-2
-Depends: R (>= 4.4)
+Depends: R (>= 4.4),
+    groupedHyperframe
 Language: en-US
 Authors@R: c(person(given = 'Tingting', family = 'Zhan', role =
        c('aut', 'cre'), email =
@@ -23,7 +24,6 @@ Imports: caret, cli, mgcv, nlme, parallel, plotly
 Suggests: 
     knitr,
     survival,
-    groupedHyperframe,
     matrixStats,
     htmlwidgets,
     rmarkdown

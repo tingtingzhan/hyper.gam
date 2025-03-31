@@ -143,7 +143,7 @@ integrandSurface <- function(
     newdata = data,
     proj_Q_p = TRUE, 
     proj_S_p = TRUE,
-    proj_beta = TRUE,
+    proj_beta = FALSE, # bug with my latest hyperframe !!!
     n = 501L,
     newid = seq_len(min(50L, .row_names_info(newdata, type = 2L))), 
     qlim = range(X, newX),
@@ -168,12 +168,12 @@ integrandSurface <- function(
   if (!all(duplicated.default(matrix_x_)[-1L])) stop()
   xname <- matrix_x_[[1L]]
   
-  data_ <- unique(lapply(dots, FUN = function(i) i$data))
+  data_ <- unique(lapply(dots, FUN = \(i) i$data))
   if (length(data_) > 1L) stop('data not same')
   data <- data_[[1L]]
   
   signs <- if (sign_adjusted) {
-    vapply(dots, FUN = function(x) {
+    vapply(dots, FUN = \(x) {
       x |> cor_xy() |> sign()
     }, FUN.VALUE = NA_real_)
   } else rep(1, times = length(dots))
@@ -200,7 +200,7 @@ integrandSurface <- function(
   )
   names(d_xy)[2] <- as.character(xname)
   
-  zs <- mapply(FUN = function(x, sgn) { # (x = dots[[1L]])
+  zs <- mapply(FUN = \(x, sgn) { # (x = dots[[1L]])
     # essentially [z_hyper_gam]; not [predict.hyper_gam] !!!
     y0 <- sgn * predict.gam(x, newdata = d_xy, se.fit = FALSE, type = 'link')
     dim(y0) <- c(n, n)
@@ -237,7 +237,7 @@ integrandSurface <- function(
     L = l
   )
   names(d_subj)[2] <- as.character(xname)
-  z_subj <- mapply(FUN = function(x, sgn) {
+  z_subj <- mapply(FUN = \(x, sgn) {
     sgn * predict.gam(x, newdata = d_subj, se.fit = FALSE, type = 'link')
   }, x = dots, sgn = signs, SIMPLIFY = FALSE)
   
@@ -294,7 +294,7 @@ integrandSurface <- function(
             L = l
           )
           names(d_beta)[2] <- as.character(xname)
-          z_beta <- mapply(FUN = function(x, sgn) {
+          z_beta <- mapply(FUN = \(x, sgn) {
             sgn * predict.gam(x, newdata = d_beta, se.fit = FALSE, type = 'link')
           }, x = dots, sgn = signs, SIMPLIFY = FALSE)
           p <- add_paths(

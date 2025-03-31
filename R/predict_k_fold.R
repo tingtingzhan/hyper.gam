@@ -40,8 +40,8 @@ predict_k_fold.hyper_gam <- function(
     signadj = rep(NA_integer_, times = k)
   )
   
-  tmp <- mclapply(X = fld, mc.cores = mc.cores, FUN = function(id) {
-  #tmp <- lapply(X = fld, FUN = function(id) {
+  tmp <- mclapply(X = fld, mc.cores = mc.cores, FUN = \(id) {
+  #tmp <- lapply(X = fld, FUN = \(id) {
     d0 <- data[-id, , drop = FALSE] # training set
     d1 <- data[id, , drop = FALSE] # test set
     m <- tryCatch(update.hyper_gam(object, data = d0), error = identity) # training model

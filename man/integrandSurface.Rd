@@ -10,7 +10,7 @@ integrandSurface(
   newdata = data,
   proj_Q_p = TRUE,
   proj_S_p = TRUE,
-  proj_beta = TRUE,
+  proj_beta = FALSE,
   n = 501L,
   newid = seq_len(min(50L, .row_names_info(newdata, type = 2L))),
   qlim = range(X, newX),
