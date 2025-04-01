@@ -2,31 +2,24 @@
 #' @title Integrand Surface(s) of Sign-Adjusted Quantile Indices [hyper_gam]
 #' 
 #' @description
-#' An interactive \CRANpkg{htmlwidgets} of the \link[graphics]{persp}ective plot for 
+#' An interactive \CRANpkg{htmlwidgets} of the 
+#' \link[graphics]{persp}ective plot for 
 #' [hyper_gam] model(s)
 #' using package \CRANpkg{plotly}.
 #' 
 #' @param ... one or more [hyper_gam] models
-#' based on *a same training set*.
+#' based on *a same data set*.
 #' 
 #' @param sign_adjusted \link[base]{logical} scalar
 #' 
-#' @param newdata \link[base]{data.frame}, with at least 
-#' the response \eqn{y^{\text{new}}} and
-#' the \link[base]{double} \link[base]{matrix} of 
-#' functional predictor values \eqn{X^{\text{new}}}
-#' of the *test set*. 
-#' The predictor \eqn{X^{\text{new}}} are 
-#' tabulated on the same \eqn{p}-grid as 
-#' the training functional predictor values \eqn{X}.
-#' If missing, the training set will be used.
+#' @param newdata see function [predict.hyper_gam()].
 #' 
-#' @param proj_Q_p \link[base]{logical} scalar, whether to show 
+#' @param proj_xy \link[base]{logical} scalar, whether to show 
 #' the projection of \eqn{\hat{S}\big(p, Q_i(p)\big)}
 #' (see sections **Details** and **Value**)
 #' to the \eqn{(p,q)}-plain, default `TRUE`
 #' 
-#' @param proj_S_p \link[base]{logical} scalar, whether to show
+#' @param proj_xz \link[base]{logical} scalar, whether to show
 #' the projection of \eqn{\hat{S}\big(p, Q_i(p)\big)} to the \eqn{(p,s)}-plain, default `TRUE`
 #' 
 #' @param proj_beta \link[base]{logical} scalar, whether to show
@@ -116,13 +109,13 @@
 #' is displayed on the surface \eqn{\hat{S}(p,q)};}
 #' \item {the quantile curve \eqn{Q_i(p)} 
 #' is projected on the \eqn{(p,q)}-plain of the 3-dimensional \eqn{(p,q,s)} cube, 
-#' if `proj_Q_p=TRUE` (default);}
+#' if `proj_xy=TRUE` (default);}
 #' \item {the user-specified \eqn{\tilde{p}} is marked on the \eqn{(p,q)}-plain of the 3D cube, 
-#' if `proj_Q_p=TRUE` (default);}
+#' if `proj_xy=TRUE` (default);}
 #' \item {\eqn{\hat{S}\big(p, Q_i(p)\big)}
 #' is projected on the \eqn{(p,s)}-plain of the 3-dimensional \eqn{(p,q,s)} cube, 
 #' if one and only one [hyper_gam] model is provided in in
-#' put argument `...` and `proj_S_p=TRUE` (default);}
+#' put argument `...` and `proj_xz=TRUE` (default);}
 #' \item {the estimated *linear functional coefficient* \eqn{\hat{\beta}(p)} is shown on the \eqn{(p,s)}-plain of the 3D cube, 
 #' if one and only one *linear* [hyper_gam] model is provided in input argument `...` and `proj_beta=TRUE` (default).}
 #' }
@@ -141,8 +134,8 @@ integrandSurface <- function(
     # xfom,
     sign_adjusted = TRUE,
     newdata = data,
-    proj_Q_p = TRUE, 
-    proj_S_p = TRUE,
+    proj_xy = TRUE, 
+    proj_xz = TRUE,
     proj_beta = FALSE, # bug with my latest hyperframe !!!
     n = 501L,
     newid = seq_len(min(50L, .row_names_info(newdata, type = 2L))), 
@@ -212,6 +205,7 @@ integrandSurface <- function(
   zmax <- max(unlist(zs))
   
   p <- plot_ly(x = x_, y = y_)
+  
   for (z_ in zs) {
     p <- add_surface(
       p = p, 
@@ -241,7 +235,7 @@ integrandSurface <- function(
     sgn * predict.gam(x, newdata = d_subj, se.fit = FALSE, type = 'link')
   }, x = dots, sgn = signs, SIMPLIFY = FALSE)
   
-  if (proj_Q_p) {
+  if (proj_xy) {
     
     p <- add_paths(
     #p <- add_trace(
@@ -253,20 +247,9 @@ integrandSurface <- function(
         width = if (length(newid) <= 5L) 5/5 else 2/5
       ))
     
-    #p <- add_paths(
-    #  p = p, data = d_subj, 
-    #  x = sign_prob, y = asOneSidedFormula(xname), 
-    #  z = zmin, 
-    #  showlegend = FALSE,
-    #  line = list(
-    #    width = 1,
-    #    color = axis_col[1L] #,
-    #    # dash = 'dot' # 'dash', 'dot'; # only works for ?plotly::add_trace
-    #  )) # deal with `sign_prob` later (i.e., old name of `probs` in [sign_adjust])
-    
   } # projection on x-y plain: Q(p) curve
   
-  if (proj_S_p) {
+  if (proj_xz) {
     # projection on x-z plain, F(p, Q(p)) curve
     # this is only done if (length(dots) == 1L); otherwise too messy
     if (length(dots) == 1L) {
@@ -284,7 +267,7 @@ integrandSurface <- function(
   } # projection on x-z plain, F(p, Q(p)) curve
   
   if (proj_beta) {
-    if (length(dots) == 1L) {
+    if (length(dots) == 1L) { # will remove this bracket in future!!
       for (i in seq_along(dots)) {
         if (dots[[i]]$formula[[3L]][[1L]] == 's') {
           
@@ -336,3 +319,45 @@ integrandSurface <- function(
 
 
 
+
+if (FALSE) { # learn projection with plotly
+  
+    
+  # python
+  # https://plotly.com/python/3d-line-plots/ # no mention of projection
+  # https://community.plotly.com/t/how-to-plot-a-2d-graph-on-the-background-side-wall-of-a-3d-plot/72874/5
+  
+  # R
+  # https://plotly.com/r/3d-line-plots/ # no mention of projection
+  # https://stackoverflow.com/questions/53182432/3d-surface-with-a-2d-projection-using-r
+  
+  plot_ly(z = ~volcano) |> 
+    add_surface(
+      contours = list(
+        z = list(
+          show = TRUE,
+          usecolormap = TRUE,
+          highlightcolor = "#ff0000",
+          project = list(z=TRUE)
+        ),
+        y = list(
+          show = TRUE,
+          usecolormap = FALSE, # Projection without colormap
+          highlightcolor = "#ff0000",
+          project = list(y=TRUE)
+        ),
+        x = list(
+          show = TRUE,
+          usecolormap = TRUE,
+          highlightcolor = "#ff0000",
+          project = list(x=TRUE)
+        )
+      )
+    )
+  
+  # ?plotly::add_trace
+  # explanation for parameter `...`
+  # Arguments (i.e., attributes) passed along to the trace type. See schema() for a list of acceptable attributes for a given trace type (by going to traces -> type -> attributes).
+  
+  # ?plotly::schema
+}

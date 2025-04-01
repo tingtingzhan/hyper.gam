@@ -2,29 +2,26 @@ Package: hyper.gam
 Type: Package
 Title: Generalized Additive Models with Hypercolumn
 Version: 0.1.0
-Date: 2025-01-17
-Description: hyper.gam.
+Date: 2025-04-01
+Description: Generalized additive models with hypercolumn,
+      sign-adjustment, and visualization.
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Encoding: UTF-8
 License: GPL-2
-Depends: R (>= 4.4),
-    groupedHyperframe
+Depends: R (>= 4.4), groupedHyperframe
 Language: en-US
-Authors@R: c(person(given = 'Tingting', family = 'Zhan', role =
-       c('aut', 'cre'), email =
-       c('tingtingzhan@gmail.com'), comment = c(ORCID =
-       '0000-0001-9971-4844')), person(given = 'Inna', family =
-       'Chervoneva', role = c('aut'), email =
-       'Inna.Chervoneva@jefferson.edu', comment = c(ORCID =
-       '0000-0002-9104-4505')), person(given = 'Erjia', family = 'Cui', 
-       role = c('ctb'), email = 'ecui@umn.edu', 
-       comment = c(ORCID = '0000-0003-3576-2892')))
+Authors@R: c(person(given = 'Tingting', family = 'Zhan',
+      role = c('aut', 'cre'), email =
+      c('tingtingzhan@gmail.com'), comment = c(ORCID =
+      '0000-0001-9971-4844')), person(given = 'Inna',
+      family = 'Chervoneva', role = c('aut'), email =
+      'Inna.Chervoneva@jefferson.edu', comment = c(ORCID
+      = '0000-0002-9104-4505')), person(given = 'Erjia',
+      family = 'Cui', role = c('ctb'), email =
+      'ecui@umn.edu', comment = c(ORCID =
+      '0000-0003-3576-2892')))
 Imports: caret, cli, mgcv, nlme, parallel, plotly
-Suggests: 
-    knitr,
-    survival,
-    matrixStats,
-    htmlwidgets,
-    rmarkdown
+Suggests: knitr, rmarkdown, spatstat.geom, survival,
+      matrixStats, htmlwidgets
 VignetteBuilder: knitr

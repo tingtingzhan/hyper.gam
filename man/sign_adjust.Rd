@@ -14,6 +14,10 @@ sign_adjust(object, ...)
 
 \item{...}{parameters of function \link{cor_xy.gam}}
 }
+\value{
+Function \link{sign_adjust.hyper_gam} returns a \link[base]{numeric} \link[base]{vector}.
+}
 \description{
 Sign Adjustment
 }
+\keyword{internal}

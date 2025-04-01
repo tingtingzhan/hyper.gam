@@ -1,5 +1,5 @@
 ---
-title: "Generalized Additive Model with Hyper-Column Predictor"
+title: "Linear and Nonlinear Quantile Index Predictor"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{intro}
@@ -18,7 +18,7 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 
 # Introduction
 
-This vignette of package **`hyper.gam`** ([Github](https://github.com/tingtingzhan/hyper.gam), [RPubs](https://rpubs.com/tingtingzhan/hyper_gam)) documents an idiot-proof interface of fitting a generalized additive model to a `hyperframe` with a `hypercolumn` predictor, as well as an intuitive interactive visualization.
+This vignette of documents an application based on package **`hyper.gam`** ([Github](https://github.com/tingtingzhan/hyper.gam), [RPubs](https://rpubs.com/tingtingzhan/hyper_gam)).
 
 ## Note to Users
 
@@ -35,10 +35,12 @@ library(survival)
 c(
   '', 'Forward pipe operator', '`?base::pipeOp` introduced in `R` 4.1.0', 
   '`attr`', 'Attributes', '`base::attr`; `base::attributes`',
+  '`contour`', 'Contours', '`graphics::contour`; `hyper.gam::contour.hyper_gam`',
   '`coxph`', 'Cox model', '`survival::coxph`',
   '`gam`', 'Generalized additive models', '`mgcv::gam`',
   '`groupedHyperframe`, `hypercolumn`', 'Grouped hyper data frame', ' `groupedHyperframe::as.groupedHyperframe`; `spatstat.geom::hyperframe`', 
   '`htmlwidget`', 'HTML Widgets', '`` ?htmlwidgets::`htmlwidgets-package` ``; `plotly::plotly`',
+  '`persp`', 'Perspective plot', '`graphics::persp`; `hyper.gam::persp.hyper_gam`',
   '`PFS`', 'Progression/recurrence free survival', 'https://en.wikipedia.org/wiki/Progression-free_survival',
   '`quantile`', 'Quantile', '`stats::quantile`',
   '`S3`, `generic`, `methods`', '`S3` object oriented system',  '`base::UseMethod`; `utils::methods`; `utils::getS3method`; https://adv-r.hadley.nz/s3.html',
@@ -54,13 +56,9 @@ c(
 
 The authors thank [Erjia Cui](https://orcid.org/0000-0003-3576-2892) for his contribution to function `hyper_gam()`.
 
-This work supported by NCI R01CA222847 ([I. Chervoneva](https://orcid.org/0000-0002-9104-4505), [T. Zhan](https://orcid.org/0000-0001-9971-4844), and [H. Rui](https://orcid.org/0000-0002-8778-261X)) and R01CA253977 (H. Rui and I. Chervoneva).
+This work is supported by NCI R01CA222847 ([I. Chervoneva](https://orcid.org/0000-0002-9104-4505), [T. Zhan](https://orcid.org/0000-0001-9971-4844), and [H. Rui](https://orcid.org/0000-0002-8778-261X)) and R01CA253977 (H. Rui and I. Chervoneva).
 
-# Application
-
-## Linear and Nonlinear Quantile Index
-
-### Data Preparation
+# Data Preparation
 
 Data set `Ki67` from package **`groupedHyperframe`** is a `groupedHyperframe` with a `numeric`-`hypercolumn` *`logKi67`* and a nested grouping structure *`~patientID/tissueID`*
 
@@ -69,7 +67,7 @@ data(Ki67, package = 'groupedHyperframe')
 Ki67
 ```
 
-Analysis in the next section is based on the aggregated quantiles by `patientID`.  Users are encouraged to learn more about `groupedHyperframe` class and function `aggregate_quantile()` from package **`groupedHyperframe`** [vignettes](https://rpubs.com/tingtingzhan/groupedHyperframe).
+Analysis in the next section is based on the aggregated quantiles by `patientID`. Users are encouraged to learn more about `groupedHyperframe` class and function `aggregate_quantile()` from package **`groupedHyperframe`** [vignettes](https://rpubs.com/tingtingzhan/groupedHyperframe).
 
 ```{r}
 s = Ki67 |>
@@ -77,7 +75,7 @@ s = Ki67 |>
 s |> head()
 ```
 
-### Linear Quantile Index
+# Linear Quantile Index
 
 We fit a linear `hyper_gam` model, i.e., a `gam` model with the `numeric`-`hypercolumn` *`logKi67.quantile`* using `mgcv::s` smooth.
 
@@ -85,13 +83,33 @@ We fit a linear `hyper_gam` model, i.e., a `gam` model with the `numeric`-`hyper
 m0 = hyper_gam(PFS ~ logKi67.quantile, data = s)
 ```
 
-Function `integrandSurface()` creates .. an `htmlwidget` object using package **`plotly`**.
+## Visualization
+
+Function `integrandSurface()` creates an interactive `htmlwidget` by package **`plotly`** to illustrate the integrand surface of linear quantile indices $p\in[0,1]$ and $q\in\text{range}\big(Q_i(p)\big)$ for all subjects $i=1,\cdots,n$.
+
+$$
+\hat{S}_0(p,q) = \hat{\beta}(p)\cdot q
+$$
+
+as well as the projections of the integrand curves of selected subjects onto the $(p,q)$- and $(S,p)$-plane.
 
 ```{r fig.width=5, fig.height=5}
 integrandSurface(m0)
 ```
 
-Linear quantile index is the $k$-fold prediction based on the linear `hyper_gam` *`m0`*.
+Less fancy illustrations of the integrand surface include `persp`ective plot and `contour` plot.
+
+```{r fig.width=3, fig.height=3}
+persp(m0)
+```
+
+```{r fig.width=3, fig.height=3}
+contour(m0)
+```
+
+## $k$-Fold Prediction
+
+Linear quantile index is the $k$-fold prediction of the linear `hyper_gam` model *`m0`*.
 
 ```{r}
 set.seed(145); QI = m0 |> 
@@ -104,13 +122,15 @@ Diagnosis of linear quantile index *`QI`*
 boxplot(QI ~ attr(QI, 'fold'), xlab = 'Fold')
 ```
 
+## Regression Model using Linear Quantile Index 
+
 ```{r}
 suppressWarnings(sQI <- cbind(s, spatstat.geom::hyperframe(QI = QI)) |> 
                    as.data.frame())
 coxph(PFS ~ QI, data = sQI) |> summary()
 ```
 
-### Nonlinear Quantile Index
+# Nonlinear Quantile Index
 
 We fit a nonlinear `hyper_gam` model, i.e., a `gam` model with the `numeric`-`hypercolumn` *`logKi67.quantile`* using tensor product interaction `mgcv::ti` smooth.
 
@@ -118,9 +138,33 @@ We fit a nonlinear `hyper_gam` model, i.e., a `gam` model with the `numeric`-`hy
 m1 = hyper_gam(PFS ~ logKi67.quantile, data = s, nonlinear = TRUE)
 ```
 
+## Visualization
+
+Function `integrandSurface()` illustrates the integrand surface of nonlinear quantile indices $p\in[0,1]$ and $q\in\text{range}\big(Q_i(p)\big)$ for all subjects $i=1,\cdots,n$.
+
+$$
+\hat{S}_0(p,q) = \hat{F}(p,q)
+$$
+as well as the projections of the integrand curves of selected subjects onto the $(p,q)$- and $(S,p)$-plane.
+
 ```{r fig.width=5, fig.height=5}
 integrandSurface(m1)
 ```
+
+Less fancy illustrations of the integrand surface include `persp`ective plot and `contour` plot.
+
+```{r fig.width=3, fig.height=3}
+persp(m1)
+```
+
+```{r fig.width=3, fig.height=3}
+contour(m1)
+```
+
+
+## $k$-Fold Prediction
+
+Nonlinear quantile index is the $k$-fold prediction of the nonlinear `hyper_gam` model *`m1`*.
 
 ```{r}
 set.seed(145); nlQI = m1 |> kfoldPredict.hyper_gam(k = 10L)
@@ -132,9 +176,10 @@ Diagnosis of nonlinear quantile index *`nlQI`*
 boxplot(nlQI ~ attr(nlQI, 'fold'), xlab = 'Fold')
 ```
 
+## Regression Model using Linear Quantile Index 
+
 ```{r}
 suppressWarnings(s_nlQI <- cbind(s, spatstat.geom::hyperframe(nlQI = nlQI)) |> 
                    as.data.frame())
 coxph(PFS ~ nlQI, data = s_nlQI) |> summary()
 ```
-

@@ -1,6 +1,18 @@
 
 
+
+#' @title \link[stats]{update} a [hyper_gam] model
+#' 
+#' @param object a [hyper_gam] model
+#' 
+#' @param ... additional parameters, currently not in use
+#' 
+#' @returns 
+#' Function [update.hyper_gam()] returns a [hyper_gam] model
+#' 
+#' @keywords internal
 #' @importFrom stats update.default
+#' @export update.hyper_gam
 #' @export
 update.hyper_gam <- function(object, ...) {
   # we do not have any ?mgcv:::update.*

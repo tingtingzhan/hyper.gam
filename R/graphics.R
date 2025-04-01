@@ -20,10 +20,10 @@
 #' 
 #' @param image_col argument `col` of \link[graphics]{image.default}
 #' 
-#' @param ... ..
+#' @param ... additional parameters, currently not in use
 #' 
 #' @returns
-#' Function [persp.hyper_gam], 
+#' Function [persp.hyper_gam()], 
 #' a method dispatch of S3 generic \link[graphics]{persp},
 #' does not have a return value.
 #' 
@@ -56,7 +56,7 @@ persp.hyper_gam <- function(
 
 
 #' @returns
-#' Function [contour.hyper_gam],
+#' Function [contour.hyper_gam()],
 #' a method dispatch of S3 generic \link[graphics]{contour},
 #' does not have a return value
 #' 

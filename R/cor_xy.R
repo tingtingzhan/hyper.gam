@@ -32,9 +32,10 @@ cor_xy <- function(object, ...) UseMethod(generic = 'cor_xy')
 # are positively correlated with the user-selected \eqn{X_{\cdot,j}}.
 #' 
 #' @returns
-#' Function [cor_xy.gam] returns a \link[base]{numeric} scalar or \link[base]{vector} of 
+#' Function [cor_xy.gam()] returns a \link[base]{numeric} scalar or \link[base]{vector} of 
 #' \link[stats]{cor}relation(s).
 #' 
+#' @keywords internal
 #' @importFrom stats cor quantile
 #' @export cor_xy.gam
 #' @export

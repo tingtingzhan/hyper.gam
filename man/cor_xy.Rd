@@ -18,7 +18,7 @@ cor_xy(object, ...)
 taking values between 0 and 1, see function \link[stats]{quantile}.}
 }
 \value{
-Function \link{cor_xy.gam} returns a \link[base]{numeric} scalar or \link[base]{vector} of
+Function \code{\link[=cor_xy.gam]{cor_xy.gam()}} returns a \link[base]{numeric} scalar or \link[base]{vector} of
 \link[stats]{cor}relation(s).
 }
 \description{
@@ -27,3 +27,4 @@ Function \link{cor_xy.gam} returns a \link[base]{numeric} scalar or \link[base]{
 \details{
 ..
 }
+\keyword{internal}

@@ -8,8 +8,8 @@ integrandSurface(
   ...,
   sign_adjusted = TRUE,
   newdata = data,
-  proj_Q_p = TRUE,
-  proj_S_p = TRUE,
+  proj_xy = TRUE,
+  proj_xz = TRUE,
   proj_beta = FALSE,
   n = 501L,
   newid = seq_len(min(50L, .row_names_info(newdata, type = 2L))),
@@ -21,26 +21,18 @@ integrandSurface(
 }
 \arguments{
 \item{...}{one or more \link{hyper_gam} models
-based on \emph{a same training set}.}
+based on \emph{a same data set}.}
 
 \item{sign_adjusted}{\link[base]{logical} scalar}
 
-\item{newdata}{\link[base]{data.frame}, with at least
-the response \eqn{y^{\text{new}}} and
-the \link[base]{double} \link[base]{matrix} of
-functional predictor values \eqn{X^{\text{new}}}
-of the \emph{test set}.
-The predictor \eqn{X^{\text{new}}} are
-tabulated on the same \eqn{p}-grid as
-the training functional predictor values \eqn{X}.
-If missing, the training set will be used.}
+\item{newdata}{see function \code{\link[=predict.hyper_gam]{predict.hyper_gam()}}.}
 
-\item{proj_Q_p}{\link[base]{logical} scalar, whether to show
+\item{proj_xy}{\link[base]{logical} scalar, whether to show
 the projection of \eqn{\hat{S}\big(p, Q_i(p)\big)}
 (see sections \strong{Details} and \strong{Value})
 to the \eqn{(p,q)}-plain, default \code{TRUE}}
 
-\item{proj_S_p}{\link[base]{logical} scalar, whether to show
+\item{proj_xz}{\link[base]{logical} scalar, whether to show
 the projection of \eqn{\hat{S}\big(p, Q_i(p)\big)} to the \eqn{(p,s)}-plain, default \code{TRUE}}
 
 \item{proj_beta}{\link[base]{logical} scalar, whether to show
@@ -78,19 +70,20 @@ of subject \eqn{i}
 is displayed on the surface \eqn{\hat{S}(p,q)};}
 \item {the quantile curve \eqn{Q_i(p)}
 is projected on the \eqn{(p,q)}-plain of the 3-dimensional \eqn{(p,q,s)} cube,
-if \code{proj_Q_p=TRUE} (default);}
+if \code{proj_xy=TRUE} (default);}
 \item {the user-specified \eqn{\tilde{p}} is marked on the \eqn{(p,q)}-plain of the 3D cube,
-if \code{proj_Q_p=TRUE} (default);}
+if \code{proj_xy=TRUE} (default);}
 \item {\eqn{\hat{S}\big(p, Q_i(p)\big)}
 is projected on the \eqn{(p,s)}-plain of the 3-dimensional \eqn{(p,q,s)} cube,
 if one and only one \link{hyper_gam} model is provided in in
-put argument \code{...} and \code{proj_S_p=TRUE} (default);}
+put argument \code{...} and \code{proj_xz=TRUE} (default);}
 \item {the estimated \emph{linear functional coefficient} \eqn{\hat{\beta}(p)} is shown on the \eqn{(p,s)}-plain of the 3D cube,
 if one and only one \emph{linear} \link{hyper_gam} model is provided in input argument \code{...} and \code{proj_beta=TRUE} (default).}
 }
 }
 \description{
-An interactive \CRANpkg{htmlwidgets} of the \link[graphics]{persp}ective plot for
+An interactive \CRANpkg{htmlwidgets} of the
+\link[graphics]{persp}ective plot for
 \link{hyper_gam} model(s)
 using package \CRANpkg{plotly}.
 }

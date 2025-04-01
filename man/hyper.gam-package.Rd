@@ -4,19 +4,15 @@
 \name{hyper.gam-package}
 \alias{hyper.gam}
 \alias{hyper.gam-package}
-\title{\link[mgcv]{gam} with one-and-only-one \link[base]{matrix} Predictor}
+\title{hyper.gam: Generalized Additive Models with Hypercolumn}
 \description{
-Function \link{hyper_gam} ..
+Generalized additive models with hypercolumn, sign-adjustment, and visualization.
+}
+\note{
+Help files of individual functions are intentionally suppressed in the \code{pdf} manual.
+Users are encouraged to get started with
 
-Function \link{cor_xy.gam} ..
-
-Function \link{sign_adjust.hyper_gam} ..
-
-Function \link{predict.hyper_gam} ..
-
-Functions \link{persp.hyper_gam} and \link{contour.hyper_gam} ..
-
-Function \link{integrandSurface} ..
+\code{vignette('QuantileIndex', package = 'hyper.gam')}
 }
 \author{
 \strong{Maintainer}: Tingting Zhan \email{tingtingzhan@gmail.com} (\href{https://orcid.org/0000-0001-9971-4844}{ORCID})
