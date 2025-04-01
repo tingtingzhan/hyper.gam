@@ -22,7 +22,7 @@ kfoldPredict.hyper_gam(
 }
 \value{
 Function \code{\link[=kfoldPredict.hyper_gam]{kfoldPredict.hyper_gam()}} returns a \link[base]{numeric} \link[base]{vector},
-with \link[base]{attributes} for savy developers
+with \link[base]{attributes} for savvy developers
 \describe{
 \item{\code{attr(.,'fold')}}{\link[base]{integer} \link[base]{vector}, indices of the \eqn{i}-th fold}
 \item{\code{attr(.,'sgn')}}{\link[base]{numeric} \link[base]{vector} of length-\eqn{k}, sign-adjustment for each fold}
