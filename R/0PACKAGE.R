@@ -5,8 +5,7 @@
 #' 
 #' `vignette('QuantileIndex', package = 'hyper.gam')`
 #' 
-#' @import hyper.gam
-#' 
+#' @import groupedHyperframe
 '_PACKAGE'
 
 
