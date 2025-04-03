@@ -91,9 +91,9 @@ $$
 \hat{S}_0(p,q) = \hat{\beta}(p)\cdot q
 $$
 
-as well as the projections of the integrand curves of selected subjects onto the $(p,q)$- and $(S,p)$-plane.
+as well as the projections of the integrand curves of selected subjects onto the $(p,q)$- and $(S,p)$-plane.  Note that this `htmlwidget` is suppressed in the vignette on `CRAN` due to package size limit. This `htmlwidget` can be viewed and interacted with on [RPubs](https://rpubs.com/tingtingzhan/QuantileIndex).
 
-```{r fig.width=5, fig.height=5}
+```{r eval=FALSE,fig.width=5, fig.height=5}
 integrandSurface(m0)
 ```
 
@@ -145,9 +145,9 @@ Function `integrandSurface()` illustrates the integrand surface of nonlinear qua
 $$
 \hat{S}_0(p,q) = \hat{F}(p,q)
 $$
-as well as the projections of the integrand curves of selected subjects onto the $(p,q)$- and $(S,p)$-plane.
+as well as the projections of the integrand curves of selected subjects onto the $(p,q)$- and $(S,p)$-plane. Note that this `htmlwidget` is suppressed in the vignette on `CRAN` due to package size limit. This `htmlwidget` can be viewed and interacted with on [RPubs](https://rpubs.com/tingtingzhan/QuantileIndex).
 
-```{r fig.width=5, fig.height=5}
+```{r eval=FALSE,fig.width=5, fig.height=5}
 integrandSurface(m1)
 ```
 

@@ -2,9 +2,8 @@ Package: hyper.gam
 Type: Package
 Title: Generalized Additive Models with Hypercolumn
 Version: 0.1.0
-Date: 2025-04-01
-Description: Generalized additive models with hypercolumn,
-      sign-adjustment, and visualization.
+Date: 2025-04-03
+Description: Generalized additive models (gam) with a numeric hypercolumn tabulated on a common grid. Sign-adjustment based on the correlation of gam prediction and a user-selected slice of the hypercolumn. Visualization of the integrand surface over the hypercolumn.
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Encoding: UTF-8
