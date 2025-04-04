@@ -29,6 +29,9 @@ library(hyper.gam)
 library(survival)
 ```
 
+Users should remove the parameter `mc.cores = 1L` from all examples to engage all CPU cores on the current host under macOS. The authors of package **`groupedHyperframe`** are forced to have `mc.cores = 1L` in this vignette to pass `CRAN`'s submission check.
+
+
 ## Terms and Abbreviations
 
 ```{r echo = FALSE, results = 'asis'}
