@@ -6,7 +6,7 @@
 #' Create \link[graphics]{persp}ective and \link[graphics]{contour}
 #' plots of FR-index integrand using R package \pkg{graphics}.
 #' 
-#' End users are encouraged to use function [integrandSurface]
+#' End users are encouraged to use function [integrandSurface()]
 #' with \CRANpkg{plotly} work horse.
 #' 
 #' @param x [hyper_gam] object
@@ -91,7 +91,7 @@ contour.hyper_gam <- function(
 # this is actually another version of [augdata] !!!!!
 get_mesh.hyper_gam <- function(x, newdata, n = 501L, ...) {
   
-  # I hope to use [get_mesh.hyper_gam] in [integrandSurface]
+  # I hope to use [get_mesh.hyper_gam()] in [integrandSurface()]
   
   xname <- attr(x, which = 'xname', exact = TRUE)
   X <- x$data[[xname]] 

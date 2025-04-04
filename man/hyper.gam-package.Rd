@@ -4,9 +4,9 @@
 \name{hyper.gam-package}
 \alias{hyper.gam}
 \alias{hyper.gam-package}
-\title{hyper.gam: Generalized Additive Models with Hypercolumn}
+\title{hyper.gam: Generalized Additive Models with Hyper Column}
 \description{
-Generalized additive models (gam) with a numeric hypercolumn tabulated on a common grid. Sign-adjustment based on the correlation of gam prediction and a user-selected slice of the hypercolumn. Visualization of the integrand surface over the hypercolumn.
+Generalized additive models with a numeric hyper column tabulated on a common grid. Sign-adjustment based on the correlation of gam prediction and a user-selected slice of the hyper column. Visualization of the integrand surface over the hyper column.
 }
 \note{
 Help files of individual functions are intentionally suppressed in the \code{pdf} manual.

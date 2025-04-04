@@ -51,7 +51,7 @@ does not have a return value
 Create \link[graphics]{persp}ective and \link[graphics]{contour}
 plots of FR-index integrand using R package \pkg{graphics}.
 
-End users are encouraged to use function \link{integrandSurface}
+End users are encouraged to use function \code{\link[=integrandSurface]{integrandSurface()}}
 with \CRANpkg{plotly} work horse.
 }
 \keyword{internal}
