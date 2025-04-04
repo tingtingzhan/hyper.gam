@@ -6,7 +6,7 @@
 \alias{hyper.gam-package}
 \title{hyper.gam: Generalized Additive Models with Hyper Column}
 \description{
-Generalized additive models with a numeric hyper column tabulated on a common grid. Sign-adjustment based on the correlation of gam prediction and a user-selected slice of the hyper column. Visualization of the integrand surface over the hyper column.
+Generalized additive models with a numeric hyper column tabulated on a common grid. Sign-adjustment based on the correlation of model prediction and a user-selected slice of the hyper column. Visualization of the integrand surface over the hyper column.
 }
 \note{
 Help files of individual functions are intentionally suppressed in the \code{pdf} manual.
