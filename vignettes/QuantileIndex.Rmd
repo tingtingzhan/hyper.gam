@@ -113,7 +113,7 @@ Linear quantile index is the $k$-fold prediction of the linear `hyper_gam` model
 
 ```{r}
 set.seed(145); QI = m0 |> 
-  kfoldPredict.hyper_gam(k = 10L)
+  kfoldPredict.hyper_gam(k = 10L, mc.cores = 1L)
 ```
 
 Diagnosis of linear quantile index *`QI`*
@@ -167,7 +167,7 @@ contour(m1)
 Nonlinear quantile index is the $k$-fold prediction of the nonlinear `hyper_gam` model *`m1`*.
 
 ```{r}
-set.seed(145); nlQI = m1 |> kfoldPredict.hyper_gam(k = 10L)
+set.seed(145); nlQI = m1 |> kfoldPredict.hyper_gam(k = 10L, mc.cores = 1L)
 ```
 
 Diagnosis of nonlinear quantile index *`nlQI`*
