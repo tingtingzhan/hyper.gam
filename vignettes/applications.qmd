@@ -10,6 +10,7 @@ toc-location: left
 toc-depth: 4
 toc-title: ''
 editor: visual
+bibliography: hypergam.bib
 vignette: >
   %\VignetteIndexEntry{intro}
   %\VignetteEngine{quarto::html}
@@ -19,7 +20,6 @@ vignette: >
 # Introduction
 
 This vignette of documents applications based on package **`hyper.gam`** ([Github](https://github.com/tingtingzhan/hyper.gam), [RPubs](https://rpubs.com/tingtingzhan/hyper_gam)).
-
 
 ## Prerequisite
 
@@ -39,7 +39,6 @@ And eventually make their way to [`CRAN`](https://CRAN.R-project.org/package=hyp
 utils::install.packages('hyper.gam')
 ```
 
-
 ## Getting Started
 
 Examples in this vignette require that the `search` path has
@@ -56,7 +55,6 @@ library(knitr) # for tables in this vignette
 #options(mc.cores = 1L) # for CRAN submission
 ```
 
-
 ## Terms and Abbreviations
 
 ```{r echo = FALSE, results = 'asis'}
@@ -66,12 +64,12 @@ c(
   '`contour`', 'Contours', '`graphics::contour`; `hyper.gam::contour.hyper_gam`',
   '`coxph`', 'Cox model', '`survival::coxph`',
   '`gam`', 'Generalized additive models', '`mgcv::gam`',
-  '`groupedHyperframe`, `hypercolumn`', 'Grouped hyper data frame', ' `groupedHyperframe::as.groupedHyperframe`; `spatstat.geom::hyperframe`', 
+  '`groupedHyperframe`, `hypercolumn`', '(Hyper column of) (grouped) hyper data frame', ' `groupedHyperframe::as.groupedHyperframe`; `spatstat.geom::hyperframe`', 
   '`htmlwidget`', 'HTML Widgets', '`` ?htmlwidgets::`htmlwidgets-package` ``; `plotly::plotly`',
   '`persp`', 'Perspective plot', '`graphics::persp`; `hyper.gam::persp.hyper_gam`',
-  '`PFS`', 'Progression/recurrence free survival', 'https://en.wikipedia.org/wiki/Progression-free_survival',
+  '`PFS`', 'Progression/recurrence free survival', '<https://en.wikipedia.org/wiki/Progression-free_survival>',
   '`quantile`', 'Quantile', '`stats::quantile`',
-  '`S3`, `generic`, `methods`', '`S3` object oriented system',  '`base::UseMethod`; `utils::methods`; `utils::getS3method`; https://adv-r.hadley.nz/s3.html',
+  '`S3`, `generic`, `methods`', '`S3` object oriented system',  '`base::UseMethod`; `utils::methods`; `utils::getS3method`; <https://adv-r.hadley.nz/s3.html>',
   '`Surv`', 'Survival object', '`survival::Surv`'
 ) |>
   matrix(nrow = 3L, dimnames = list(c('Term / Abbreviation', 'Description', 'Reference'), NULL)) |>
@@ -86,8 +84,9 @@ The authors thank [Erjia Cui](https://orcid.org/0000-0003-3576-2892) for his con
 
 This work is supported by NCI R01CA222847 ([I. Chervoneva](https://orcid.org/0000-0002-9104-4505), [T. Zhan](https://orcid.org/0000-0001-9971-4844), and [H. Rui](https://orcid.org/0000-0002-8778-261X)) and R01CA253977 (H. Rui and I. Chervoneva).
 
-
 # Quantile Index Predictor
+
+Publications include [@Yi23a; @Yi23b].
 
 ## Data Preparation
 
@@ -123,7 +122,7 @@ $$
 \hat{S}_0(p,q) = \hat{\beta}(p)\cdot q
 $$
 
-as well as the projections of the integrand curves of selected subjects onto the $(p,q)$- and $(S,p)$-plane.  Note that this `htmlwidget` is suppressed in the vignette on `CRAN` due to package size limit. This `htmlwidget` can be viewed and interacted with on [RPubs](https://rpubs.com/tingtingzhan/QuantileIndex).
+as well as the projections of the integrand curves of selected subjects onto the $(p,q)$- and $(S,p)$-plane. Note that this `htmlwidget` is suppressed in the vignette on `CRAN` due to package size limit. This `htmlwidget` can be viewed and interacted with on [RPubs](https://rpubs.com/tingtingzhan/QuantileIndex).
 
 ```{r}
 #| eval: false
@@ -166,7 +165,7 @@ par(mar = c(4, 5, 1, 0))
 boxplot(QI ~ attr(QI, 'fold'), xlab = 'Fold')
 ```
 
-### Regression Model using Linear Quantile Index 
+### Regression Model using Linear Quantile Index
 
 ```{r}
 suppressWarnings(sQI <- cbind(s, spatstat.geom::hyperframe(QI = QI)) |> 
@@ -188,8 +187,7 @@ Function `integrandSurface()` illustrates the integrand surface of nonlinear qua
 
 $$
 \hat{S}_0(p,q) = \hat{F}(p,q)
-$$
-as well as the projections of the integrand curves of selected subjects onto the $(p,q)$- and $(S,p)$-plane. Note that this `htmlwidget` is suppressed in the vignette on `CRAN` due to package size limit. This `htmlwidget` can be viewed and interacted with on [RPubs](https://rpubs.com/tingtingzhan/QuantileIndex).
+$$ as well as the projections of the integrand curves of selected subjects onto the $(p,q)$- and $(S,p)$-plane. Note that this `htmlwidget` is suppressed in the vignette on `CRAN` due to package size limit. This `htmlwidget` can be viewed and interacted with on [RPubs](https://rpubs.com/tingtingzhan/QuantileIndex).
 
 ```{r eval=FALSE,fig.width=5, fig.height=5}
 integrandSurface(m1)
@@ -211,7 +209,6 @@ par(mar = c(4, 5, 1, 0))
 contour(m1)
 ```
 
-
 ### $k$-Fold Prediction
 
 Nonlinear quantile index is the $k$-fold prediction of the nonlinear `hyper_gam` model *`m1`*.
@@ -229,10 +226,15 @@ par(mar = c(4, 5, 1, 0))
 boxplot(nlQI ~ attr(nlQI, 'fold'), xlab = 'Fold')
 ```
 
-### Regression Model using Linear Quantile Index 
+### Regression Model using Linear Quantile Index
 
 ```{r}
 suppressWarnings(s_nlQI <- cbind(s, spatstat.geom::hyperframe(nlQI = nlQI)) |> 
                    as.data.frame())
 coxph(PFS ~ nlQI, data = s_nlQI) |> summary()
 ```
+
+# References
+
+::: {#refs}
+:::
