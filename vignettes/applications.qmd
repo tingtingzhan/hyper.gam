@@ -52,6 +52,7 @@ library(survival)
 ```{r}
 #| echo: false
 library(knitr) # for tables in this vignette
+op = par()
 #options(mc.cores = 1L) # for CRAN submission
 ```
 
@@ -136,15 +137,19 @@ Less fancy illustrations of the integrand surface include `persp`ective and `con
 ```{r}
 #| fig-width: 3
 #| fig-height: 3
+#| warning: false
 par(mar = c(2, 2, 0, 0))
 persp(m0)
+par(op)
 ```
 
 ```{r}
 #| fig-width: 3
 #| fig-height: 3
+#| warning: false
 par(mar = c(4, 5, 1, 0))
 contour(m0)
+par(op)
 ```
 
 ### $k$-Fold Prediction
@@ -161,8 +166,10 @@ Diagnosis of linear quantile index *`QI`*
 ```{r}
 #| fig-width: 4
 #| fig-height: 3.5
+#| warning: false
 par(mar = c(4, 5, 1, 0))
 boxplot(QI ~ attr(QI, 'fold'), xlab = 'Fold')
+par(op)
 ```
 
 ### Regression Model using Linear Quantile Index
@@ -198,15 +205,19 @@ Less fancy illustrations of the integrand surface include `persp`ective and `con
 ```{r}
 #| fig-width: 3
 #| fig-height: 3
+#| warning: false
 par(mar = c(2, 2, 0, 0))
 persp(m1)
+par(op)
 ```
 
 ```{r}
 #| fig-width: 3
 #| fig-height: 3
+#| warning: false
 par(mar = c(4, 5, 1, 0))
 contour(m1)
+par(op)
 ```
 
 ### $k$-Fold Prediction
@@ -222,8 +233,10 @@ Diagnosis of nonlinear quantile index *`nlQI`*.
 ```{r}
 #| fig-width: 4
 #| fig-height: 3.5
+#| warning: false
 par(mar = c(4, 5, 1, 0))
 boxplot(nlQI ~ attr(nlQI, 'fold'), xlab = 'Fold')
+par(op)
 ```
 
 ### Regression Model using Linear Quantile Index
