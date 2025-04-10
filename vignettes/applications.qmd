@@ -52,7 +52,7 @@ library(survival)
 ```{r}
 #| echo: false
 library(knitr) # for tables in this vignette
-op = par()
+op = par(no.readonly = TRUE)
 #options(mc.cores = 1L) # for CRAN submission
 ```
 
