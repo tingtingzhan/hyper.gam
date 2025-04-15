@@ -24,4 +24,4 @@ Authors@R: c(person(given = 'Tingting', family = 'Zhan', role = c('aut',
 Imports: caret, cli, mgcv, nlme, parallel, plotly
 Suggests: knitr, quarto, rmarkdown, spatstat.geom, survival, matrixStats,
         htmlwidgets
-VignetteBuilder: quarto
+VignetteBuilder: quarto, knitr

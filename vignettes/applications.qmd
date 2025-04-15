@@ -19,7 +19,7 @@ vignette: >
 
 # Introduction
 
-This vignette of documents applications based on package **`hyper.gam`** ([Github](https://github.com/tingtingzhan/hyper.gam), [RPubs](https://rpubs.com/tingtingzhan/hyper_gam)).
+This vignette of documents applications based on package **`hyper.gam`** ([Github](https://github.com/tingtingzhan/hyper.gam), [RPubs](https://rpubs.com/tingtingzhan/hyper_gam_application)).
 
 ## Prerequisite
 
@@ -60,20 +60,21 @@ op = par(no.readonly = TRUE)
 
 ```{r echo = FALSE, results = 'asis'}
 c(
-  '', 'Forward pipe operator', '`?base::pipeOp` introduced in `R` 4.1.0', 
-  '`attr`', 'Attributes', '`base::attr`; `base::attributes`',
-  '`contour`', 'Contours', '`graphics::contour`; `hyper.gam::contour.hyper_gam`',
-  '`coxph`', 'Cox model', '`survival::coxph`',
-  '`gam`', 'Generalized additive models', '`mgcv::gam`',
-  '`groupedHyperframe`, `hypercolumn`', '(Hyper column of) (grouped) hyper data frame', ' `groupedHyperframe::as.groupedHyperframe`; `spatstat.geom::hyperframe`', 
-  '`htmlwidget`', 'HTML Widgets', '`` ?htmlwidgets::`htmlwidgets-package` ``; `plotly::plotly`',
-  '`persp`', 'Perspective plot', '`graphics::persp`; `hyper.gam::persp.hyper_gam`',
-  '`PFS`', 'Progression/recurrence free survival', '<https://en.wikipedia.org/wiki/Progression-free_survival>',
-  '`quantile`', 'Quantile', '`stats::quantile`',
-  '`S3`, `generic`, `methods`', '`S3` object oriented system',  '`base::UseMethod`; `utils::methods`; `utils::getS3method`; <https://adv-r.hadley.nz/s3.html>',
-  '`Surv`', 'Survival object', '`survival::Surv`'
+  '', 'Forward [pipe operator](https://search.r-project.org/R/refmans/base/html/pipeOp.html) introduced in `R` 4.1.0', 
+  '[`attr`](https://search.r-project.org/R/refmans/base/html/attr.html), [`attributes`](https://search.r-project.org/R/refmans/base/html/attributes.html)', 'Attributes',
+  '[`contour`](https://search.r-project.org/R/refmans/graphics/html/contour.html)', 'Contours, `hyper.gam::contour.hyper_gam`',
+  '[`coxph`](https://search.r-project.org/CRAN/refmans/survival/html/coxph.html)', 'Cox model',
+  '[`gam`](https://search.r-project.org/CRAN/refmans/mgcv/html/gam.html)', 'Generalized additive models',
+  '[`groupedHyperframe`](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/intro.html)', 'Grouped hyper data frame',
+  '`hypercolumns`, [`hyperframe`](https://search.r-project.org/CRAN/refmans/spatstat.geom/html/hyperframe.html)', '(Hyper columns of) hyper data frame',
+  '[`htmlwidget`](https://search.r-project.org/CRAN/refmans/htmlwidgets/html/htmlwidgets-package.html)', 'HTML Widgets, <https://www.htmlwidgets.org>, <https://plotly.com/r/getting-started/>',
+  '[`persp`](https://search.r-project.org/R/refmans/graphics/html/persp.html)', 'Perspective plot, `hyper.gam::persp.hyper_gam`',
+  '`PFS`', 'Progression/recurrence free survival, <https://en.wikipedia.org/wiki/Progression-free_survival>',
+  '[`quantile`](https://search.r-project.org/R/refmans/stats/html/quantile.html)', 'Quantile',
+  '`S3`, `generic`, [`methods`](https://search.r-project.org/R/refmans/utils/html/methods.html)', '`S3` object oriented system, [`UseMethod`](https://search.r-project.org/R/refmans/base/html/UseMethod.html); [`getS3method`](https://search.r-project.org/R/refmans/utils/html/getS3method.html); <https://adv-r.hadley.nz/s3.html>',
+  '[`Surv`](https://search.r-project.org/CRAN/refmans/survival/html/Surv.html)', 'Survival, i.e., time-to-event, object'
 ) |>
-  matrix(nrow = 3L, dimnames = list(c('Term / Abbreviation', 'Description', 'Reference'), NULL)) |>
+  matrix(nrow = 2L, dimnames = list(c('Term / Abbreviation', 'Description'), NULL)) |>
   t.default() |>
   as.data.frame.matrix() |> 
   kable()
@@ -123,13 +124,15 @@ $$
 \hat{S}_0(p,q) = \hat{\beta}(p)\cdot q
 $$
 
-as well as the projections of the integrand curves of selected subjects onto the $(p,q)$- and $(S,p)$-plane. Note that this `htmlwidget` is suppressed in the vignette on `CRAN` due to package size limit. This `htmlwidget` can be viewed and interacted with on [RPubs](https://rpubs.com/tingtingzhan/QuantileIndex).
+as well as the projections of the integrand curves of selected subjects onto the $(p,q)$- and $(S,p)$-plane. This interactive `htmlwidget` object is suppressed in this vignette due to its size.
 
 ```{r}
 #| eval: false
 #| fig-width: 5
 #| fig-height: 5
 integrandSurface(m0)
+# `htmlwidget` too large to include in vignette;
+# please interact with it on your local computer 
 ```
 
 Less fancy illustrations of the integrand surface include `persp`ective and `contour` plots provided by package **`graphics`** shipped with vanilla **`R`**.
@@ -194,10 +197,17 @@ Function `integrandSurface()` illustrates the integrand surface of nonlinear qua
 
 $$
 \hat{S}_0(p,q) = \hat{F}(p,q)
-$$ as well as the projections of the integrand curves of selected subjects onto the $(p,q)$- and $(S,p)$-plane. Note that this `htmlwidget` is suppressed in the vignette on `CRAN` due to package size limit. This `htmlwidget` can be viewed and interacted with on [RPubs](https://rpubs.com/tingtingzhan/QuantileIndex).
+$$
 
-```{r eval=FALSE,fig.width=5, fig.height=5}
+as well as the projections of the integrand curves of selected subjects onto the $(p,q)$- and $(S,p)$-plane. This interactive `htmlwidget` object is suppressed in this vignette due to its size.
+
+```{r}
+#| eval: false
+#| fig-width: 5
+#| fig-height: 5
 integrandSurface(m1)
+# `htmlwidget` too large to include in vignette;
+# please interact with it on your local computer 
 ```
 
 Less fancy illustrations of the integrand surface include `persp`ective and `contour` plots provided by package **`graphics`** shipped with vanilla **`R`**.
