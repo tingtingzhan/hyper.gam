@@ -1,5 +1,5 @@
 ---
-title: "Generalized Additive Models with Hyper Column"
+title: "Generalized Additive Models with Hyper Column Predictor"
 author: Tingting Zhan
 format: 
   html:
@@ -12,7 +12,7 @@ toc-title: ''
 editor: visual
 bibliography: hypergam.bib
 vignette: >
-  %\VignetteIndexEntry{intro}
+  %\VignetteIndexEntry{applications}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
@@ -28,7 +28,8 @@ New features are first implemented on [Github](https://github.com/tingtingzhan/h
 ```{r}
 #| warning: false
 #| eval: false
-devtools::install_github('tingtingzhan/hyper.gam')
+remotes::install_github('tingtingzhan/groupedHyperframe')
+remotes::install_github('tingtingzhan/hyper.gam')
 ```
 
 And eventually make their way to [`CRAN`](https://CRAN.R-project.org/package=hyper.gam).
@@ -36,6 +37,7 @@ And eventually make their way to [`CRAN`](https://CRAN.R-project.org/package=hyp
 ```{r}
 #| warning: false
 #| eval: false
+utils::install.packages('groupedHyperframe')
 utils::install.packages('hyper.gam')
 ```
 
@@ -46,6 +48,7 @@ Examples in this vignette require that the `search` path has
 ```{r}
 #| message: false
 library(hyper.gam)
+library(groupedHyperframe)
 library(survival)
 ```
 
@@ -130,7 +133,7 @@ as well as the projections of the integrand curves of selected subjects onto the
 #| eval: false
 #| fig-width: 5
 #| fig-height: 5
-integrandSurface(m0)
+m0 |> integrandSurface(n = 21L, proj_xy = FALSE, proj_xz = FALSE)
 # `htmlwidget` too large to include in vignette;
 # please interact with it on your local computer 
 ```
@@ -202,10 +205,10 @@ $$
 as well as the projections of the integrand curves of selected subjects onto the $(p,q)$- and $(S,p)$-plane. This interactive `htmlwidget` object is suppressed in this vignette due to its size.
 
 ```{r}
-#| eval: false
+#| eval: true
 #| fig-width: 5
 #| fig-height: 5
-integrandSurface(m1)
+m1 |> integrandSurface(n = 21L, proj_xy = FALSE, proj_xz = FALSE)
 # `htmlwidget` too large to include in vignette;
 # please interact with it on your local computer 
 ```
