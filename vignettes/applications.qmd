@@ -106,8 +106,6 @@ op = par(no.readonly = TRUE)
 | [`search`](https://search.r-project.org/R/refmans/base/html/search.html) | Search path for `R` objects |
 | [`Surv`](https://search.r-project.org/CRAN/refmans/survival/html/Surv.html) | Survival, i.e., time-to-event, object, from package **`survival`** [@survival] |
 
-
-
 ## Acknowledgement
 
 The authors thank [Erjia Cui](https://orcid.org/0000-0003-3576-2892) for his contribution to function `hyper_gam()`.
@@ -118,15 +116,17 @@ This work is supported by National Institutes of Health, U.S. Department of Heal
 
 -   R01CA253977 (H. Rui and I. Chervoneva).
 
-
+```{=html}
 <!---
 [Highlighted test.]{style="background-color: #FFFF00"}
 -->
+```
 
+```{=html}
 <!---
 [~~Highlighted strike through test.~~]{style="background-color: #FFFF00"}
 -->
-
+```
 
 # Data Structure
 
@@ -155,7 +155,7 @@ Ki67q = Ki67 |>
   aggregate_quantile(by = ~ patientID, probs = seq.int(from = .01, to = .99, by = .01))
 ```
 
-The returned object *`Ki67q`* is a hyper data frame `hyperframe` with a numeric-hypercolumn of aggregated sample quantiles *`logKi67.quantile`* per *`patientID`*. Users are encouraged to learn more about the function `aggregate_quantile()` from package **`groupedHyperframe`** vignettes ([RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe), [`CRAN`](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/intro.html)), section *Grouped Hyper Data Frame*, subsection *From `data.frame`*. 
+The returned object *`Ki67q`* is a hyper data frame `hyperframe` with a numeric-hypercolumn of aggregated sample quantiles *`logKi67.quantile`* per *`patientID`*. Users are encouraged to learn more about the function `aggregate_quantile()` from package **`groupedHyperframe`** vignettes ([RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe), [`CRAN`](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/intro.html)), section *Grouped Hyper Data Frame*, subsection *From `data.frame`*.
 
 ```{r}
 Ki67q |> head()
@@ -163,7 +163,7 @@ Ki67q |> head()
 
 ## Step 2: Estimate Integrand Surface
 
-Linear quantile index (QI) (@eq-QI) is a predictor in a functional generalized linear model [@James02],
+Linear quantile index (QI) (@eq-QI) is a predictor in a functional generalized linear model [@James02] for outcomes from the exponential family of distributions, or a linear functional Cox model [@Gellar15] for survival outcomes,
 
 $$
 \text{QI}_{i}=\int_{0}^{1} \beta(p)Q_i(p)dp
@@ -175,7 +175,8 @@ where $Q_i(p)$ is the (aggregated) sample quantiles *`logKi67.quantile`* for the
 m0 = hyper_gam(PFS ~ logKi67.quantile, data = Ki67q)
 ```
 
-Nonlinear quantile index (nlQI) (@eq-nlQI) is a predictor in the functional generalized additive model [@McLean14],
+Nonlinear quantile index (nlQI) (@eq-nlQI) is a predictor in the functional generalized additive model [@McLean14] for outcomes from the exponential family of distributions, 
+or an additive functional Cox model [@Cui21] for survival outcomes.
 
 $$
 \text{nlQI}_{i}= \int_{0}^{1} F\big(p, Q_i(p)\big)dp
@@ -192,9 +193,10 @@ The returned `hyper_gam` objects *`m0`* and *`m1`* inherit from the `S3` class `
 Function `integrandSurface()` creates an interactive `htmlwidget` [@htmlwidgets] visualization of the estimated integrand surfaces for the linear (@eq-QI) or nonlinear quantile index (@eq-nlQI) using `R` package **`plotly`** [@plotly]. The integrand surfaces, defined on $p\in[0,1]$ and $q\in\text{range}\big\{Q_i(p), i=1,\cdots,n\big\}$, are
 
 $$
+\hat{S}(p,q) =
 \begin{cases}
-\hat{S}_{\text{linear}}(p,q) & = \hat{\beta}(p)\cdot q\\
-\hat{S}_{\text{nonlinear}}(p,q) & = \hat{F}(p,q)
+\hat{\beta}(p)\cdot q\\
+\hat{F}(p,q)
 \end{cases}
 $$ {#eq-S}
 
@@ -206,7 +208,7 @@ Also in this interactive visualization are
 
 -   the ***projections*** of the estimated linear or nonlinear integrand path onto the $(p,s)$-plane (a.k.a., the "backwall"), so that the area under each projected path is equal to the estimated linear (@eq-QI) or nonlinear quantile index (@eq-nlQI).
 
-@fig-integrandSurface is an interactive `htmlwidget` visualization of the nonlinear integrand surface, integrand paths and their projections to the "floor" and "backwall".  Users should remove the argument `n` in `integrandSurface(, n=101L)`, and use the default `n=501L` instead, for a more refined surface. We must use `n=101L` to reduce the `htmlwidget` object size, in order to comply with `CRAN` and/or [RPubs](https://rpubs.com) file size limit. For the same reason, the interactive visualization of the linear integrand surface is suppressed in this vignette. Users are strongly encouraged to interact with it on their local device.
+@fig-integrandSurface is an interactive `htmlwidget` visualization of the nonlinear integrand surface, integrand paths and their projections to the "floor" and "backwall". Users should remove the argument `n` in `integrandSurface(, n=101L)`, and use the default `n=501L` instead, for a more refined surface. We must use `n=101L` to reduce the `htmlwidget` object size, in order to comply with `CRAN` and/or [RPubs](https://rpubs.com) file size limit. For the same reason, the interactive visualization of the linear integrand surface is suppressed in this vignette. Users are strongly encouraged to interact with it on their local device.
 
 ```{r}
 #| eval: false
@@ -251,14 +253,15 @@ m1 |> persp() # a static figure
 m1 |> contour() # a static figure
 ```
 
-Visualization of the integrand surface (@eq-S) in functions `integrandSurface()`, `persp.hyper_gam()` and `contour.hyper_gam()` is inspired by function `mgcv::vis.gam()`.  Visualization of the *integrand paths*, as well as their projections on the $(p,q)$- and $(p,s)$-plane, is an original idea and design by Tingting Zhan.
-
+Visualization of the integrand surface (@eq-S) in functions `integrandSurface()`, `persp.hyper_gam()` and `contour.hyper_gam()` is inspired by function `mgcv::vis.gam()`. Visualization of the *integrand paths*, as well as their projections on the $(p,q)$- and $(p,s)$-plane, is an original idea and design by Tingting Zhan.
 
 ## Step 3: Compute Quantile Index Predictor
 
+```{=html}
 <!---
 ### Separate Training & Test Data Sets
 -->
+```
 
 Linear and nonlinear quantile indices are the predictors in the functional generalized linear model (@eq-QI) and the functional generalized additive model (@eq-nlQI), respectively. Let's consider a conventional scenario that we first fit a `hyper_gam` model to the training data set, then compute the quantile index predictors in the training data set, as well as in the test data set, using the training model.
 
@@ -276,9 +279,11 @@ Next, a functional generalized additive model is fitted to the training data set
 m1a = hyper_gam(PFS ~ logKi67.quantile, nonlinear = TRUE, data = Ki67q_0)
 ```
 
+```{=html}
 <!---
 #### Training Data Set
 -->
+```
 
 ### Training Data Set
 
@@ -302,9 +307,11 @@ Ki67q_0[,c('PFS', 'age', 'race')] |>
   coxph(formula = PFS ~ age + nlQI, data = _)
 ```
 
+```{=html}
 <!---
 #### Test Data Set
 -->
+```
 
 ### Test Data Set
 
@@ -327,6 +334,7 @@ Ki67q_1[,c('PFS', 'age', 'race')] |>
   coxph(formula = PFS ~ age + nlQI, data = _)
 ```
 
+````{=html}
 <!---
 
 ### $k$-Fold Cross-Prediction
@@ -388,6 +396,7 @@ Ki67q |>
 ```
 
 -->
+````
 
 # References
 
