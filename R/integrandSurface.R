@@ -138,7 +138,7 @@ integrandSurface <- function(
     proj_xz = TRUE,
     proj_beta = FALSE, # bug with my latest hyperframe !!!
     n = 501L,
-    newid = seq_len(min(50L, .row_names_info(newdata, type = 2L))), 
+    newid = min(5L, .row_names_info(newdata, type = 2L)) |> seq_len(), 
     qlim = range(X, newX),
     axis_col = c('dodgerblue', 'deeppink', 'darkolivegreen'),
     beta_col = 'purple',
@@ -241,7 +241,7 @@ integrandSurface <- function(
       add_paths(
         x = d$x, y = d$y, z = zmin, name = d$id, color = d$id, 
         showlegend = FALSE,
-        line = list(width = 2/5)
+        line = list(width = 4)
       )
   } # projection on x-y plain
   
@@ -260,7 +260,7 @@ integrandSurface <- function(
           add_paths(
             x = d$x, y = qlim[2L], z = z_subj[[i]], name = d$id, color = d$id,
             showlegend = FALSE,
-            line = list(width = 2/5)
+            line = list(width = 4)
           )
       }
     }
@@ -297,7 +297,7 @@ integrandSurface <- function(
       add_paths(
         x = d$x, y = d$y, z = z_subj[[i]], name = d$id, color = d$id,
         showlegend = FALSE,
-        line = list(width = 2)
+        line = list(width = 4)
       )
   }
   
