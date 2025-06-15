@@ -1,5 +1,6 @@
 ---
 title: "Supervised Learning Tools for Deriving Biomarkers based on Single-Cell Data"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 author: 
   - name: Tingting Zhan
     orcid: 0000-0001-9971-4844
@@ -40,11 +41,16 @@ vignette: >
 
 # Introduction
 
-This vignette provides examples of using the package **`hyper.gam`** ([Github](https://github.com/tingtingzhan/hyper.gam), [RPubs](https://rpubs.com/tingtingzhan/hyper_gam_application)) for deriving single index predictors of scalar outcomes based on spatial and non-spatial single-cell imaging data.
+This vignette provides examples of using `R` packages
+
+-   **`hyper.gam`**, @hyper_gam, [`CRAN`](https://cran.r-project.org/package=hyper.gam), [Github](https://github.com/tingtingzhan/hyper.gam), [RPubs](https://rpubs.com/tingtingzhan/hyper_gam)
+-   **`groupedHyperframe`**, @groupedHyperframe, [`CRAN`](https://cran.r-project.org/package=groupedHyperframe), [Github](https://github.com/tingtingzhan/groupedHyperframe), [RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe)
+
+for deriving single index predictors of scalar outcomes based on spatial and non-spatial single-cell imaging data.
 
 ## Prerequisite
 
-New features are first implemented on [Github](https://github.com/tingtingzhan/hyper.gam).
+Experimental (and maybe unstable) features are implemented **extremely frequently** on Github. [Active developers should use the Github version; suggestions and bug reports are welcome!]{style="background-color: #FFFF00"}
 
 ```{r}
 #| warning: false
@@ -53,7 +59,7 @@ remotes::install_github('tingtingzhan/groupedHyperframe')
 remotes::install_github('tingtingzhan/hyper.gam')
 ```
 
-And eventually make their way to [`CRAN`](https://CRAN.R-project.org/package=hyper.gam).
+Stable releases to `CRAN` are typically updated every 2 to 3 months, or when the authors have an upcoming manuscript in the peer-reviewing process. [Developers should **not** use the `CRAN` version!]{style="background-color: #FFFF00"}
 
 ```{r}
 #| warning: false
@@ -67,11 +73,17 @@ utils::install.packages('hyper.gam')
 Examples in this vignette require that the `search` path has
 
 ```{r}
-#| message: false
 library(groupedHyperframe)
 library(hyper.gam)
 library(survival)
 ```
+
+### Function name clash
+
+Since package **`spatstat.explore`** version 3.4-3.004, we have a `Registered S3 method overwritten` when loading packages **`groupedHyperframe`** and **`hyper.gam`**. The function name clash is between `spatstat.explore::plot.roc()` and `pROC::plot.roc()`.
+
+-   Package **`spatstat.explore`** is among the `Imports` of package **`groupedHyperframe`**
+-   Package **`pROC`** [@pROC] is among the `Imports` of package **`caret`**. Package **`caret`** is among the `Imports` of package **`hyper.gam`** (for $k$-fold prediction).
 
 ```{r}
 #| echo: false
@@ -83,7 +95,8 @@ op = par(no.readonly = TRUE)
 
 | Term / Abbreviation | Description |
 |------------------------------------|------------------------------------|
-| [`|>`](https://search.r-project.org/R/refmans/base/html/pipeOp.html) | Forward pipe operator introduced since `R` 4.1.0, used together with the `_` placeholder |
+| [`|>`](https://search.r-project.org/R/refmans/base/html/pipeOp.html) | Forward pipe operator introduced since `R` 4.1.0, as well as the `_` placeholder |
+| [`::`](https://search.r-project.org/R/refmans/base/html/ns-dblcolon.html) | Explicitly-[namespace](https://search.r-project.org/R/refmans/base/html/ns-reflect.html)d function |
 | [`attr`](https://search.r-project.org/R/refmans/base/html/attr.html), [`attributes`](https://search.r-project.org/R/refmans/base/html/attributes.html) | Attributes |
 | [`contour`](https://search.r-project.org/R/refmans/graphics/html/contour.html) | Contour line, <https://en.wikipedia.org/wiki/Contour_line> |
 | [`createDataPartition`](https://search.r-project.org/CRAN/refmans/caret/html/createDataPartition.html) | Test vs. training data set partition, from package **`caret`** [@caret] |
@@ -175,8 +188,17 @@ where $Q_i(p)$ is the (aggregated) sample quantiles *`logKi67.quantile`* for the
 m0 = hyper_gam(PFS ~ logKi67.quantile, data = Ki67q)
 ```
 
-Nonlinear quantile index (nlQI) (@eq-nlQI) is a predictor in the functional generalized additive model [@McLean14] for outcomes from the exponential family of distributions, 
-or an additive functional Cox model [@Cui21] for survival outcomes.
+````{=html}
+<!---
+```{r}
+m0_alternative = hyper_gam(Surv(recfreesurv_mon, recurrence) ~ logKi67.quantile, data = Ki67q) 
+# this is also okay
+# tzhan is debating whether to document this ...
+```
+-->
+````
+
+Nonlinear quantile index (nlQI) (@eq-nlQI) is a predictor in the functional generalized additive model [@McLean14] for outcomes from the exponential family of distributions, or an additive functional Cox model [@Cui21] for survival outcomes.
 
 $$
 \text{nlQI}_{i}= \int_{0}^{1} F\big(p, Q_i(p)\big)dp
@@ -397,6 +419,10 @@ Ki67q |>
 
 -->
 ````
+
+# Spatial Index
+
+🚧 This section is under construction
 
 # References
 
