@@ -224,11 +224,14 @@ $$ {#eq-S}
 
 Also in this interactive visualization are
 
+-   the contour lines on the integrand surfaces (@eq-S), as well as their projections along the $s$-axis, i.e., onto the $(p,q)$-plane (a.k.a., the "floor");
+
 -   the estimated linear **integrand paths** $\hat{\beta}(p)Q_i(p)$ or the nonlinear integrand paths $\hat{F}(p, Q_i(p))$ on the integrand surfaces (@eq-S);
 
--   the sample quantiles $Q_i(p)$, i.e., the ***projections*** of the estimated linear or nonlinear integrand path onto the $(p,q)$-plane (a.k.a., the "floor")
+-   the sample quantiles $Q_i(p)$, i.e., the ***projections*** of the estimated linear or nonlinear integrand path along the $s$-axis, i.e., onto the $(p,q)$-plane (a.k.a., the "floor");
 
--   the ***projections*** of the estimated linear or nonlinear integrand path onto the $(p,s)$-plane (a.k.a., the "backwall"), so that the area under each projected path is equal to the estimated linear (@eq-QI) or nonlinear quantile index (@eq-nlQI).
+-   the ***projections*** of the estimated linear or nonlinear integrand path along the $q$-axis, i.e., onto the $(p,s)$-plane (a.k.a., the "backwall"), so that the area under each projected path is equal to the estimated linear (@eq-QI) or nonlinear quantile index (@eq-nlQI).
+
 
 @fig-integrandSurface is an interactive `htmlwidget` visualization of the nonlinear integrand surface, integrand paths and their projections to the "floor" and "backwall". Users should remove the argument `n` in `integrandSurface(, n=101L)`, and use the default `n=501L` instead, for a more refined surface. We must use `n=101L` to reduce the `htmlwidget` object size, in order to comply with `CRAN` and/or [RPubs](https://rpubs.com) file size limit. For the same reason, the interactive visualization of the linear integrand surface is suppressed in this vignette. Users are strongly encouraged to interact with it on their local device.
 
