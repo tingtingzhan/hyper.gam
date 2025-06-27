@@ -89,9 +89,7 @@ Package **`groupedHyperframe`** `Imports` packages
 -   **`spatstat.explore`** (version `r packageVersion('spatstat.explore')`) and **`spatstat.geom`** (version `r packageVersion('spatstat.geom')`), @Baddeley15, key dependency, for spatial statistics
 -   **`SpatialPack`** [@SpatialPack, version `r packageVersion('SpatialPack')`, key dependency], for Tjøstheim's coefficient of spatial association
 
-Since package **`spatstat.explore`** version 3.4-3.004, we have a `Registered S3 method overwritten` when loading packages **`groupedHyperframe`** and **`hyper.gam`**. The function name clash is between `spatstat.explore::plot.roc()` and `pROC::plot.roc()`.  The package **`pROC`** [@pROC] is among the `Imports` of package **`caret`** [@caret].
-
-
+Since package **`spatstat.explore`** version 3.4-3.004, we have a `Registered S3 method overwritten` when loading packages **`groupedHyperframe`** and **`hyper.gam`**. The function name clash is between `spatstat.explore::plot.roc()` and `pROC::plot.roc()`. The package **`pROC`** [@pROC] is among the `Imports` of package **`caret`** [@caret].
 
 ## Getting Started
 
@@ -121,7 +119,7 @@ op = par(no.readonly = TRUE)
 | `csv`, [`read.csv`](https://search.r-project.org/R/refmans/utils/html/read.table.html) | (Read) comma-separated-value files |
 | [`coxph`](https://search.r-project.org/CRAN/refmans/survival/html/coxph.html) | Cox proportional hazards model, from package **`survival`** [@survival] |
 | [`gam`](https://search.r-project.org/CRAN/refmans/mgcv/html/gam.html) | Generalized additive models (GAM), from package **`mgcv`** [@mgcv] |
-| [`groupedHyperframe`](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/intro.html) | Grouped hyper data frame, from package **`groupedHyperframe`** [@groupedHyperframe] |
+| [`groupedHyperframe`](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html) | Grouped hyper data frame, from package **`groupedHyperframe`** [@groupedHyperframe] |
 | `hypercolumns`, [`hyperframe`](https://search.r-project.org/CRAN/refmans/spatstat.geom/html/hyperframe.html) | (Hyper columns of) hyper data frame, from package **`spatstat.geom`** [@Baddeley05] |
 | [`htmlwidget`](https://search.r-project.org/CRAN/refmans/htmlwidgets/html/htmlwidgets-package.html) | HyperText Markup Language (HTML) widgets, from package **`htmlwidgets`** [@htmlwidgets], <https://www.htmlwidgets.org>, <https://plotly.com/r/getting-started/> |
 | [`inherits`](https://search.r-project.org/R/refmans/base/html/class.html) | Class inheritance |
@@ -162,7 +160,7 @@ This work is supported by National Institutes of Health, U.S. Department of Heal
 
 # Data Structure
 
-Single-cell multiplex immuno-fluorescence immunohistochemistry (mIF-IHC) imaging data are the result of digital processing of the microscopic images of tissue stained with selected antibodies. Quantitative pathology platforms, e.g., [Akoya](https://www.akoyabio.com) or [QuPath](https://qupath.github.io), support cell segmentation of mIF-IHC images and quantification of the mean protein expression in each cell. The cell centroid coordinates and cell signal intensities (CSIs) for each stained protein are usually extracted as individual comma-separated values `.csv` files. For each cell in a tissue image, the data include the cell centroid coordinates and cell signal intensity (CSI) for each quantified protein expression. The data may have multiple levels of hierarchical clustering. For example, single cells are clustered within a Region of Interest (ROI) or a tissue core, ROIs are clustered within a tissue or tissue cores are clustered within a patient.
+Single-cell multiplex immuno-fluorescence immunohistochemistry (mIF-IHC) imaging data are the result of digital processing of the microscopic images of tissue stained with selected antibodies. Quantitative pathology platforms, e.g., Akoya or QuPath, support cell segmentation of mIF-IHC images and quantification of the mean protein expression in each cell. The cell centroid coordinates and cell signal intensities (CSIs) for each stained protein are usually extracted as individual comma-separated values `.csv` files. For each cell in a tissue image, the data include the cell centroid coordinates and cell signal intensity (CSI) for each quantified protein expression. The data may have multiple levels of hierarchical clustering. For example, single cells are clustered within a Region of Interest (ROI) or a tissue core, ROIs are clustered within a tissue or tissue cores are clustered within a patient.
 
 # Quantile Index
 
@@ -170,7 +168,7 @@ Applications based on the Quantile Index (QI) methodology is described in our pe
 
 ## Example
 
-Data example **`Ki67`** included in package **`groupedHyperframe`** ([Github](https://github.com/tingtingzhan/groupedHyperframe), [`CRAN`](https://CRAN.R-project.org/package=groupedHyperframe)) is a *grouped hyper data frame*, an extension of the hyper data frame `hyperframe` object defined in package **`spatstat.geom`** [@Baddeley15; @Baddeley05]. The numeric-hypercolumn *`logKi67`*, whose elements are numeric vectors of different lengths, contains the log-transformed Ki67 protein expression CSIs in each *`tissueID`* nested in *`patientID`*. Such nested grouping structure is denoted by *`~patientID/tissueID`* following the nomenclature of package **`nlme`** [@Pinheiro00; @nlme]. The data example **`Ki67`** also contains the metadata including the outcome of interest, e.g., progression free survival *`PFS`*, *`Her2`*, *`HR`*, etc. Detailed information about the `groupedHyperframe` class may be found in package **`groupedHyperframe`** vignettes ([RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe), [`CRAN`](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/intro.html)), section *Grouped Hyper Data Frame*.
+Data example **`Ki67`** included in package **`groupedHyperframe`** ([Github](https://github.com/tingtingzhan/groupedHyperframe), [`CRAN`](https://CRAN.R-project.org/package=groupedHyperframe)) is a *grouped hyper data frame*, an extension of the hyper data frame `hyperframe` object defined in package **`spatstat.geom`** [@Baddeley15; @Baddeley05]. The numeric-hypercolumn *`logKi67`*, whose elements are numeric vectors of different lengths, contains the log-transformed Ki67 protein expression CSIs in each *`tissueID`* nested in *`patientID`*. Such nested grouping structure is denoted by *`~patientID/tissueID`* following the nomenclature of package **`nlme`** [@Pinheiro00; @nlme]. The data example **`Ki67`** also contains the metadata including the outcome of interest, e.g., progression free survival *`PFS`*, *`Her2`*, *`HR`*, etc. Detailed information about the `groupedHyperframe` class may be found in package **`groupedHyperframe`** vignettes ([RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe), [`CRAN`](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html)), section *Grouped Hyper Data Frame*.
 
 ```{r}
 data(Ki67, package = 'groupedHyperframe')
@@ -187,7 +185,7 @@ Ki67q = Ki67 |>
   aggregate_quantile(by = ~ patientID, probs = seq.int(from = .01, to = .99, by = .01))
 ```
 
-The returned object *`Ki67q`* is a hyper data frame `hyperframe` with a numeric-hypercolumn of aggregated sample quantiles *`logKi67.quantile`* per *`patientID`*. Users are encouraged to learn more about the function `aggregate_quantile()` from package **`groupedHyperframe`** vignettes ([RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe), [`CRAN`](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/intro.html)), section *Grouped Hyper Data Frame*, subsection *From `data.frame`*.
+The returned object *`Ki67q`* is a hyper data frame `hyperframe` with a numeric-hypercolumn of aggregated sample quantiles *`logKi67.quantile`* per *`patientID`*. Users are encouraged to learn more about the function `aggregate_quantile()` from package **`groupedHyperframe`** vignettes ([RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe), [`CRAN`](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html)), section *Grouped Hyper Data Frame*, subsection *From `data.frame`*.
 
 ```{r}
 Ki67q |> head()
@@ -330,7 +328,7 @@ Next, we fit a functional generalized additive model to the the training data se
 m1a = hyper_gam(PFS ~ logKi67.quantile, nonlinear = TRUE, data = Ki67q_0)
 ```
 
-The `S3` method dispatch `hyper.gam::predict.hyper_gam()` calculates the quantile index predict[**or**]{style="background-color: #FFFF00"}s of the training and/or test data set, based on the training model *`m1a`*.  The returned value is a `numeric` `vector`. This is a convenient wrapper and slight modification of the function `mgcv::predict.gam()`. The use of `S3` generic `stats::predict()`, which is typically for predict[**ed**]{style="background-color: #FFFF00"} values, could be confusing, but we choose to follow the practice and nomenclature of function `mgcv::predict.gam()`.
+The `S3` method dispatch `hyper.gam::predict.hyper_gam()` calculates the quantile index predict[**or**]{style="background-color: #FFFF00"}s of the training and/or test data set, based on the training model *`m1a`*. The returned value is a `numeric` `vector`. This is a convenient wrapper and slight modification of the function `mgcv::predict.gam()`. The use of `S3` generic `stats::predict()`, which is typically for predict[**ed**]{style="background-color: #FFFF00"} values, could be confusing, but we choose to follow the practice and nomenclature of function `mgcv::predict.gam()`.
 
 We can, but we ***should not***, use the quantile index predictors of the training data set for downstream analysis, because these quantile index predictors are optimized on the training data set and the results would be optimistically biased.
 
