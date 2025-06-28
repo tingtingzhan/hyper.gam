@@ -257,24 +257,21 @@ Also in this interactive visualization are
 
 -   the ***projections*** of the estimated linear or nonlinear integrand path along the $q$-axis, i.e., onto the $(p,s)$-plane (a.k.a., the "backwall"), so that the area under each projected path is equal to the estimated linear (@eq-QI) or nonlinear quantile index (@eq-nlQI).
 
-@fig-integrandSurface is an interactive `htmlwidget` visualization of the nonlinear integrand surface, integrand paths and their projections to the "floor" and "backwall". Users should remove the argument `n` in `integrandSurface(, n=101L)`, and use the default `n=501L` instead, for a more refined surface. We must use `n=101L` to reduce the `htmlwidget` object size, in order to comply with `CRAN` and/or [RPubs](https://rpubs.com) file size limit. For the same reason, the interactive visualization of the linear integrand surface is suppressed in this vignette. Users are strongly encouraged to interact with it on their local device.
+@fig-integrandSurface is a collage [via package **`htmltools`**, @htmltools] of the interactive `htmlwidget` visualizations of the linear and nonlinear integrand surfaces, integrand paths and their projections to the "floor" and "backwall". Users should remove the argument `n` in function call `integrandSurface(, n=21L)`, and use the default `n=501L` instead, for a more refined surface. We must use `n=21L` to reduce the `htmlwidget` objects size, in order to comply with `CRAN` and/or [RPubs](https://rpubs.com) file size limit. 
 
 ```{r}
-#| eval: false
-#| fig-width: 5
-#| fig-height: 5
-m0 |> integrandSurface() # please interact with it on your local computer 
-```
-
-```{r}
-#| eval: true
 #| label: fig-integrandSurface
 #| fig-width: 5
-#| fig-height: 5
-#| fig-align: left
-#| fig-cap: 'Nonlinear integrand surface, integrand paths and their projections to the "floor" and "backwall"'
-m1 |> integrandSurface(n = 101L)
+#| fig-height: 10
+#| fig-cap: 'Linear (top) and nonlinear (bottom) integrand surfaces, contours, integrand paths and their projections to the "floor" and "backwall"'
+library(htmltools)
+tagList(
+  m0 |> integrandSurface(n = 21L), 
+  m1 |> integrandSurface(n = 21L)
+) |> 
+  browsable()
 ```
+
 
 Static illustrations of the estimated integrand surfaces, e.g., the `persp`ective (`S3` method dispatch `persp.hyper_gam()`) and `contour` (`S3` method dispatch `contour.hyper_gam()`) plots, are produced by calling the `S3` generics `persp()` and `contour()` in package **`graphics`** shipped with vanilla **`R`**. These static figures are suppressed to reduce the file size of this vignette.
 
