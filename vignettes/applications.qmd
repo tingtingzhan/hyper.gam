@@ -50,6 +50,8 @@ for deriving single index predictors of scalar outcomes based on spatial and non
 
 ## Prerequisite
 
+Packages **`groupedHyperframe`** and **`hyper.gam`** require `R` version 4.5.0 (released 2025-04-11) or higher.  [RStudio](https://posit.co/download/rstudio-desktop/) is not required, but highly recommended.
+
 Experimental (and maybe unstable) features are implemented **extremely frequently** on Github. [Active developers should use the Github version; suggestions and bug reports are welcome!]{style="background-color: #FFFF00"}
 
 ```{r}
@@ -76,7 +78,7 @@ Package **`hyper.gam`** `Imports` packages
 -   **`cli`** [@cli, version `r packageVersion('cli')`], for attractive command line interfaces (CLIs)
 -   **`mgcv`** [@mgcv, version `r packageVersion('mgcv')`, key dependency], for fitting generalized additive models
 -   **`nlme`** [@nlme, version `r packageVersion('nlme')`], to import the `S3` generic function `nlme::getData()`
--   **`parallel`** (shipped with vanilla `R`, version `r packageVersion('base')`), for parallel computing of $k$-fold prediction (to be documented in future)
+-   **`parallel`** (shipped with `r R.version$version.string`), for parallel computing of $k$-fold prediction (to be documented in future)
 -   **`plotly`** [@plotly, version `r packageVersion('plotly')`, key dependency], for interactive visualization using HTML widget
 -   **`groupedHyperframe`** [@groupedHyperframe, version `r packageVersion('groupedHyperframe')`, key dependency], for data structure
 
@@ -84,7 +86,7 @@ Package **`groupedHyperframe`** `Imports` packages
 
 -   **`cli`** [@cli, version `r packageVersion('cli')`]
 -   **`matrixStats`** [@matrixStats, version `r packageVersion('matrixStats')`, key dependency], for matrix arithmetic
--   **`parallel`** (shipped with vanilla `R`, version `r packageVersion('base')`)
+-   **`parallel`** (shipped with `r R.version$version.string`)
 -   **`pracma`** [@pracma, version `r packageVersion('pracma')`, key dependency], for (cumulative) trapezoidal integration
 -   **`spatstat.explore`** (version `r packageVersion('spatstat.explore')`) and **`spatstat.geom`** (version `r packageVersion('spatstat.geom')`), @Baddeley15, key dependency, for spatial statistics
 -   **`SpatialPack`** [@SpatialPack, version `r packageVersion('SpatialPack')`, key dependency], for Tjøstheim's coefficient of spatial association
@@ -257,7 +259,7 @@ Also in this interactive visualization are
 
 -   the ***projections*** of the estimated linear or nonlinear integrand path along the $q$-axis, i.e., onto the $(p,s)$-plane (a.k.a., the "backwall"), so that the area under each projected path is equal to the estimated linear (@eq-QI) or nonlinear quantile index (@eq-nlQI).
 
-@fig-integrandSurface is a collage [via package **`htmltools`**, @htmltools] of the interactive `htmlwidget` visualizations of the linear and nonlinear integrand surfaces, integrand paths and their projections to the "floor" and "backwall". Users should remove the argument `n` in function call `integrandSurface(, n=21L)`, and use the default `n=501L` instead, for a more refined surface. We must use `n=21L` to reduce the `htmlwidget` objects size, in order to comply with `CRAN` and/or [RPubs](https://rpubs.com) file size limit. 
+@fig-integrandSurface is a collage [via package **`htmltools`**, @htmltools] of the interactive `htmlwidget` visualizations of the linear and nonlinear integrand surfaces, contours, integrand paths and their projections to the "floor" and "backwall". Users should remove the argument `n` in function call `integrandSurface(, n=21L)`, and use the default `n=501L` instead, for a more refined surface. The authors must use `n=21L` to reduce the `htmlwidget` objects size, in order to comply with `CRAN` and/or [RPubs](https://rpubs.com) file size limit. 
 
 ```{r}
 #| label: fig-integrandSurface
