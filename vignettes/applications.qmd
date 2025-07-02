@@ -50,7 +50,7 @@ for deriving single index predictors of scalar outcomes based on spatial and non
 
 ## Prerequisite
 
-Packages **`groupedHyperframe`** and **`hyper.gam`** require `R` version 4.5.0 (released 2025-04-11) or higher.  [RStudio](https://posit.co/download/rstudio-desktop/) is not required, but highly recommended.
+Packages **`groupedHyperframe`** and **`hyper.gam`** require `R` version 4.5.0 (released 2025-04-11) or higher. [RStudio](https://posit.co/download/rstudio-desktop/) is not required, but highly recommended.
 
 Experimental (and maybe unstable) features are implemented **extremely frequently** on Github. [Active developers should use the Github version; suggestions and bug reports are welcome!]{style="background-color: #FFFF00"}
 
@@ -126,10 +126,12 @@ op = par(no.readonly = TRUE)
 | [`htmlwidget`](https://search.r-project.org/CRAN/refmans/htmlwidgets/html/htmlwidgets-package.html) | HyperText Markup Language (HTML) widgets, from package **`htmlwidgets`** [@htmlwidgets], <https://www.htmlwidgets.org>, <https://plotly.com/r/getting-started/> |
 | [`inherits`](https://search.r-project.org/R/refmans/base/html/class.html) | Class inheritance |
 | [`L`](https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Constants)-suffix | Create [integer](https://search.r-project.org/R/refmans/base/html/integer.html) constant |
+| [`marks`](https://search.r-project.org/CRAN/refmans/spatstat.geom/html/spatstat.geom-internal.html), [`marked`](https://search.r-project.org/CRAN/refmans/spatstat.geom/html/is.marked.html) | Marks of a point pattern |
 | [`mgcv::s`](https://search.r-project.org/CRAN/refmans/mgcv/html/s.html) | (Set up of) spline based smooths [@mgcv_s] |
 | [`mgcv::ti`](https://search.r-project.org/CRAN/refmans/mgcv/html/te.html) | Tensor product interaction [@mgcv_ti] |
 | [`persp`](https://search.r-project.org/R/refmans/graphics/html/persp.html) | Perspective plot, <https://en.wikipedia.org/wiki/Perspective_(graphical)> |
 | `PFS` | Progression/recurrence free survival, <https://en.wikipedia.org/wiki/Progression-free_survival> |
+| [`ppp`](https://search.r-project.org/CRAN/refmans/spatstat.geom/html/ppp.html), [`ppp.object`](https://search.r-project.org/CRAN/refmans/spatstat.geom/html/ppp.object.html) | (Marked) point pattern |
 | [`predict`](https://search.r-project.org/R/refmans/stats/html/predict.html) | Model predictions |
 | [`predict.gam`](https://search.r-project.org/CRAN/refmans/mgcv/html/predict.gam.html) | GAM model predictor |
 | [`quantile`](https://search.r-project.org/R/refmans/stats/html/quantile.html) | Quantile |
@@ -170,7 +172,7 @@ Applications based on the Quantile Index (QI) methodology is described in our pe
 
 ## Example
 
-Data example **`Ki67`** included in package **`groupedHyperframe`** ([Github](https://github.com/tingtingzhan/groupedHyperframe), [`CRAN`](https://CRAN.R-project.org/package=groupedHyperframe)) is a *grouped hyper data frame*, an extension of the hyper data frame `hyperframe` object defined in package **`spatstat.geom`** [@Baddeley15; @Baddeley05]. The numeric-hypercolumn *`logKi67`*, whose elements are numeric vectors of different lengths, contains the log-transformed Ki67 protein expression CSIs in each *`tissueID`* nested in *`patientID`*. Such nested grouping structure is denoted by *`~patientID/tissueID`* following the nomenclature of package **`nlme`** [@Pinheiro00; @nlme]. The data example **`Ki67`** also contains the metadata including the outcome of interest, e.g., progression free survival *`PFS`*, *`Her2`*, *`HR`*, etc. Detailed information about the `groupedHyperframe` class may be found in package **`groupedHyperframe`** vignettes ([RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe), [`CRAN`](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html)), section *Grouped Hyper Data Frame*.
+Data example **`Ki67`** included in package **`groupedHyperframe`** ([Github](https://github.com/tingtingzhan/groupedHyperframe), [`CRAN`](https://CRAN.R-project.org/package=groupedHyperframe)) is a *grouped hyper data frame*, an extension of the hyper data frame `hyperframe` object from package **`spatstat.geom`** [@Baddeley15; @Baddeley05]. The point-pattern `ppp`-hypercolumn *`ppp.`* contains the log-transformed Ki67 protein expression CSIs in each *`tissueID`* nested in *`patientID`*. Such nested grouping structure is denoted by *`~patientID/tissueID`* following the nomenclature of package **`nlme`** [@Pinheiro00; @nlme]. The data example **`Ki67`** also contains the metadata including the outcome of interest, e.g., progression free survival *`PFS`*, *`Her2`*, *`HR`*, etc. Detailed information about the `groupedHyperframe` class may be found in package **`groupedHyperframe`** vignettes ([RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe), [`CRAN`](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html)), section *Grouping Structure on `ppp`-Hypercolumn*.
 
 ```{r}
 data(Ki67, package = 'groupedHyperframe')
@@ -179,7 +181,7 @@ Ki67
 
 ## 1️⃣ Compute Aggregated Quantiles
 
-Function `aggregate_quantile()` first converts each element of the numeric-hypercolumn *`logKi67`* into sample `quantile`s at a pre-specified grid of `prob`abilitie`s` $\{p_k, k=1,\cdots,K \} \in [0,1]$, then aggregates the quantiles of multiple *`tissueID`*'s per *`patientID`* by point-wise means (default of parameter `f_aggr_`). Note that the aggregation must be performed at the level of biologically *independent* clusters, e.g., *`~patientID`*, to produce independent quantile predictors.
+Function `aggregate_quantile()` first converts the numeric marks, i.e., the log-transformed Ki67 intensities, from each element of the `ppp`-hypercolumn *`ppp.`* into sample `quantile`s at a pre-specified grid of probabilities $\{p_k, k=1,\cdots,K \} \in [0,1]$, then aggregates the quantiles of multiple *`tissueID`*'s per *`patientID`* by point-wise means (default of parameter `f_aggr_`). Note that the aggregation must be performed at the level of biologically *independent* clusters, e.g., *`~patientID`*, to produce independent quantile predictors.
 
 ```{r}
 #| message: false
@@ -187,7 +189,7 @@ Ki67q = Ki67 |>
   aggregate_quantile(by = ~ patientID, probs = seq.int(from = .01, to = .99, by = .01))
 ```
 
-The returned object *`Ki67q`* is a hyper data frame `hyperframe` with a numeric-hypercolumn of aggregated sample quantiles *`logKi67.quantile`* per *`patientID`*. Users are encouraged to learn more about the function `aggregate_quantile()` from package **`groupedHyperframe`** vignettes ([RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe), [`CRAN`](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html)), section *Grouped Hyper Data Frame*, subsection *From `data.frame`*.
+The returned object *`Ki67q`* is a hyper data frame `hyperframe` with a numeric-hypercolumn of aggregated sample quantiles *`logKi67.quantile`* per *`patientID`*. Users are encouraged to learn more about the function `aggregate_quantile()` from package **`groupedHyperframe`** vignettes ([RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe), [`CRAN`](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html)), section *Grouping Structure on `ppp`-Hypercolumn*.
 
 ```{r}
 Ki67q |> head()
@@ -206,16 +208,6 @@ where $Q_i(p)$ is the (aggregated) sample quantiles *`logKi67.quantile`* for the
 ```{r}
 m0 = hyper_gam(PFS ~ logKi67.quantile, data = Ki67q)
 ```
-
-````{=html}
-<!---
-```{r}
-m0_alternative = hyper_gam(Surv(recfreesurv_mon, recurrence) ~ logKi67.quantile, data = Ki67q) 
-# this is also okay
-# tzhan is debating whether to document this ...
-```
--->
-````
 
 Nonlinear quantile index (nlQI) (@eq-nlQI) is a predictor in the functional generalized additive model [@McLean14] for outcomes from the exponential family of distributions, or an additive functional Cox model [@Cui21] for survival outcomes.
 
@@ -259,7 +251,7 @@ Also in this interactive visualization are
 
 -   the ***projections*** of the estimated linear or nonlinear integrand path along the $q$-axis, i.e., onto the $(p,s)$-plane (a.k.a., the "backwall"), so that the area under each projected path is equal to the estimated linear (@eq-QI) or nonlinear quantile index (@eq-nlQI).
 
-@fig-integrandSurface is a collage [via package **`htmltools`**, @htmltools] of the interactive `htmlwidget` visualizations of the linear and nonlinear integrand surfaces, contours, integrand paths and their projections to the "floor" and "backwall". Users should remove the argument `n` in function call `integrandSurface(, n=21L)`, and use the default `n=501L` instead, for a more refined surface. The authors must use `n=21L` to reduce the `htmlwidget` objects size, in order to comply with `CRAN` and/or [RPubs](https://rpubs.com) file size limit. 
+@fig-integrandSurface is a collage [via package **`htmltools`**, @htmltools] of the interactive `htmlwidget` visualizations of the linear and nonlinear integrand surfaces, contours, integrand paths and their projections to the "floor" and "backwall". Users should remove the argument `n` in function call `integrandSurface(, n=21L)`, and use the default `n=501L` instead, for a more refined surface. The authors must use `n=21L` to reduce the `htmlwidget` objects size, in order to comply with `CRAN` and/or [RPubs](https://rpubs.com) file size limit.
 
 ```{r}
 #| label: fig-integrandSurface
@@ -273,7 +265,6 @@ tagList(
 ) |> 
   browsable()
 ```
-
 
 Static illustrations of the estimated integrand surfaces, e.g., the `persp`ective (`S3` method dispatch `persp.hyper_gam()`) and `contour` (`S3` method dispatch `contour.hyper_gam()`) plots, are produced by calling the `S3` generics `persp()` and `contour()` in package **`graphics`** shipped with vanilla **`R`**. These static figures are suppressed to reduce the file size of this vignette.
 
@@ -413,9 +404,58 @@ Ki67q |>
 -->
 ````
 
-# Spatial Index
+# 🚧 Spatial Index for Point Pattern with Continuous Marks
+
+Recommended $r_\text{max}$.
+
+```{r}
+.rmax = Ki67 |> rmax_(fun = 'K')
+```
+
+
+```{r}
+# r = seq.int(from = 0, to = min(.rmax$ppp.), by = 1)
+# later, legal rmax is 215, not sure why..
+r = seq.int(from = 0, to = 200, by = 1)
+```
+
+
+```{r}
+Ki67.E = Ki67 |>
+  Emark_(r = r, correction = 'best') |>
+  aggregate_fv(by = ~ patientID, f_aggr_ = pmean)
+Ki67.E |> head()
+```
+
+
+```{r}
+x0 = hyper_gam(PFS ~ logKi67.E.cumtrapz, data = Ki67.E)
+```
+
+```{r}
+x1 = hyper_gam(PFS ~ logKi67.E.cumtrapz, data = Ki67.E, nonlinear = TRUE)
+```
+
+```{r}
+#| eval: false
+#| fig-show: hide
+library(htmltools)
+tagList(
+  x0 |> integrandSurface(n = 21L), 
+  x1 |> integrandSurface(n = 21L)
+) |> 
+  browsable()
+# figure suppressed to reduce vignette size
+```
+
+
+
+
+# 🚧 Spatial Index for Point Pattern with Multi-Type Marks
 
 🚧 This section is under construction
+
+
 
 # References
 
