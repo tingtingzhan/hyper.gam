@@ -406,24 +406,31 @@ Ki67q |>
 
 # 🚧 Spatial Index for Point Pattern with Continuous Marks
 
+🚧🚧 **This section is under construction** 🚧🚧
+
 Recommended $r_\text{max}$.
 
 ```{r}
 .rmax = Ki67 |> rmax_(fun = 'K')
 ```
-
-
 ```{r}
-# r = seq.int(from = 0, to = min(.rmax$ppp.), by = 1)
-# later, legal rmax is 215, not sure why..
-r = seq.int(from = 0, to = 200, by = 1)
+#| results: hide
+Ki67 |>
+  Emark_(r = seq.int(from = 0, to = min(.rmax$ppp.), by = 1), correction = 'none') |>
+  aggregate_fv(by = ~ patientID, f_aggr_ = pmean)
 ```
+
+
 
 
 ```{r}
 Ki67.E = Ki67 |>
-  Emark_(r = r, correction = 'best') |>
+  Emark_(r = seq.int(from = 0, to = 180, by = 1), correction = 'none') |>
   aggregate_fv(by = ~ patientID, f_aggr_ = pmean)
+```
+
+
+```{r}
 Ki67.E |> head()
 ```
 
@@ -453,7 +460,8 @@ tagList(
 
 # 🚧 Spatial Index for Point Pattern with Multi-Type Marks
 
-🚧 This section is under construction
+🚧🚧 **This section is under construction** 🚧🚧
+
 
 
 
