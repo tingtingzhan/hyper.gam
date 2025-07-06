@@ -74,13 +74,13 @@ utils::install.packages('hyper.gam')
 
 Package **`hyper.gam`** `Imports` packages
 
--   **`caret`** [@caret, version `r packageVersion('caret')`, key dependency], for $k$-fold prediction (to be documented in future)
+-   `r knitr::asis_output('\U1f5dd')` **`caret`** [@caret, version `r packageVersion('caret')`, key dependency], for $k$-fold prediction (to be documented in future)
 -   **`cli`** [@cli, version `r packageVersion('cli')`], for attractive command line interfaces (CLIs)
--   **`mgcv`** [@mgcv, version `r packageVersion('mgcv')`, key dependency], for fitting generalized additive models
+-   `r knitr::asis_output('\U1f5dd')` **`mgcv`** [@mgcv, version `r packageVersion('mgcv')`, key dependency], for fitting generalized additive models
 -   **`nlme`** [@nlme, version `r packageVersion('nlme')`], to import the `S3` generic function `nlme::getData()`
 -   **`parallel`** (shipped with `r R.version$version.string`), for parallel computing of $k$-fold prediction (to be documented in future)
--   **`plotly`** [@plotly, version `r packageVersion('plotly')`, key dependency], for interactive visualization using HTML widget
--   **`groupedHyperframe`** [@groupedHyperframe, version `r packageVersion('groupedHyperframe')`, key dependency], for data structure
+-   `r knitr::asis_output('\U1f5dd')` **`plotly`** [@plotly, version `r packageVersion('plotly')`, key dependency], for interactive visualization using HTML widget
+-   `r knitr::asis_output('\U1f5dd')` **`groupedHyperframe`** [@groupedHyperframe, version `r packageVersion('groupedHyperframe')`, key dependency], for data structure
 
 Package **`groupedHyperframe`** `Imports` packages
 
@@ -91,7 +91,7 @@ Package **`groupedHyperframe`** `Imports` packages
 -   **`spatstat.explore`** (version `r packageVersion('spatstat.explore')`) and **`spatstat.geom`** (version `r packageVersion('spatstat.geom')`), @Baddeley15, key dependency, for spatial statistics
 -   **`SpatialPack`** [@SpatialPack, version `r packageVersion('SpatialPack')`, key dependency], for Tjøstheim's coefficient of spatial association
 
-Since package **`spatstat.explore`** version 3.4-3.004, we have a `Registered S3 method overwritten` when loading packages **`groupedHyperframe`** and **`hyper.gam`**. The function name clash is between `spatstat.explore::plot.roc()` and `pROC::plot.roc()`. The package **`pROC`** [@pROC] is among the `Imports` of package **`caret`** [@caret].
+Since package **`spatstat.explore`** version 3.4-3.004, we have a `Registered S3 method overwritten` when loading both packages **`groupedHyperframe`** and **`hyper.gam`**. This function name clash is between `spatstat.explore::plot.roc()` and `pROC::plot.roc()`. The package **`pROC`** [@pROC] is among the `Imports` of package **`caret`** [@caret].
 
 ## Getting Started
 
@@ -407,6 +407,7 @@ Ki67q |>
 # 🚧 Spatial Index for Point Pattern with Continuous Marks
 
 🚧🚧 **This section is under construction** 🚧🚧
+
 
 Recommended $r_\text{max}$.
 
