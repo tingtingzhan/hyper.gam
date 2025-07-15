@@ -109,37 +109,6 @@ op = par(no.readonly = TRUE)
 #options(mc.cores = 1L) # for CRAN submission
 ```
 
-## Terms and Abbreviations
-
-| Term / Abbreviation | Description |
-|------------------------------------|------------------------------------|
-| [`|>`](https://search.r-project.org/R/refmans/base/html/pipeOp.html) | Forward pipe operator introduced since `R` 4.1.0, as well as the `_` placeholder |
-| [`::`](https://search.r-project.org/R/refmans/base/html/ns-dblcolon.html) | Explicitly-[namespace](https://search.r-project.org/R/refmans/base/html/ns-reflect.html)d function |
-| [`attr`](https://search.r-project.org/R/refmans/base/html/attr.html), [`attributes`](https://search.r-project.org/R/refmans/base/html/attributes.html) | Attributes |
-| [`contour`](https://search.r-project.org/R/refmans/graphics/html/contour.html) | Contour line, <https://en.wikipedia.org/wiki/Contour_line> |
-| [`createDataPartition`](https://search.r-project.org/CRAN/refmans/caret/html/createDataPartition.html) | Test vs. training data set partition, from package **`caret`** [@caret] |
-| `csv`, [`read.csv`](https://search.r-project.org/R/refmans/utils/html/read.table.html) | (Read) comma-separated-value files |
-| [`coxph`](https://search.r-project.org/CRAN/refmans/survival/html/coxph.html) | Cox proportional hazards model, from package **`survival`** [@survival] |
-| [`gam`](https://search.r-project.org/CRAN/refmans/mgcv/html/gam.html) | Generalized additive models (GAM), from package **`mgcv`** [@mgcv] |
-| [`groupedHyperframe`](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html) | Grouped hyper data frame, from package **`groupedHyperframe`** [@groupedHyperframe] |
-| `hypercolumns`, [`hyperframe`](https://search.r-project.org/CRAN/refmans/spatstat.geom/html/hyperframe.html) | (Hyper columns of) hyper data frame, from package **`spatstat.geom`** [@Baddeley05] |
-| [`htmlwidget`](https://search.r-project.org/CRAN/refmans/htmlwidgets/html/htmlwidgets-package.html) | HyperText Markup Language (HTML) widgets, from package **`htmlwidgets`** [@htmlwidgets], <https://www.htmlwidgets.org>, <https://plotly.com/r/getting-started/> |
-| [`inherits`](https://search.r-project.org/R/refmans/base/html/class.html) | Class inheritance |
-| [`L`](https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Constants)-suffix | Create [integer](https://search.r-project.org/R/refmans/base/html/integer.html) constant |
-| [`marks`](https://search.r-project.org/CRAN/refmans/spatstat.geom/html/spatstat.geom-internal.html), [`marked`](https://search.r-project.org/CRAN/refmans/spatstat.geom/html/is.marked.html) | Marks of a point pattern |
-| [`mgcv::s`](https://search.r-project.org/CRAN/refmans/mgcv/html/s.html) | (Set up of) spline based smooths [@mgcv_s] |
-| [`mgcv::ti`](https://search.r-project.org/CRAN/refmans/mgcv/html/te.html) | Tensor product interaction [@mgcv_ti] |
-| [`persp`](https://search.r-project.org/R/refmans/graphics/html/persp.html) | Perspective plot, <https://en.wikipedia.org/wiki/Perspective_(graphical)> |
-| `PFS` | Progression/recurrence free survival, <https://en.wikipedia.org/wiki/Progression-free_survival> |
-| [`ppp`](https://search.r-project.org/CRAN/refmans/spatstat.geom/html/ppp.html), [`ppp.object`](https://search.r-project.org/CRAN/refmans/spatstat.geom/html/ppp.object.html) | (Marked) point pattern |
-| [`predict`](https://search.r-project.org/R/refmans/stats/html/predict.html) | Model predictions |
-| [`predict.gam`](https://search.r-project.org/CRAN/refmans/mgcv/html/predict.gam.html) | GAM model predictor |
-| [`quantile`](https://search.r-project.org/R/refmans/stats/html/quantile.html) | Quantile |
-| `S3`, `generic`, [`methods`](https://search.r-project.org/R/refmans/utils/html/methods.html) | `S3` object oriented system, [`UseMethod`](https://search.r-project.org/R/refmans/base/html/UseMethod.html); [`getS3method`](https://search.r-project.org/R/refmans/utils/html/getS3method.html); <https://adv-r.hadley.nz/s3.html> |
-| [`search`](https://search.r-project.org/R/refmans/base/html/search.html) | Search path for `R` objects |
-| [`Surv`](https://search.r-project.org/CRAN/refmans/survival/html/Surv.html) | Survival, i.e., time-to-event, object, from package **`survival`** [@survival] |
-| [`symbol`, `name`](https://search.r-project.org/R/refmans/base/html/name.html) | Names and symbols to refer to `R` objects |
-
 ## Acknowledgement
 
 The authors thank [Erjia Cui](https://orcid.org/0000-0003-3576-2892) for his contribution to function `hyper_gam()`.
@@ -408,12 +377,12 @@ Ki67q |>
 
 🚧🚧 **This section is under construction** 🚧🚧
 
-
 Recommended $r_\text{max}$.
 
 ```{r}
 .rmax = Ki67 |> rmax_(fun = 'K')
 ```
+
 ```{r}
 #| results: hide
 Ki67 |>
@@ -421,20 +390,15 @@ Ki67 |>
   aggregate_fv(by = ~ patientID, f_aggr_ = pmean)
 ```
 
-
-
-
 ```{r}
 Ki67.E = Ki67 |>
   Emark_(r = seq.int(from = 0, to = 180, by = 1), correction = 'none') |>
   aggregate_fv(by = ~ patientID, f_aggr_ = pmean)
 ```
 
-
 ```{r}
 Ki67.E |> head()
 ```
-
 
 ```{r}
 x0 = hyper_gam(PFS ~ logKi67.E.cumtrapz, data = Ki67.E)
@@ -456,14 +420,42 @@ tagList(
 # figure suppressed to reduce vignette size
 ```
 
-
-
-
 # 🚧 Spatial Index for Point Pattern with Multi-Type Marks
 
 🚧🚧 **This section is under construction** 🚧🚧
 
+# Appendix
 
+## Terms and Abbreviations
+
+| Term / Abbreviation | Description |
+|------------------------------------|------------------------------------|
+| [`|>`](https://search.r-project.org/R/refmans/base/html/pipeOp.html) | Forward pipe operator introduced since `R` 4.1.0, as well as the `_` placeholder |
+| [`::`](https://search.r-project.org/R/refmans/base/html/ns-dblcolon.html) | Explicitly-[namespace](https://search.r-project.org/R/refmans/base/html/ns-reflect.html)d function |
+| [`attr`](https://search.r-project.org/R/refmans/base/html/attr.html), [`attributes`](https://search.r-project.org/R/refmans/base/html/attributes.html) | Attributes |
+| [`contour`](https://search.r-project.org/R/refmans/graphics/html/contour.html) | Contour line, <https://en.wikipedia.org/wiki/Contour_line> |
+| [`createDataPartition`](https://search.r-project.org/CRAN/refmans/caret/html/createDataPartition.html) | Test vs. training data set partition, from package **`caret`** [@caret] |
+| `csv`, [`read.csv`](https://search.r-project.org/R/refmans/utils/html/read.table.html) | (Read) comma-separated-value files |
+| [`coxph`](https://search.r-project.org/CRAN/refmans/survival/html/coxph.html) | Cox proportional hazards model, from package **`survival`** [@survival] |
+| [`gam`](https://search.r-project.org/CRAN/refmans/mgcv/html/gam.html) | Generalized additive models (GAM), from package **`mgcv`** [@mgcv] |
+| [`groupedHyperframe`](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html) | Grouped hyper data frame, from package **`groupedHyperframe`** [@groupedHyperframe] |
+| `hypercolumns`, [`hyperframe`](https://search.r-project.org/CRAN/refmans/spatstat.geom/html/hyperframe.html) | (Hyper columns of) hyper data frame, from package **`spatstat.geom`** [@Baddeley05] |
+| [`htmlwidget`](https://search.r-project.org/CRAN/refmans/htmlwidgets/html/htmlwidgets-package.html) | HyperText Markup Language (HTML) widgets, from package **`htmlwidgets`** [@htmlwidgets], <https://www.htmlwidgets.org>, <https://plotly.com/r/getting-started/> |
+| [`inherits`](https://search.r-project.org/R/refmans/base/html/class.html) | Class inheritance |
+| [`L`](https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Constants)-suffix | Create [integer](https://search.r-project.org/R/refmans/base/html/integer.html) constant |
+| [`marks`](https://search.r-project.org/CRAN/refmans/spatstat.geom/html/spatstat.geom-internal.html), [`marked`](https://search.r-project.org/CRAN/refmans/spatstat.geom/html/is.marked.html) | Marks of a point pattern |
+| [`mgcv::s`](https://search.r-project.org/CRAN/refmans/mgcv/html/s.html) | (Set up of) spline based smooths [@mgcv_s] |
+| [`mgcv::ti`](https://search.r-project.org/CRAN/refmans/mgcv/html/te.html) | Tensor product interaction [@mgcv_ti] |
+| [`persp`](https://search.r-project.org/R/refmans/graphics/html/persp.html) | Perspective plot, <https://en.wikipedia.org/wiki/Perspective_(graphical)> |
+| `PFS` | Progression/recurrence free survival, <https://en.wikipedia.org/wiki/Progression-free_survival> |
+| [`ppp`](https://search.r-project.org/CRAN/refmans/spatstat.geom/html/ppp.html), [`ppp.object`](https://search.r-project.org/CRAN/refmans/spatstat.geom/html/ppp.object.html) | (Marked) point pattern |
+| [`predict`](https://search.r-project.org/R/refmans/stats/html/predict.html) | Model predictions |
+| [`predict.gam`](https://search.r-project.org/CRAN/refmans/mgcv/html/predict.gam.html) | GAM model predictor |
+| [`quantile`](https://search.r-project.org/R/refmans/stats/html/quantile.html) | Quantile |
+| `S3`, `generic`, [`methods`](https://search.r-project.org/R/refmans/utils/html/methods.html) | `S3` object oriented system, [`UseMethod`](https://search.r-project.org/R/refmans/base/html/UseMethod.html); [`getS3method`](https://search.r-project.org/R/refmans/utils/html/getS3method.html); <https://adv-r.hadley.nz/s3.html> |
+| [`search`](https://search.r-project.org/R/refmans/base/html/search.html) | Search path for `R` objects |
+| [`Surv`](https://search.r-project.org/CRAN/refmans/survival/html/Surv.html) | Survival, i.e., time-to-event, object, from package **`survival`** [@survival] |
+| [`symbol`, `name`](https://search.r-project.org/R/refmans/base/html/name.html) | Names and symbols to refer to `R` objects |
 
 
 # References
