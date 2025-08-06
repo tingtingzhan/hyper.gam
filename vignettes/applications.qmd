@@ -52,7 +52,7 @@ R terminology might be different from that of mathematics and statistics. Please
 
 ## Prerequisite
 
-Packages **`groupedHyperframe`** and **`hyper.gam`** require `R` version 4.5.0 (released 2025-04-11) or higher. [RStudio](https://posit.co/download/rstudio-desktop/) is not required, but highly recommended.  This vignette is generated under `r R.version$version.string` using packages **`knitr`** [@knitr, v`r packageVersion('knitr')`], **`quarto`** [@quarto, v`r packageVersion('quarto')`], **`rmarkdown`** [@rmarkdown, v`r packageVersion('rmarkdown')`].
+Packages **`groupedHyperframe`** and **`hyper.gam`** require `R` version 4.5.0 (released 2025-04-11) or higher. [RStudio](https://posit.co/download/rstudio-desktop/) is not required, but highly recommended. This vignette is generated under `r R.version$version.string` using packages **`knitr`** [@knitr, v`r packageVersion('knitr')`], **`quarto`** [@quarto, v`r packageVersion('quarto')`], **`rmarkdown`** [@rmarkdown, v`r packageVersion('rmarkdown')`].
 
 ```{r}
 #| code-fold: true
@@ -61,7 +61,6 @@ Sys.info()[c('sysname', 'release', 'machine')]
 R.version
 ```
 
-
 Experimental (and maybe unstable) features are implemented **extremely frequently** on Github. [Active developers should use the Github version; suggestions and bug reports are welcome!]{style="background-color: #FFFF00"} Stable releases to `CRAN` are typically updated every 2 to 3 months, or when the authors have an upcoming manuscript in the peer-reviewing process.
 
 ```{r}
@@ -69,7 +68,6 @@ Experimental (and maybe unstable) features are implemented **extremely frequentl
 remotes::install_github('tingtingzhan/groupedHyperframe')
 remotes::install_github('tingtingzhan/hyper.gam')
 ```
-
 
 ```{r}
 #| eval: false
@@ -151,6 +149,8 @@ To cite the implementation of the Quantile Index (QI) methodology, please use
 ```{r}
 #| echo: false
 #| warning: false
+ap = available.packages(repos = 'https://cran.rstudio.com/') |>
+  as.data.frame.matrix()
 bib_QI = bibentry(
   bibtype = 'article',
   title = 'Quantile Index predictors using R package hyper.gam',
@@ -162,23 +162,47 @@ bib_QI = bibentry(
   issn = '1367-4811',
   doi = '10.1093/bioinformatics/btaf430'
 )
-bib_hypergam = #citation('hyper.gam')
+bib_hypergam =
   bibentry(
     bibtype = 'Manual',
     title = 'hyper.gam: Generalized Additive Models with Hyper Column',
     author = c('Tingting Zhan', 'Inna Chervoneva'),
     year = '2025',
-    note = 'R package version 0.1.2',
+    note = ap |>
+      subset.data.frame(subset = Package == 'hyper.gam', select = 'Version') |>
+      c() |>
+      sprintf(fmt = 'R package version %s'),
     url = 'https://CRAN.R-project.org/package=hyper.gam',
     doi = '10.32614/CRAN.package.hyper.gam'
   )
+bib_groupedHyperframe =
+  bibentry(
+    bibtype = 'Manual',
+    title = 'groupedHyperframe: Grouped Hyper Data Frame: An Extension of Hyper Data Frame',
+    author = c('Tingting Zhan', 'Inna Chervoneva'),
+    year = '2025',
+    note = ap |>
+      subset.data.frame(subset = Package == 'groupedHyperframe', select = 'Version') |>
+      c() |>
+      sprintf(fmt = 'R package version %s'),
+    url = 'https://CRAN.R-project.org/package=groupedHyperframe',
+    doi = '10.32614/CRAN.package.groupedHyperframe'
+  )
 ```
+
+> `r bib_groupedHyperframe |> format(style = 'text') |> gsub(pattern = '\n', replacement = ' ', x = _)`
 
 > `r bib_hypergam |> format(style = 'text') |> gsub(pattern = '\n', replacement = ' ', x = _)`
 
 > `r bib_QI |> format(style = 'text') |> gsub(pattern = '\n', replacement = ' ', x = _)`
 
 The [BibTeX](https://ctan.org/pkg/bibtex) and/or [BibLaTeX](https://ctan.org/pkg/biblatex) entries for [LaTeX](https://www.latex-project.org) users are
+
+```{r}
+#| echo: false
+#| comment: ''
+bib_groupedHyperframe |> toBibtex()
+```
 
 ```{r}
 #| echo: false
@@ -191,7 +215,6 @@ bib_hypergam |> toBibtex()
 #| comment: ''
 bib_QI |> toBibtex()
 ```
-
 
 Applications based on the quantile index methodology are described in our peer-reviewed publications @Yi23a; @Yi23b; @Yi25.
 
