@@ -48,24 +48,33 @@ This vignette provides examples of using `R` packages
 
 for deriving single index predictors of scalar outcomes based on spatial and non-spatial single-cell imaging data.
 
+R terminology might be different from that of mathematics and statistics. Please refer to Appendix @sec-terms for explanation and reference of the terms and abbreviations used in this vignette.
+
 ## Prerequisite
 
-Packages **`groupedHyperframe`** and **`hyper.gam`** require `R` version 4.5.0 (released 2025-04-11) or higher. [RStudio](https://posit.co/download/rstudio-desktop/) is not required, but highly recommended.  This vignette is generated under `r R.version$version.string` using packages **`knitr`** [@knitr, version `r packageVersion('knitr')`], **`quarto`** [@quarto, version `r packageVersion('quarto')`], **`rmarkdown`** [@rmarkdown, version `r packageVersion('rmarkdown')`].
-
-Experimental (and maybe unstable) features are implemented **extremely frequently** on Github. [Active developers should use the Github version; suggestions and bug reports are welcome!]{style="background-color: #FFFF00"}
+Packages **`groupedHyperframe`** and **`hyper.gam`** require `R` version 4.5.0 (released 2025-04-11) or higher. [RStudio](https://posit.co/download/rstudio-desktop/) is not required, but highly recommended.  This vignette is generated under `r R.version$version.string` using packages **`knitr`** [@knitr, v`r packageVersion('knitr')`], **`quarto`** [@quarto, v`r packageVersion('quarto')`], **`rmarkdown`** [@rmarkdown, v`r packageVersion('rmarkdown')`].
 
 ```{r}
-#| warning: false
+#| code-fold: true
+#| code-summary: "Environment on author's computer"
+Sys.info()[c('sysname', 'release', 'machine')]
+R.version
+```
+
+
+Experimental (and maybe unstable) features are implemented **extremely frequently** on Github. [Active developers should use the Github version; suggestions and bug reports are welcome!]{style="background-color: #FFFF00"} Stable releases to `CRAN` are typically updated every 2 to 3 months, or when the authors have an upcoming manuscript in the peer-reviewing process.
+
+```{r}
 #| eval: false
 remotes::install_github('tingtingzhan/groupedHyperframe')
 remotes::install_github('tingtingzhan/hyper.gam')
 ```
 
-Stable releases to `CRAN` are typically updated every 2 to 3 months, or when the authors have an upcoming manuscript in the peer-reviewing process.
 
 ```{r}
-#| warning: false
 #| eval: false
+#| code-fold: true
+#| code-summary: "Developers, do NOT use the CRAN version!"
 utils::install.packages('groupedHyperframe') # Developers: do NOT use!!
 utils::install.packages('hyper.gam') # Developers: do NOT use!!
 ```
@@ -74,24 +83,25 @@ utils::install.packages('hyper.gam') # Developers: do NOT use!!
 
 Package **`hyper.gam`** `Imports` packages
 
--   `r knitr::asis_output('\U1f5dd')` **`caret`** [@caret, version `r packageVersion('caret')`, key dependency], for $k$-fold prediction (to be documented in future)
--   **`cli`** [@cli, version `r packageVersion('cli')`], for attractive command line interfaces (CLIs)
--   `r knitr::asis_output('\U1f5dd')` **`mgcv`** [@mgcv, version `r packageVersion('mgcv')`, key dependency], for fitting generalized additive models
--   **`nlme`** [@nlme, version `r packageVersion('nlme')`], to import the `S3` generic function `nlme::getData()`
--   **`parallel`** (shipped with `r R.version$version.string`), for parallel computing of $k$-fold prediction (to be documented in future)
--   `r knitr::asis_output('\U1f5dd')` **`plotly`** [@plotly, version `r packageVersion('plotly')`, key dependency], for interactive visualization using HTML widget
--   `r knitr::asis_output('\U1f5dd')` **`groupedHyperframe`** [@groupedHyperframe, version `r packageVersion('groupedHyperframe')`, key dependency], for data structure
+-   `r '\U1f5dd'` **`caret`** [@caret, v`r packageVersion('caret')`], key dependency, for $k$-fold prediction (to be documented in future)
+-   **`cli`** [@cli, v`r packageVersion('cli')`], for attractive command line interfaces (CLIs)
+-   `r '\U1f5dd'` **`mgcv`** [@mgcv, v`r packageVersion('mgcv')`], key dependency, for fitting generalized additive models
+-   **`nlme`** [@nlme, v`r packageVersion('nlme')`], to import the `S3` generic function `nlme::getData()`
+-   **`parallel`** shipped with `r R.version$version.string`, for parallel computing of $k$-fold prediction (to be documented in future)
+-   `r '\U1f5dd'` **`plotly`** [@plotly, v`r packageVersion('plotly')`], key dependency, for interactive visualization using HTML widget
+-   `r '\U1f5dd'` **`groupedHyperframe`** [@groupedHyperframe, v`r packageVersion('groupedHyperframe')`], key dependency, for data structure
 
 Package **`groupedHyperframe`** `Imports` packages
 
--   **`cli`** [@cli, version `r packageVersion('cli')`]
--   **`matrixStats`** [@matrixStats, version `r packageVersion('matrixStats')`, key dependency], for matrix arithmetic
--   **`parallel`** (shipped with `r R.version$version.string`)
--   **`pracma`** [@pracma, version `r packageVersion('pracma')`, key dependency], for (cumulative) trapezoidal integration
--   **`spatstat.explore`** (version `r packageVersion('spatstat.explore')`) and **`spatstat.geom`** (version `r packageVersion('spatstat.geom')`), @Baddeley15, key dependency, for spatial statistics
--   **`SpatialPack`** [@SpatialPack, version `r packageVersion('SpatialPack')`, key dependency], for Tjøstheim's coefficient of spatial association
+-   **`cli`** [@cli, v`r packageVersion('cli')`], for attractive command line interfaces
+-   `r '\U1f5dd'` **`GET`** [@GET, v`r packageVersion('GET')`], key dependency, for global envelope test
+-   `r '\U1f5dd'` **`matrixStats`** [@matrixStats, v`r packageVersion('matrixStats')`], key dependency, for matrix arithmetic
+-   **`parallel`** shipped with `r R.version$version.string`, for parallel computing
+-   `r '\U1f5dd'` **`pracma`** [@pracma, v`r packageVersion('pracma')`], key dependency, for (cumulative) trapezoidal integration
+-   `r '\U1f5dd'` **`SpatialPack`** [@SpatialPack, v`r packageVersion('SpatialPack')`], key dependency, for Tjøstheim's coefficient of spatial association
+-   `r '\U1f5dd'` **`spatstat.explore`** (dev v`r packageVersion('spatstat.explore')`), **`spatstat.geom`** (dev v`r packageVersion('spatstat.geom')`), **`spatstat.random`** (dev v`r packageVersion('spatstat.random')`), key dependency, for spatial statistics
 
-Since package **`spatstat.explore`** version 3.4-3.004, we have a `Registered S3 method overwritten` when loading both packages **`groupedHyperframe`** and **`hyper.gam`**. This function name clash is between `spatstat.explore::plot.roc()` and `pROC::plot.roc()`. The package **`pROC`** [@pROC] is among the `Imports` of package **`caret`** [@caret].
+Since package **`spatstat.explore`** version 3.4-3.004, we have a `Registered S3 method overwritten` when loading both packages **`groupedHyperframe`** and **`hyper.gam`**. This function name clash is between `spatstat.explore::plot.roc()` and `pROC::plot.roc()`. The package **`pROC`** [@pROC, v`r packageVersion('pROC')`] is among the `Imports` of package **`caret`** [@caret, v`r packageVersion('caret')`].
 
 ## Getting Started
 
@@ -116,7 +126,6 @@ The authors thank [Erjia Cui](https://orcid.org/0000-0003-3576-2892) for his con
 This work is supported by National Institutes of Health, U.S. Department of Health and Human Services grants
 
 -   R01CA222847 ([I. Chervoneva](https://orcid.org/0000-0002-9104-4505), [T. Zhan](https://orcid.org/0000-0001-9971-4844), and [H. Rui](https://orcid.org/0000-0002-8778-261X))
-
 -   R01CA253977 (H. Rui and I. Chervoneva).
 
 ```{=html}
@@ -137,7 +146,54 @@ Single-cell multiplex immuno-fluorescence immunohistochemistry (mIF-IHC) imaging
 
 # Quantile Index
 
-Applications based on the Quantile Index (QI) methodology is described in our peer-reviewed publications @Yi23a; @Yi23b; @Yi25.
+To cite the implementation of the Quantile Index (QI) methodology, please use
+
+```{r}
+#| echo: false
+#| warning: false
+bib_QI = bibentry(
+  bibtype = 'article',
+  title = 'Quantile Index predictors using R package hyper.gam',
+  author = c('Tingting Zhan', 'Misung Yi', 'Inna Chervoneva' ),
+  journal = 'Bioinformatics',
+  pages = 'btaf430',
+  year = '2025', 
+  month = '07',
+  issn = '1367-4811',
+  doi = '10.1093/bioinformatics/btaf430'
+)
+bib_hypergam = #citation('hyper.gam')
+  bibentry(
+    bibtype = 'Manual',
+    title = 'hyper.gam: Generalized Additive Models with Hyper Column',
+    author = c('Tingting Zhan', 'Inna Chervoneva'),
+    year = '2025',
+    note = 'R package version 0.1.2',
+    url = 'https://CRAN.R-project.org/package=hyper.gam',
+    doi = '10.32614/CRAN.package.hyper.gam'
+  )
+```
+
+> `r bib_hypergam |> format(style = 'text') |> gsub(pattern = '\n', replacement = ' ', x = _)`
+
+> `r bib_QI |> format(style = 'text') |> gsub(pattern = '\n', replacement = ' ', x = _)`
+
+The [BibTeX](https://ctan.org/pkg/bibtex) and/or [BibLaTeX](https://ctan.org/pkg/biblatex) entries for [LaTeX](https://www.latex-project.org) users are
+
+```{r}
+#| echo: false
+#| comment: ''
+bib_hypergam |> toBibtex()
+```
+
+```{r}
+#| echo: false
+#| comment: ''
+bib_QI |> toBibtex()
+```
+
+
+Applications based on the quantile index methodology are described in our peer-reviewed publications @Yi23a; @Yi23b; @Yi25.
 
 ## Example
 
@@ -239,12 +295,11 @@ m1 |> integrandSurface(n = 21L)
 #| fig-width: 5
 #| fig-height: 10
 #| fig-cap: 'Linear (top) and nonlinear (bottom) integrand surfaces, contours, integrand paths and their projections to the "floor" and "backwall"'
-library(htmltools)
-tagList(
+htmltools::tagList(
   m0 |> integrandSurface(n = 21L), 
   m1 |> integrandSurface(n = 21L)
 ) |> 
-  browsable()
+  htmltools::browsable()
 ```
 
 Static illustrations of the estimated integrand surfaces, e.g., the `persp`ective (`S3` method dispatch `persp.hyper_gam()`) and `contour` (`S3` method dispatch `contour.hyper_gam()`) plots, are produced by calling the `S3` generics `persp()` and `contour()` in package **`graphics`** shipped with vanilla **`R`**. These static figures are suppressed to reduce the file size of this vignette.
@@ -438,7 +493,7 @@ tagList(
 
 # Appendix
 
-## Terms and Abbreviations
+## Terms & Abbreviations {#sec-terms}
 
 | Term / Abbreviation | Description |
 |------------------------------------|------------------------------------|
