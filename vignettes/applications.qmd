@@ -50,6 +50,18 @@ for deriving single index predictors of scalar outcomes based on spatial and non
 
 R terminology might be different from that of mathematics and statistics. Please refer to Appendix @sec-terms for explanation and reference of the terms and abbreviations used in this vignette.
 
+Package **`hyper.gam`** `Imports` packages
+
+-   `r '\U1f5dd'` **`caret`** [@caret, v`r packageVersion('caret')`], key dependency, for $k$-fold prediction (to be documented in future)
+-   **`cli`** [@cli, v`r packageVersion('cli')`], for attractive command line interfaces (CLIs)
+-   `r '\U1f5dd'` **`mgcv`** [@mgcv, v`r packageVersion('mgcv')`], key dependency, for fitting generalized additive models
+-   **`nlme`** [@nlme, v`r packageVersion('nlme')`], to import the `S3` generic function `nlme::getData()`
+-   **`parallel`** shipped with `r R.version$version.string`, for parallel computing of $k$-fold prediction (to be documented in future)
+-   `r '\U1f5dd'` **`plotly`** [@plotly, v`r packageVersion('plotly')`], key dependency, for interactive visualization using HTML widget
+-   `r '\U1f5dd'` **`groupedHyperframe`** [@groupedHyperframe, v`r packageVersion('groupedHyperframe')`], key dependency, for data structure
+
+Package **`groupedHyperframe`** `Imports` are outlined in its separate vignette ([CRAN](https://cran.r-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html), [RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe)).
+
 ## Prerequisite
 
 Packages **`groupedHyperframe`** and **`hyper.gam`** require `R` version 4.5.0 (released 2025-04-11) or higher. [RStudio](https://posit.co/download/rstudio-desktop/) is not required, but highly recommended. This vignette is generated under `r R.version$version.string` using packages **`knitr`** [@knitr, v`r packageVersion('knitr')`], **`quarto`** [@quarto, v`r packageVersion('quarto')`], **`rmarkdown`** [@rmarkdown, v`r packageVersion('rmarkdown')`].
@@ -77,30 +89,6 @@ utils::install.packages('groupedHyperframe') # Developers: do NOT use!!
 utils::install.packages('hyper.gam') # Developers: do NOT use!!
 ```
 
-### Dependencies
-
-Package **`hyper.gam`** `Imports` packages
-
--   `r '\U1f5dd'` **`caret`** [@caret, v`r packageVersion('caret')`], key dependency, for $k$-fold prediction (to be documented in future)
--   **`cli`** [@cli, v`r packageVersion('cli')`], for attractive command line interfaces (CLIs)
--   `r '\U1f5dd'` **`mgcv`** [@mgcv, v`r packageVersion('mgcv')`], key dependency, for fitting generalized additive models
--   **`nlme`** [@nlme, v`r packageVersion('nlme')`], to import the `S3` generic function `nlme::getData()`
--   **`parallel`** shipped with `r R.version$version.string`, for parallel computing of $k$-fold prediction (to be documented in future)
--   `r '\U1f5dd'` **`plotly`** [@plotly, v`r packageVersion('plotly')`], key dependency, for interactive visualization using HTML widget
--   `r '\U1f5dd'` **`groupedHyperframe`** [@groupedHyperframe, v`r packageVersion('groupedHyperframe')`], key dependency, for data structure
-
-Package **`groupedHyperframe`** `Imports` packages
-
--   **`cli`** [@cli, v`r packageVersion('cli')`], for attractive command line interfaces
--   `r '\U1f5dd'` **`GET`** [@GET, v`r packageVersion('GET')`], key dependency, for global envelope test
--   `r '\U1f5dd'` **`matrixStats`** [@matrixStats, v`r packageVersion('matrixStats')`], key dependency, for matrix arithmetic
--   **`parallel`** shipped with `r R.version$version.string`, for parallel computing
--   `r '\U1f5dd'` **`pracma`** [@pracma, v`r packageVersion('pracma')`], key dependency, for (cumulative) trapezoidal integration
--   `r '\U1f5dd'` **`SpatialPack`** [@SpatialPack, v`r packageVersion('SpatialPack')`], key dependency, for Tjøstheim's coefficient of spatial association
--   `r '\U1f5dd'` **`spatstat.explore`** (dev v`r packageVersion('spatstat.explore')`), **`spatstat.geom`** (dev v`r packageVersion('spatstat.geom')`), **`spatstat.random`** (dev v`r packageVersion('spatstat.random')`), key dependency, for spatial statistics
-
-Since package **`spatstat.explore`** version 3.4-3.004, we have a `Registered S3 method overwritten` when loading both packages **`groupedHyperframe`** and **`hyper.gam`**. This function name clash is between `spatstat.explore::plot.roc()` and `pROC::plot.roc()`. The package **`pROC`** [@pROC, v`r packageVersion('pROC')`] is among the `Imports` of package **`caret`** [@caret, v`r packageVersion('caret')`].
-
 ## Getting Started
 
 Examples in this vignette require that the `search` path has
@@ -111,6 +99,8 @@ library(hyper.gam)
 library(survival)
 ```
 
+As of package **`spatstat.explore`** [@Baddeley15, v`r packageVersion('spatstat.explore')`] and **`pROC`** [@pROC, v`r packageVersion('pROC')`], we have a function name clash between `spatstat.explore::plot.roc()` and `pROC::plot.roc()` when loading both packages **`groupedHyperframe`** (which `Imports` package **`spatstat.explore`**) and **`hyper.gam`** (which `Imports` package **`caret`** which `Imports` package **`pROC`**).  This function name clash is potentially hazardous as the `S3` classes `spatstat.explore::roc` and `pROC::roc` are totally different.
+
 ```{r}
 #| echo: false
 op = par(no.readonly = TRUE)
@@ -119,12 +109,15 @@ op = par(no.readonly = TRUE)
 
 ## Acknowledgement
 
-The authors thank [Erjia Cui](https://orcid.org/0000-0003-3576-2892) for his contribution to function `hyper_gam()`.
-
 This work is supported by National Institutes of Health, U.S. Department of Health and Human Services grants
 
 -   R01CA222847 ([I. Chervoneva](https://orcid.org/0000-0002-9104-4505), [T. Zhan](https://orcid.org/0000-0001-9971-4844), and [H. Rui](https://orcid.org/0000-0002-8778-261X))
 -   R01CA253977 (H. Rui and I. Chervoneva).
+
+The authors thank 
+
+-   [Erjia Cui](https://orcid.org/0000-0003-3576-2892)'s contribution to function `hyper_gam()`.
+
 
 ```{=html}
 <!---
