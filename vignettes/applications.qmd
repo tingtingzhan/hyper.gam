@@ -189,12 +189,10 @@ bib_groupedHyperframe =
 
 > `r bib_QI |> format(style = 'text') |> gsub(pattern = '\n', replacement = ' ', x = _)`
 
-The [BibTeX](https://ctan.org/pkg/bibtex) and/or [BibLaTeX](https://ctan.org/pkg/biblatex) entries for [LaTeX](https://www.latex-project.org) users are
+<details><summary>[BibTeX](https://ctan.org/pkg/bibtex) and/or [BibLaTeX](https://ctan.org/pkg/biblatex) entries for [LaTeX](https://www.latex-project.org) users</summary>
 
 ```{r}
 #| echo: false
-#| code-fold: true
-#| code-summary: 'test'
 #| comment: ''
 bib_groupedHyperframe |> toBibtex()
 ```
@@ -210,6 +208,9 @@ bib_hypergam |> toBibtex()
 #| comment: ''
 bib_QI |> toBibtex()
 ```
+
+</details>
+
 
 Applications based on the quantile index methodology are described in our peer-reviewed publications @Yi23a; @Yi23b; @Yi25.
 
