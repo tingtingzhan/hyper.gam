@@ -193,6 +193,8 @@ The [BibTeX](https://ctan.org/pkg/bibtex) and/or [BibLaTeX](https://ctan.org/pkg
 
 ```{r}
 #| echo: false
+#| code-fold: true
+#| code-summary: 'test'
 #| comment: ''
 bib_groupedHyperframe |> toBibtex()
 ```
@@ -213,20 +215,40 @@ Applications based on the quantile index methodology are described in our peer-r
 
 ## Example
 
-Data example **`Ki67`** included in package **`groupedHyperframe`** ([Github](https://github.com/tingtingzhan/groupedHyperframe), [`CRAN`](https://CRAN.R-project.org/package=groupedHyperframe)) is a *grouped hyper data frame*, an extension of the hyper data frame `hyperframe` object from package **`spatstat.geom`** [@Baddeley15; @Baddeley05]. The point-pattern `ppp`-hypercolumn *`ppp.`* contains the log-transformed Ki67 protein expression CSIs in each *`tissueID`* nested in *`patientID`*. Such nested grouping structure is denoted by *`~patientID/tissueID`* following the nomenclature of package **`nlme`** [@Pinheiro00; @nlme]. The data example **`Ki67`** also contains the metadata including the outcome of interest, e.g., progression free survival *`PFS`*, *`Her2`*, *`HR`*, etc. Detailed information about the `groupedHyperframe` class may be found in package **`groupedHyperframe`** vignettes ([RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe), [`CRAN`](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html)), section *Grouping Structure on `ppp`-Hypercolumn*.
+We construct a *grouped hyper data frame* object *`Ki67g`* from data example *`Ki67`* included in package **`groupedHyperframe`** ([Github](https://github.com/tingtingzhan/groupedHyperframe), [CRAN](https://CRAN.R-project.org/package=groupedHyperframe)). Grouped hyper data frame `groupedHyperframe` is an extension of the hyper data frame `hyperframe` object from package **`spatstat.geom`** [@Baddeley15; @Baddeley05]. 
 
 ```{r}
-data(Ki67, package = 'groupedHyperframe')
-Ki67
+Ki67g = groupedHyperframe::Ki67 |>
+  within.data.frame(expr = {
+    x = y = NULL # remove x- and y-coords for non-spacial application
+  }) |>
+  as.groupedHyperframe(group = ~ patientID/tissueID)
 ```
+
+The `groupedHyperframe` object *`Ki67g`* has 
+
+-   A `numeric`-hypercolumn *`logKi67`*, which contains the log-transformed Ki-67 protein expression CSIs in each *`tissueID`* nested in *`patientID`*. Such nested grouping structure is denoted by *`~patientID/tissueID`* following the nomenclature of package **`nlme`** [@Pinheiro00; @nlme]. 
+-   Metadata including the outcome of interest, e.g., progression free survival *`PFS`*, *`Her2`*, *`HR`*, etc. 
+
+```{r}
+#| code-fold: true
+#| code-summary: 'Non-spacial `groupedHyperframe` *`Ki67g`*'
+Ki67g
+```
+
+
+Detailed information about the `groupedHyperframe` class may be found in package **`groupedHyperframe`** vignettes ([RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe), [CRAN](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html)), section *Grouped Hyper Data Frame*.
+
+
+
 
 ## 1️⃣ Compute Aggregated Quantiles
 
-Function `aggregate_quantile()` first converts the numeric marks, i.e., the log-transformed Ki67 intensities, from each element of the `ppp`-hypercolumn *`ppp.`* into sample `quantile`s at a pre-specified grid of probabilities $\{p_k, k=1,\cdots,K \} \in [0,1]$, then aggregates the quantiles of multiple *`tissueID`*'s per *`patientID`* by point-wise means (default of parameter `f_aggr_`). Note that the aggregation must be performed at the level of biologically *independent* clusters, e.g., *`~patientID`*, to produce independent quantile predictors.
+Function `aggregate_quantile()` first converts the numeric marks, i.e., the log-transformed Ki-67 intensities, from each element of the `ppp`-hypercolumn *`ppp.`* into sample `quantile`s at a pre-specified grid of probabilities $\{p_k, k=1,\cdots,K \} \in [0,1]$, then aggregates the quantiles of multiple *`tissueID`*'s per *`patientID`* by point-wise means (default of parameter `f_aggr_`). Note that the aggregation must be performed at the level of biologically *independent* clusters, e.g., *`~patientID`*, to produce independent quantile predictors.
 
 ```{r}
 #| message: false
-Ki67q = Ki67 |>
+Ki67q = Ki67g |>
   aggregate_quantile(by = ~ patientID, probs = seq.int(from = .01, to = .99, by = .01))
 ```
 
@@ -457,21 +479,30 @@ Ki67q |>
 
 🚧🚧 **This section is under construction** 🚧🚧
 
+Spatial version of `groupedHyperframe`
+
+```{r}
+Ki67s = groupedHyperframe::Ki67 |>
+  grouped_ppp(formula = logKi67 ~ PFS + Tstage + adj_rad + adj_chemo + histology + Her2 + HR + node + race + age | patientID/tissueID, data = _)
+```
+
+
+
 Recommended $r_\text{max}$.
 
 ```{r}
-.rmax = Ki67 |> rmax_(fun = 'K')
+.rmax = Ki67s |> rmax_(fun = 'K')
 ```
 
 ```{r}
 #| results: hide
-Ki67 |>
+Ki67s |>
   Emark_(r = seq.int(from = 0, to = min(.rmax$ppp.), by = 1), correction = 'none') |>
   aggregate_fv(by = ~ patientID, f_aggr_ = pmean)
 ```
 
 ```{r}
-Ki67.E = Ki67 |>
+Ki67.E = Ki67s |>
   Emark_(r = seq.int(from = 0, to = 180, by = 1), correction = 'none') |>
   aggregate_fv(by = ~ patientID, f_aggr_ = pmean)
 ```
