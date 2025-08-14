@@ -252,10 +252,13 @@ Ki67q = Ki67g |>
   aggregate_quantile(by = ~ patientID, probs = seq.int(from = .01, to = .99, by = .01))
 ```
 
-The returned object *`Ki67q`* is a hyper data frame `hyperframe` with a numeric-hypercolumn of aggregated sample quantiles *`logKi67.quantile`* per *`patientID`*. Users are encouraged to learn more about the function `aggregate_quantile()` from package **`groupedHyperframe`** vignettes ([RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe), [`CRAN`](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html)), section *Grouping Structure on `ppp`-Hypercolumn*.
+The returned object *`Ki67q`* is a hyper data frame `hyperframe` with a numeric-hypercolumn of aggregated sample quantiles *`logKi67.quantile`* per *`patientID`*. Users are encouraged to learn more about the function `aggregate_quantile()` from package **`groupedHyperframe`** vignettes ([RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe), [CRAN](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html)), section *Grouping `ppp`-Hypercolumn*, subsection *Truncated Aggregation*.
 
 ```{r}
-Ki67q |> head()
+#| code-fold: true
+#| code-summary: '`groupedHyperframe` *`Ki67q`*: aggregated quantiles'
+Ki67q |>
+  head()
 ```
 
 ## 2️⃣ Estimate Integrand Surface
@@ -325,7 +328,7 @@ m1 |> integrandSurface(n = 21L)
 
 ```{r}
 #| code-fold: true
-#| code-summary: R code to collage multiple `htmlwidget`s
+#| code-summary: 'R code: collage multiple `htmlwidget`s'
 #| label: fig-integrandSurface
 #| fig-width: 5
 #| fig-height: 10
