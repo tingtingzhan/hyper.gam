@@ -126,59 +126,15 @@ The authors thank
 
 Single-cell multiplex immuno-fluorescence immunohistochemistry (mIF-IHC) imaging data are the result of digital processing of the microscopic images of tissue stained with selected antibodies. Quantitative pathology platforms, e.g., Akoya or QuPath, support cell segmentation of mIF-IHC images and quantification of the mean protein expression in each cell. The cell centroid coordinates and cell signal intensities (CSIs) for each stained protein are usually extracted as individual comma-separated values `.csv` files. For each cell in a tissue image, the data include the cell centroid coordinates and cell signal intensity (CSI) for each quantified protein expression. The data may have multiple levels of hierarchical clustering. For example, single cells are clustered within a Region of Interest (ROI) or a tissue core, ROIs are clustered within a tissue or tissue cores are clustered within a patient.
 
-# Quantile Index
+# 🎉 Quantile Index
 
 To cite the implementation of the Quantile Index (QI) methodology, please use
 
-```{r}
-#| echo: false
-#| warning: false
-ap = available.packages(repos = 'https://cran.rstudio.com/') |>
-  as.data.frame.matrix()
-bib_QI = bibentry(
-  bibtype = 'article',
-  title = 'Quantile Index predictors using R package hyper.gam',
-  author = c('Tingting Zhan', 'Misung Yi', 'Inna Chervoneva' ),
-  journal = 'Bioinformatics',
-  pages = 'btaf430',
-  year = '2025', 
-  month = '07',
-  issn = '1367-4811',
-  doi = '10.1093/bioinformatics/btaf430'
-)
-bib_hypergam =
-  bibentry(
-    bibtype = 'Manual',
-    title = 'hyper.gam: Generalized Additive Models with Hyper Column',
-    author = c('Tingting Zhan', 'Inna Chervoneva'),
-    year = '2025',
-    note = ap |>
-      subset.data.frame(subset = Package == 'hyper.gam', select = 'Version') |>
-      c() |>
-      sprintf(fmt = 'R package version %s'),
-    url = 'https://CRAN.R-project.org/package=hyper.gam',
-    doi = '10.32614/CRAN.package.hyper.gam'
-  )
-bib_groupedHyperframe =
-  bibentry(
-    bibtype = 'Manual',
-    title = 'groupedHyperframe: Grouped Hyper Data Frame: An Extension of Hyper Data Frame',
-    author = c('Tingting Zhan', 'Inna Chervoneva'),
-    year = '2025',
-    note = ap |>
-      subset.data.frame(subset = Package == 'groupedHyperframe', select = 'Version') |>
-      c() |>
-      sprintf(fmt = 'R package version %s'),
-    url = 'https://CRAN.R-project.org/package=groupedHyperframe',
-    doi = '10.32614/CRAN.package.groupedHyperframe'
-  )
-```
+> `r bib_groupedHyperframe() |> format(style = 'text') |> gsub(pattern = '\n', replacement = ' ', x = _)`
 
-> `r bib_groupedHyperframe |> format(style = 'text') |> gsub(pattern = '\n', replacement = ' ', x = _)`
+> `r bib_hypergam() |> format(style = 'text') |> gsub(pattern = '\n', replacement = ' ', x = _)`
 
-> `r bib_hypergam |> format(style = 'text') |> gsub(pattern = '\n', replacement = ' ', x = _)`
-
-> `r bib_QI |> format(style = 'text') |> gsub(pattern = '\n', replacement = ' ', x = _)`
+> `r bib_btaf430() |> format(style = 'text') |> gsub(pattern = '\n', replacement = ' ', x = _)`
 
 <details>
 
@@ -187,24 +143,14 @@ bib_groupedHyperframe =
 ```{r}
 #| echo: false
 #| comment: ''
-bib_groupedHyperframe |> toBibtex()
-```
-
-```{r}
-#| echo: false
-#| comment: ''
-bib_hypergam |> toBibtex()
-```
-
-```{r}
-#| echo: false
-#| comment: ''
-bib_QI |> toBibtex()
+bib_btaf430() |> toBibtex()
+bib_groupedHyperframe() |> toBibtex()
+bib_hypergam() |> toBibtex()
 ```
 
 </details>
 
-Applications based on the quantile index methodology are described in our peer-reviewed publications @Yi23a; @Yi23b; @Yi25.
+as well as @Yi23a; @Yi23b; @Yi25.
 
 ## 1️⃣ Compute Aggregated Quantiles
 
@@ -221,7 +167,7 @@ Ki67q = groupedHyperframe::Ki67 |>
 
 The returned object *`Ki67q`* is a hyper data frame `hyperframe` with
 
--   a `numeric`-hypercolumn of the aggregated sample quantiles *`logKi67.quantile`* per *`patientID`*. These quantiles are calculated at a pre-specified grid of probabilities $\{p_k, k=1,\cdots,K \} \in [0,1]$. The aggregation, of multiple *`tissueID`*'s per *`patientID`*, is by point-wise means. Note that the aggregation must be performed at the level of biologically *independent* clusters, e.g., *`~patientID`*, to produce independent quantile predictors.
+-   a `numeric`-hypercolumn of the aggregated sample quantiles *`logKi67.quantile`* per *`patientID`*. These quantiles are calculated at a pre-specified grid of probabilities $\{p_k, k=1,\cdots,K \} \in [0,1]$. The aggregation of quantiles, over multiple *`tissueID`*'s per *`patientID`*, is by point-wise means. Note that the aggregation must be performed at the level of biologically *independent* clusters, e.g., *`~patientID`*, to produce independent quantile predictors.
 -   Metadata, including the outcome of interest, e.g., progression free survival *`PFS`*, *`Her2`*, *`HR`*, etc.
 
 ```{r}
