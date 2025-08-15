@@ -43,8 +43,8 @@ vignette: >
 
 This vignette provides examples of using `R` packages
 
--   **`groupedHyperframe`**, @groupedHyperframe, [`CRAN`](https://cran.r-project.org/package=groupedHyperframe), [Github](https://github.com/tingtingzhan/groupedHyperframe), [RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe)
--   **`hyper.gam`**, @hyper_gam, [`CRAN`](https://cran.r-project.org/package=hyper.gam), [Github](https://github.com/tingtingzhan/hyper.gam), [RPubs](https://rpubs.com/tingtingzhan/hyper_gam)
+-   **`groupedHyperframe`**, @groupedHyperframe, [CRAN](https://cran.r-project.org/package=groupedHyperframe), [Github](https://github.com/tingtingzhan/groupedHyperframe), [RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe)
+-   **`hyper.gam`**, @hyper_gam, [CRAN](https://cran.r-project.org/package=hyper.gam), [Github](https://github.com/tingtingzhan/hyper.gam), [RPubs](https://rpubs.com/tingtingzhan/hyper_gam)
 
 for deriving single index predictors of scalar outcomes based on spatial and non-spatial single-cell imaging data.
 
@@ -70,7 +70,6 @@ Package **`groupedHyperframe`** dependencies are outlined in its separate vignet
 
 Packages **`groupedHyperframe`** and **`hyper.gam`** require `R` version 4.5.0 (released 2025-04-11) or higher ([macOS](https://cran.r-project.org/bin/macosx/), [Windows](https://cran.r-project.org/bin/windows/base/)). An Integrated Development Environment (IDE), e.g., [RStudio](https://posit.co/download/rstudio-desktop/) or [Positron](https://positron.posit.co/download.html), is not required, but highly recommended. This vignette is created under `r R.version$version.string` using packages **`knitr`** [@knitr, v`r packageVersion('knitr')`], **`quarto`** [@quarto, v`r packageVersion('quarto')` with [Quarto](https://quarto.org/docs/get-started/) v`r quarto::quarto_version()`] and **`rmarkdown`** [@rmarkdown, v`r packageVersion('rmarkdown')`].
 
-
 ```{r}
 #| code-fold: true
 #| code-summary: "Environment on author's computer"
@@ -78,7 +77,7 @@ Sys.info()[c('sysname', 'release', 'machine')]
 R.version
 ```
 
-Experimental (and maybe unstable) features are implemented **extremely frequently** on Github. [Active developers should use the Github version; suggestions and bug reports are welcome!]{style="background-color: #FFFF00"} Stable releases to `CRAN` are typically updated every 2 to 3 months, or when the authors have an upcoming manuscript in the peer-reviewing process.
+Experimental (and maybe unstable) features are implemented **extremely frequently** on Github. [Active developers should use the Github version; suggestions and bug reports are welcome!]{style="background-color: #FFFF00"} Stable releases to CRAN are typically updated every 2 to 3 months, or when the authors have an upcoming manuscript in the peer-reviewing process.
 
 ```{r}
 #| eval: false
@@ -104,7 +103,7 @@ library(hyper.gam)
 library(survival)
 ```
 
-As of package **`spatstat.explore`** [@Baddeley15, v`r packageVersion('spatstat.explore')`] and **`pROC`** [@pROC, v`r packageVersion('pROC')`], we have a function name clash between `spatstat.explore::plot.roc()` and `pROC::plot.roc()` when loading both packages **`groupedHyperframe`** (which `Imports` package **`spatstat.explore`**) and **`hyper.gam`** (which `Imports` package **`caret`** which `Imports` package **`pROC`**).  This function name clash is potentially hazardous as the `S3` classes `spatstat.explore::roc` and `pROC::roc` are totally different.
+As of package **`spatstat.explore`** [@Baddeley15, v`r packageVersion('spatstat.explore')`] and **`pROC`** [@pROC, v`r packageVersion('pROC')`], we have a function name clash between `spatstat.explore::plot.roc()` and `pROC::plot.roc()` when loading both packages **`groupedHyperframe`** (which `Imports` package **`spatstat.explore`**) and **`hyper.gam`** (which `Imports` package **`caret`** which `Imports` package **`pROC`**). This function name clash is potentially hazardous as the `S3` classes `spatstat.explore::roc` and `pROC::roc` are totally different.
 
 ```{r}
 #| echo: false
@@ -119,11 +118,9 @@ This work is supported by National Institutes of Health, U.S. Department of Heal
 -   R01CA222847 ([I. Chervoneva](https://orcid.org/0000-0002-9104-4505), [T. Zhan](https://orcid.org/0000-0001-9971-4844), and [H. Rui](https://orcid.org/0000-0002-8778-261X))
 -   R01CA253977 (H. Rui and I. Chervoneva).
 
-The authors thank 
+The authors thank
 
 -   [Erjia Cui](https://orcid.org/0000-0003-3576-2892)'s contribution to function `hyper_gam()`.
-
-
 
 # Data Structure
 
@@ -183,7 +180,9 @@ bib_groupedHyperframe =
 
 > `r bib_QI |> format(style = 'text') |> gsub(pattern = '\n', replacement = ' ', x = _)`
 
-<details><summary>[BibTeX](https://ctan.org/pkg/bibtex) and/or [BibLaTeX](https://ctan.org/pkg/biblatex) entries for [LaTeX](https://www.latex-project.org) users</summary>
+<details>
+
+<summary>[BibTeX](https://ctan.org/pkg/bibtex) and/or [BibLaTeX](https://ctan.org/pkg/biblatex) entries for [LaTeX](https://www.latex-project.org) users</summary>
 
 ```{r}
 #| echo: false
@@ -205,56 +204,34 @@ bib_QI |> toBibtex()
 
 </details>
 
-
 Applications based on the quantile index methodology are described in our peer-reviewed publications @Yi23a; @Yi23b; @Yi25.
-
-## Data Example
-
-We construct a *grouped hyper data frame* object *`Ki67g`* from data example *`Ki67`* included in package **`groupedHyperframe`** ([Github](https://github.com/tingtingzhan/groupedHyperframe), [CRAN](https://CRAN.R-project.org/package=groupedHyperframe)). Grouped hyper data frame `groupedHyperframe` is an extension of the hyper data frame `hyperframe` object from package **`spatstat.geom`** [@Baddeley15; @Baddeley05]. 
-
-```{r}
-Ki67g = groupedHyperframe::Ki67 |>
-  within.data.frame(expr = {
-    x = y = NULL # remove x- and y-coords for non-spatial application
-  }) |>
-  as.groupedHyperframe(group = ~ patientID/tissueID)
-```
-
-The `groupedHyperframe` object *`Ki67g`* has 
-
--   A `numeric`-hypercolumn *`logKi67`*, which contains the log-transformed Ki-67 protein expression CSIs in each *`tissueID`* nested in *`patientID`*. Such nested grouping structure is denoted by *`~patientID/tissueID`* following the nomenclature of package **`nlme`** [@Pinheiro00; @nlme]. 
--   Metadata including the outcome of interest, e.g., progression free survival *`PFS`*, *`Her2`*, *`HR`*, etc. 
-
-```{r}
-#| code-fold: true
-#| code-summary: 'Non-spatial `groupedHyperframe` *`Ki67g`*'
-Ki67g
-```
-
-
-Detailed information about the `groupedHyperframe` class may be found in package **`groupedHyperframe`** vignettes ([RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe), [CRAN](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html)), section *Grouped Hyper Data Frame*.
-
-
-
 
 ## 1️⃣ Compute Aggregated Quantiles
 
-Function `aggregate_quantile()` first converts the numeric marks, i.e., the log-transformed Ki-67 intensities, from each element of the `ppp`-hypercolumn *`ppp.`* into sample `quantile`s at a pre-specified grid of probabilities $\{p_k, k=1,\cdots,K \} \in [0,1]$, then aggregates the quantiles of multiple *`tissueID`*'s per *`patientID`* by point-wise means (default of parameter `f_aggr_`). Note that the aggregation must be performed at the level of biologically *independent* clusters, e.g., *`~patientID`*, to produce independent quantile predictors.
+We use the data example *`Ki67`* from package **`groupedHyperframe`** in this non-spatial application.
 
 ```{r}
-#| message: false
-Ki67q = Ki67g |>
+Ki67q = groupedHyperframe::Ki67 |>
+  within.data.frame(expr = {
+    x = y = NULL # remove x- and y-coords for non-spatial application
+  }) |>
+  as.groupedHyperframe(group = ~ patientID/tissueID) |>
   aggregate_quantile(by = ~ patientID, probs = seq.int(from = .01, to = .99, by = .01))
 ```
 
-The returned object *`Ki67q`* is a hyper data frame `hyperframe` with a numeric-hypercolumn of aggregated sample quantiles *`logKi67.quantile`* per *`patientID`*. Users are encouraged to learn more about the function `aggregate_quantile()` from package **`groupedHyperframe`** vignettes ([RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe), [CRAN](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html)), section *Grouping `ppp`-Hypercolumn*, subsection *Truncated Aggregation*.
+The returned object *`Ki67q`* is a hyper data frame `hyperframe` with
+
+-   a `numeric`-hypercolumn of the aggregated sample quantiles *`logKi67.quantile`* per *`patientID`*. These quantiles are calculated at a pre-specified grid of probabilities $\{p_k, k=1,\cdots,K \} \in [0,1]$. The aggregation, of multiple *`tissueID`*'s per *`patientID`*, is by point-wise means. Note that the aggregation must be performed at the level of biologically *independent* clusters, e.g., *`~patientID`*, to produce independent quantile predictors.
+-   Metadata, including the outcome of interest, e.g., progression free survival *`PFS`*, *`Her2`*, *`HR`*, etc.
 
 ```{r}
 #| code-fold: true
-#| code-summary: '`hyperframe` *`Ki67q`*: aggregated quantiles'
+#| code-summary: 'A `hyperframe` *`Ki67q`*: aggregated quantiles'
 Ki67q |>
   head()
 ```
+
+Users are encouraged to learn more about the `hyperframe` class from package **`spatstat.geom`** [@Baddeley15; @Baddeley05]. Users are also encouraged to learn more about the functions `as.groupedHyperframe()` and `aggregate_quantile()`, as well as the `groupedHyperframe` class, from package **`groupedHyperframe`** vignette ([RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe), [CRAN](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html)).
 
 ## 2️⃣ Estimate Integrand Surface
 
@@ -309,7 +286,7 @@ Also in this interactive visualization are
 -   the sample quantiles $Q_i(p)$, i.e., the ***projections*** of the estimated linear or nonlinear integrand path along the $s$-axis, i.e., onto the $(p,q)$-plane (a.k.a., the "floor");
 -   the ***projections*** of the estimated linear or nonlinear integrand path along the $q$-axis, i.e., onto the $(p,s)$-plane (a.k.a., the "backwall"), so that the area under each projected path is equal to the estimated linear (@eq-QI) or nonlinear quantile index (@eq-nlQI).
 
-@fig-integrandSurface is a collage [via package **`htmltools`**, @htmltools] of the interactive `htmlwidget` visualizations of the linear and nonlinear integrand surfaces, contours, integrand paths and their projections to the "floor" and "backwall". Users should remove the argument `n` in function call `integrandSurface(, n=21L)`, and use the default `n=501L` instead, for a more refined surface. The authors must use `n=21L` to reduce the `htmlwidget` objects size, in order to comply with `CRAN` and/or [RPubs](https://rpubs.com) file size limit.
+@fig-integrandSurface is a collage [via package **`htmltools`**, @htmltools] of the interactive `htmlwidget` visualizations of the linear and nonlinear integrand surfaces, contours, integrand paths and their projections to the "floor" and "backwall". Users should remove the argument `n` in function call `integrandSurface(, n=21L)`, and use the default `n=501L` instead, for a more refined surface. The authors must use `n=21L` to reduce the `htmlwidget` objects size, in order to comply with CRAN and/or [RPubs](https://rpubs.com) file size limit.
 
 ```{r}
 #| eval: false
@@ -489,7 +466,6 @@ Ki67s = groupedHyperframe::Ki67 |>
 #| code-summary: 'Spatial `groupedHyperframe` *`Ki67s`*'
 Ki67s
 ```
-
 
 Recommended $r_\text{max}$.
 
