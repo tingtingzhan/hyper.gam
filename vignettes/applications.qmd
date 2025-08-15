@@ -58,7 +58,11 @@ Package **`hyper.gam`** `Imports` packages
 -   **`nlme`** [@nlme, v`r packageVersion('nlme')`], to import the `S3` generic function `nlme::getData()`
 -   **`parallel`** shipped with `r R.version$version.string`, for parallel computing of $k$-fold prediction (to be documented in future)
 -   `r '\U1f5dd'` **`plotly`** [@plotly, v`r packageVersion('plotly')`], key dependency, for interactive visualization using HTML widget
--   `r '\U1f5dd'` **`groupedHyperframe`** [@groupedHyperframe, v`r packageVersion('groupedHyperframe')`], key dependency, for data structure
+
+Package **`hyper.gam`** `Suggests` packages
+
+-   **`groupedHyperframe`** [@groupedHyperframe, dev v`r packageVersion('groupedHyperframe')`], for data preparation
+-   `r '\U1f5dd'` **`spatstat.geom`** [@Baddeley15, v`r packageVersion('spatstat.geom')`], for `hyperframe` data structure
 
 Package **`groupedHyperframe`** dependencies are outlined in its separate vignette ([CRAN](https://cran.r-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html), [RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe)).
 
@@ -120,17 +124,6 @@ The authors thank
 -   [Erjia Cui](https://orcid.org/0000-0003-3576-2892)'s contribution to function `hyper_gam()`.
 
 
-```{=html}
-<!---
-[Highlighted test.]{style="background-color: #FFFF00"}
--->
-```
-
-```{=html}
-<!---
-[~~Highlighted strike through test.~~]{style="background-color: #FFFF00"}
--->
-```
 
 # Data Structure
 

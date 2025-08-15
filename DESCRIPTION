@@ -21,7 +21,9 @@ Authors@R: c(person(given = 'Tingting', family = 'Zhan', role =
        '0000-0002-9104-4505')), person(given = 'Erjia', family =
        'Cui', role = c('ctb'), email = 'ecui@umn.edu', comment =
        c(ORCID = '0000-0003-3576-2892')))
-Imports: caret, cli, mgcv, nlme, parallel, plotly, groupedHyperframe
-Suggests: knitr, quarto, rmarkdown, spatstat.geom, survival,
-       matrixStats, htmlwidgets, htmltools
+Imports: caret, cli, mgcv, nlme, parallel, plotly
+Suggests: knitr, quarto, rmarkdown, 
+    groupedHyperframe, 
+    spatstat.geom, survival,
+    htmlwidgets, htmltools
 VignetteBuilder: quarto, knitr
