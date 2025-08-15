@@ -60,11 +60,12 @@ Package **`hyper.gam`** `Imports` packages
 -   `r '\U1f5dd'` **`plotly`** [@plotly, v`r packageVersion('plotly')`], key dependency, for interactive visualization using HTML widget
 -   `r '\U1f5dd'` **`groupedHyperframe`** [@groupedHyperframe, v`r packageVersion('groupedHyperframe')`], key dependency, for data structure
 
-Package **`groupedHyperframe`** `Imports` are outlined in its separate vignette ([CRAN](https://cran.r-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html), [RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe)).
+Package **`groupedHyperframe`** dependencies are outlined in its separate vignette ([CRAN](https://cran.r-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html), [RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe)).
 
 ## Prerequisite
 
-Packages **`groupedHyperframe`** and **`hyper.gam`** require `R` version 4.5.0 (released 2025-04-11) or higher. [RStudio](https://posit.co/download/rstudio-desktop/) is not required, but highly recommended. This vignette is generated under `r R.version$version.string` using packages **`knitr`** [@knitr, v`r packageVersion('knitr')`], **`quarto`** [@quarto, v`r packageVersion('quarto')`], **`rmarkdown`** [@rmarkdown, v`r packageVersion('rmarkdown')`].
+Packages **`groupedHyperframe`** and **`hyper.gam`** require `R` version 4.5.0 (released 2025-04-11) or higher ([macOS](https://cran.r-project.org/bin/macosx/), [Windows](https://cran.r-project.org/bin/windows/base/)). An Integrated Development Environment (IDE), e.g., [RStudio](https://posit.co/download/rstudio-desktop/) or [Positron](https://positron.posit.co/download.html), is not required, but highly recommended. This vignette is created under `r R.version$version.string` using packages **`knitr`** [@knitr, v`r packageVersion('knitr')`], **`quarto`** [@quarto, v`r packageVersion('quarto')` with [Quarto](https://quarto.org/docs/get-started/) v`r quarto::quarto_version()`] and **`rmarkdown`** [@rmarkdown, v`r packageVersion('rmarkdown')`].
+
 
 ```{r}
 #| code-fold: true
@@ -214,14 +215,14 @@ bib_QI |> toBibtex()
 
 Applications based on the quantile index methodology are described in our peer-reviewed publications @Yi23a; @Yi23b; @Yi25.
 
-## Example
+## Data Example
 
 We construct a *grouped hyper data frame* object *`Ki67g`* from data example *`Ki67`* included in package **`groupedHyperframe`** ([Github](https://github.com/tingtingzhan/groupedHyperframe), [CRAN](https://CRAN.R-project.org/package=groupedHyperframe)). Grouped hyper data frame `groupedHyperframe` is an extension of the hyper data frame `hyperframe` object from package **`spatstat.geom`** [@Baddeley15; @Baddeley05]. 
 
 ```{r}
 Ki67g = groupedHyperframe::Ki67 |>
   within.data.frame(expr = {
-    x = y = NULL # remove x- and y-coords for non-spacial application
+    x = y = NULL # remove x- and y-coords for non-spatial application
   }) |>
   as.groupedHyperframe(group = ~ patientID/tissueID)
 ```
@@ -233,7 +234,7 @@ The `groupedHyperframe` object *`Ki67g`* has
 
 ```{r}
 #| code-fold: true
-#| code-summary: 'Non-spacial `groupedHyperframe` *`Ki67g`*'
+#| code-summary: 'Non-spatial `groupedHyperframe` *`Ki67g`*'
 Ki67g
 ```
 
@@ -487,9 +488,14 @@ Spatial version of `groupedHyperframe`
 
 ```{r}
 Ki67s = groupedHyperframe::Ki67 |>
-  grouped_ppp(formula = logKi67 ~ PFS + Tstage + adj_rad + adj_chemo + histology + Her2 + HR + node + race + age | patientID/tissueID, data = _)
+  grouped_ppp(formula = logKi67 ~ . | patientID/tissueID, data = _)
 ```
 
+```{r}
+#| code-fold: true
+#| code-summary: 'Spatial `groupedHyperframe` *`Ki67s`*'
+Ki67s
+```
 
 
 Recommended $r_\text{max}$.
