@@ -251,7 +251,7 @@ The returned object *`Ki67q`* is a hyper data frame `hyperframe` with a numeric-
 
 ```{r}
 #| code-fold: true
-#| code-summary: '`groupedHyperframe` *`Ki67q`*: aggregated quantiles'
+#| code-summary: '`hyperframe` *`Ki67q`*: aggregated quantiles'
 Ki67q |>
   head()
 ```
