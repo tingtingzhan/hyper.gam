@@ -130,7 +130,7 @@ Single-cell multiplex immuno-fluorescence immunohistochemistry (mIF-IHC) imaging
 
 To cite the implementation of the Quantile Index (QI) methodology, please use
 
-> `r bib_btaf430() |> format(style = 'text') |> gsub(pattern = '\n', replacement = ' ', x = _)`
+> `r citation(package = 'hyper.gam')[[1L]] |> format(style = 'text') |> gsub(pattern = '\n', replacement = ' ', x = _)`
 
 <details>
 
@@ -139,9 +139,10 @@ To cite the implementation of the Quantile Index (QI) methodology, please use
 ```{r}
 #| echo: false
 #| comment: ''
-bib_btaf430() |> toBibtex()
-bib_groupedHyperframe() |> toBibtex()
-bib_hypergam() |> toBibtex()
+c(
+  citation(package = 'hyper.gam'),
+  citation(package = 'groupedHyperframe')  
+) |> toBibtex()
 ```
 
 </details>
