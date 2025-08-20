@@ -23,6 +23,7 @@ format:
   html:
     page-layout: full
     html-math-method: katex
+number-sections: true
 toc: true
 toc-location: left
 toc-depth: 4
@@ -126,7 +127,7 @@ The authors thank
 
 Single-cell multiplex immuno-fluorescence immunohistochemistry (mIF-IHC) imaging data are the result of digital processing of the microscopic images of tissue stained with selected antibodies. Quantitative pathology platforms, e.g., Akoya or QuPath, support cell segmentation of mIF-IHC images and quantification of the mean protein expression in each cell. The cell centroid coordinates and cell signal intensities (CSIs) for each stained protein are usually extracted as individual comma-separated values `.csv` files. For each cell in a tissue image, the data include the cell centroid coordinates and cell signal intensity (CSI) for each quantified protein expression. The data may have multiple levels of hierarchical clustering. For example, single cells are clustered within a Region of Interest (ROI) or a tissue core, ROIs are clustered within a tissue or tissue cores are clustered within a patient.
 
-# 🎉 Quantile Index
+# Quantile Index
 
 To cite the implementation of the Quantile Index (QI) methodology, please use
 
@@ -149,7 +150,7 @@ c(
 
 as well as @Yi23a; @Yi23b; @Yi25.
 
-## 1️⃣ Compute Aggregated Quantiles
+## Compute Aggregated Quantiles
 
 We use the data example *`Ki67`* from package **`groupedHyperframe`** in this non-spatial application.
 
@@ -176,7 +177,7 @@ Ki67q |>
 
 Users are encouraged to learn more about the `hyperframe` class from package **`spatstat.geom`** [@Baddeley15; @Baddeley05]. Users are also encouraged to learn more about the functions `as.groupedHyperframe()` and `aggregate_quantile()`, as well as the `groupedHyperframe` class, from package **`groupedHyperframe`** vignette ([RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe), [CRAN](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html)).
 
-## 2️⃣ Estimate Integrand Surface
+## Estimate Integrand Surface
 
 Linear quantile index (QI) (@eq-QI) is a predictor in a functional generalized linear model [@James02] for outcomes from the exponential family of distributions, or a linear functional Cox model [@Gellar15] for survival outcomes,
 
@@ -283,7 +284,7 @@ m1 |> contour() # a static figure
 
 Visualization of the integrand surface (@eq-S) in functions `integrandSurface()`, `persp.hyper_gam()` and `contour.hyper_gam()` is inspired by function `mgcv::vis.gam()`. Visualization of the *integrand paths*, as well as their projections on the $(p,q)$- and $(p,s)$-plane, is an original idea and design by Tingting Zhan.
 
-## 3️⃣ Compute Quantile Index Predictor
+## Compute Quantile Index Predictor
 
 ```{=html}
 <!---
