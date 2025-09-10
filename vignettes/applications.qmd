@@ -160,7 +160,8 @@ Ki67q = groupedHyperframe::Ki67 |>
     x = y = NULL # remove x- and y-coords for non-spatial application
   }) |>
   as.groupedHyperframe(group = ~ patientID/tissueID) |>
-  aggregate_quantile(by = ~ patientID, probs = seq.int(from = .01, to = .99, by = .01))
+  quantile(probs = seq.int(from = .01, to = .99, by = .01)) |>
+  aggregate(by = ~ patientID)
 ```
 
 The returned object *`Ki67q`* is a hyper data frame `hyperframe` with
@@ -175,7 +176,7 @@ Ki67q |>
   head()
 ```
 
-Users are encouraged to learn more about the `hyperframe` class from package **`spatstat.geom`** [@Baddeley15; @Baddeley05]. Users are also encouraged to learn more about the functions `as.groupedHyperframe()` and `aggregate_quantile()`, as well as the `groupedHyperframe` class, from package **`groupedHyperframe`** vignette ([RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe), [CRAN](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html)).
+Users are encouraged to learn more about the `hyperframe` class from package **`spatstat.geom`** [@Baddeley15; @Baddeley05]. Users are also encouraged to learn more about the function `as.groupedHyperframe()`, the pipeline `<groupedHyperframe> |> quantile() |> aggregate()`, as well as the `groupedHyperframe` class, from package **`groupedHyperframe`** vignette ([RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe), [CRAN](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html)).
 
 ## Estimate Integrand Surface
 
@@ -418,17 +419,13 @@ Recommended $r_\text{max}$.
 ```
 
 ```{r}
-#| results: hide
-Ki67s |>
-  Emark_(r = seq.int(from = 0, to = min(.rmax$ppp.), by = 1), correction = 'none') |>
-  aggregate_fv(by = ~ patientID, f_aggr_ = pmean)
-```
-
-```{r}
 Ki67.E = Ki67s |>
   Emark_(r = seq.int(from = 0, to = 180, by = 1), correction = 'none') |>
-  aggregate_fv(by = ~ patientID, f_aggr_ = pmean)
+  summary_fv() |>
+  aggregate(by = ~ patientID, fun = pmean)
 ```
+
+
 
 ```{r}
 Ki67.E |> head()

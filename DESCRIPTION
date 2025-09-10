@@ -8,7 +8,7 @@ Description: Generalized additive models with a numeric hyper column
        hyper column. Visualization of the integrand surface over the
        hyper column.
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Encoding: UTF-8
 License: GPL-2
 Language: en-US
