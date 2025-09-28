@@ -23,6 +23,8 @@ format:
   html:
     page-layout: full
     html-math-method: katex
+    link-external-icon: true
+    link-external-newwindow: true
 number-sections: true
 toc: true
 toc-location: left
@@ -127,7 +129,7 @@ The authors thank
 
 Single-cell multiplex immuno-fluorescence immunohistochemistry (mIF-IHC) imaging data are the result of digital processing of the microscopic images of tissue stained with selected antibodies. Quantitative pathology platforms, e.g., Akoya or QuPath, support cell segmentation of mIF-IHC images and quantification of the mean protein expression in each cell. The cell centroid coordinates and cell signal intensities (CSIs) for each stained protein are usually extracted as individual comma-separated values `.csv` files. For each cell in a tissue image, the data include the cell centroid coordinates and cell signal intensity (CSI) for each quantified protein expression. The data may have multiple levels of hierarchical clustering. For example, single cells are clustered within a Region of Interest (ROI) or a tissue core, ROIs are clustered within a tissue or tissue cores are clustered within a patient.
 
-# Quantile Index
+# Quantile Index [@Zhan25]
 
 To cite the implementation of the Quantile Index (QI) methodology, please use
 
@@ -164,19 +166,32 @@ Ki67q = groupedHyperframe::Ki67 |>
   aggregate(by = ~ patientID)
 ```
 
-The returned object *`Ki67q`* is a hyper data frame `hyperframe` with
+The returned object *`Ki67q`* is a hyper data frame with
 
--   a `numeric`-hypercolumn of the aggregated sample quantiles *`logKi67.quantile`* per *`patientID`*. These quantiles are calculated at a pre-specified grid of probabilities $\{p_k, k=1,\cdots,K \} \in [0,1]$. The aggregation of quantiles, over multiple *`tissueID`*'s per *`patientID`*, is by point-wise means. Note that the aggregation must be performed at the level of biologically *independent* clusters, e.g., *`~patientID`*, to produce independent quantile predictors.
+-   a numeric-hypercolumn of the aggregated sample quantiles *`logKi67.quantile`* per *`patientID`*. These quantiles are calculated at a pre-specified grid of probabilities $\{p_k, k=1,\cdots,K \} \in [0,1]$. Note that the aggregation must be performed at the level of biologically *independent* clusters, e.g., *`~patientID`*, to produce independent quantile predictors.
 -   Metadata, including the outcome of interest, e.g., progression free survival *`PFS`*, *`Her2`*, *`HR`*, etc.
 
 ```{r}
 #| code-fold: true
-#| code-summary: 'A `hyperframe` *`Ki67q`*: aggregated quantiles'
+#| code-summary: 'A hyper data frame *`Ki67q`*: aggregated quantiles'
 Ki67q |>
   head()
 ```
 
-Users are encouraged to learn more about the `hyperframe` class from package **`spatstat.geom`** [@Baddeley15; @Baddeley05]. Users are also encouraged to learn more about the function `as.groupedHyperframe()`, the pipeline `<groupedHyperframe> |> quantile() |> aggregate()`, as well as the `groupedHyperframe` class, from package **`groupedHyperframe`** vignette ([RPubs](https://rpubs.com/tingtingzhan/groupedHyperframe), [CRAN](https://CRAN.R-project.org/package=groupedHyperframe/vignettes/groupedHyperframe.html)).
+Users are encouraged to learn more about 
+
+-   the hyper data frame (`hyperframe`) from package **`spatstat.geom`** [@Baddeley15; @Baddeley05]; 
+-   each function in this pipeline in package **`groupedHyperframe`** ([CRAN](https://cran.r-project.org/package=groupedHyperframe), [Github](https://github.com/tingtingzhan/groupedHyperframe)) [vignette](https://rpubs.com/tingtingzhan/groupedHyperframe).
+
+| Function | Purpose | Section |
+|----------|------|------|
+| `as.groupedHyperframe()` | to convert a data frame into a grouped hyper data frame | 2 |
+| `quantile()` | to calculate the quantiles of each numeric-vector in the numeric-hypercolumn | 2 |
+| `aggregate()` | to aggregate the quantiles over multiple tissues per patient by point-wise means | 2 |
+
+: Sections in package **`groupedHyperframe`** [vignette](https://rpubs.com/tingtingzhan/groupedHyperframe)
+
+
 
 ## Estimate Integrand Surface
 
@@ -415,7 +430,7 @@ Ki67s
 Recommended $r_\text{max}$.
 
 ```{r}
-.rmax = Ki67s |> rmax_(fun = 'K')
+.rmax = Ki67s |> .rmax(fun = 'K')
 ```
 
 ```{r}
@@ -432,11 +447,11 @@ Ki67.E |> head()
 ```
 
 ```{r}
-x0 = hyper_gam(PFS ~ logKi67.E.cumtrapz, data = Ki67.E)
+x0 = hyper_gam(PFS ~ logKi67.E.cumvtrapz, data = Ki67.E)
 ```
 
 ```{r}
-x1 = hyper_gam(PFS ~ logKi67.E.cumtrapz, data = Ki67.E, nonlinear = TRUE)
+x1 = hyper_gam(PFS ~ logKi67.E.cumvtrapz, data = Ki67.E, nonlinear = TRUE)
 ```
 
 ```{r}
@@ -457,10 +472,21 @@ tagList(
 
 # Appendix
 
-## Terms & Abbreviations {#sec-terms}
+🚧 Nothing here.
+
+# Terms & Abbreviations {#sec-terms}
+
+@tbl-Rterm presents a comprehensive glossary of R terms and abbreviations used in this vignette, which is folded to avoid overwhelming the reader with its excessive length.
+
+R terminology and nomenclature could be *drastically different* from that of mathematics and statistics. Readers are *strongly advised* to read closely from the reference links in @tbl-Rterm, most of which point to webpages on [search.r-project.org](https://search.r-project.org), [cran.r-project.org](https://cran.r-project.org), [adv-r.hadley.nz](https://adv-r.hadley.nz) and [en.wikipedia.org](https://en.wikipedia.org).
+
+<details>
+
+<summary>@tbl-Rterm: Terms & Abbreviations in R</summary>
+
 
 | Term / Abbreviation | Description |
-|------------------------------------|------------------------------------|
+|:----------|:----------|
 | [`|>`](https://search.r-project.org/R/refmans/base/html/pipeOp.html) | Forward pipe operator introduced since `R` 4.1.0, as well as the `_` placeholder |
 | [`::`](https://search.r-project.org/R/refmans/base/html/ns-dblcolon.html) | Explicitly-[namespace](https://search.r-project.org/R/refmans/base/html/ns-reflect.html)d function |
 | [`attr`](https://search.r-project.org/R/refmans/base/html/attr.html), [`attributes`](https://search.r-project.org/R/refmans/base/html/attributes.html) | Attributes |
@@ -488,7 +514,13 @@ tagList(
 | [`Surv`](https://search.r-project.org/CRAN/refmans/survival/html/Surv.html) | Survival, i.e., time-to-event, object, from package **`survival`** [@survival] |
 | [`symbol`, `name`](https://search.r-project.org/R/refmans/base/html/name.html) | Names and symbols to refer to `R` objects |
 
-# References
+: Terms & Abbreviations in R {#tbl-Rterm}
+
+</details>
+
+{{< pagebreak >}}
+
+# References {.appendix}
 
 ::: {#refs}
 :::
