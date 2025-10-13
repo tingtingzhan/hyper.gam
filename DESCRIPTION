@@ -1,7 +1,7 @@
 Package: hyper.gam
 Type: Package
 Title: Generalized Additive Models with Hyper Column
-Version: 0.2.0
+Version: 0.2.0.20251012
 Description: Generalized additive models with a numeric hyper column
        tabulated on a common grid. Sign-adjustment based on the
        correlation of model prediction and a selected slice of the
@@ -27,5 +27,5 @@ Imports: caret, cli, mgcv, nlme, parallel, plotly
 Suggests: knitr, quarto, rmarkdown, 
     groupedHyperframe, 
     spatstat.geom, survival,
-    htmlwidgets, htmltools
+    htmlwidgets
 VignetteBuilder: quarto, knitr
