@@ -106,12 +106,6 @@ library(survival)
 ```
 
 
-```{r}
-#| echo: false
-op = par(no.readonly = TRUE)
-#options(mc.cores = 1L) # for CRAN submission
-```
-
 ## Acknowledgement
 
 This work is supported by National Institutes of Health, U.S. Department of Health and Human Services grants
