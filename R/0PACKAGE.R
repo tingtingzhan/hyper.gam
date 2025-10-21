@@ -4,6 +4,7 @@
 #' Users are encouraged to get started with the vignettes.
 #' 
 #' @import cli
+#' @import groupedHyperframe
 '_PACKAGE'
 
 
