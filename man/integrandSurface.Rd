@@ -15,6 +15,7 @@ integrandSurface(
   newid = seq_len(min(3L, .row_names_info(newdata, type = 2L))),
   qlim = range(X[is.finite(X)], newX[is.finite(newX)]),
   axis_col = c("dodgerblue", "deeppink", "darkolivegreen"),
+  axis_title = c("Probability (p)", "Quantile (q)", "Integrand (s)"),
   beta_col = "purple",
   surface_col = c("white", "lightgreen")
 )
@@ -51,6 +52,9 @@ range on \eqn{q}-axis. Default is the range of \eqn{X} and \eqn{X^{\text{new}}} 
 
 \item{axis_col}{\link[base]{length}-3 \link[base]{character} \link[base]{vector},
 colors of the \eqn{(p,q,s)} axes}
+
+\item{axis_title}{description \link[base]{length}-3 \link[base]{character} \link[base]{vector},
+title of the \eqn{(p,q,s)} axes}
 
 \item{beta_col}{\link[base]{character} scalar, color
 of \eqn{\hat{\beta(p)}}}
