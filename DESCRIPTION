@@ -1,7 +1,7 @@
 Package: hyper.gam
 Type: Package
 Title: Generalized Additive Models with Hyper Column
-Version: 0.2.1.20151215
+Version: 0.2.1
 Description: Generalized additive models with a numeric hyper column. Sign-adjustment based on the
        correlation of model prediction and a selected slice of the
        hyper column. Visualization of the integrand surface over the
