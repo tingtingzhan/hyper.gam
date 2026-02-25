@@ -12,7 +12,7 @@ integrandSurface(
   proj_xz = TRUE,
   proj_beta = FALSE,
   n = 501L,
-  newid = seq_len(min(3L, .row_names_info(newdata, type = 2L))),
+  newid = seq_len(min(3L, nrow(newdata))),
   qlim = range(X[is.finite(X)], newX[is.finite(newX)]),
   beta_col = "purple",
   surface_col = c("white", "lightgreen")

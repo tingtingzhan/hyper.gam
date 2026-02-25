@@ -47,7 +47,7 @@ kfoldPredict.hyper_gam <- function(
   data <- getData.gam(object)
   
   # ?caret::createFolds depends on ?base::set.seed
-  nr <- .row_names_info(data, type = 2L)
+  nr <- nrow(data)
   fld <- createFolds(y = seq_len(nr), k = k, list = TRUE, returnTrain = FALSE)
   
   sgn <- rep(NA_integer_, times = k)

@@ -17,6 +17,7 @@ Useful links:
 \itemize{
   \item \url{https://github.com/tingtingzhan/hyper.gam}
   \item \url{https://tingtingzhan.quarto.pub/groupedhyperframe/bioinformatics_btaf430.html}
+  \item \url{https://tingtingzhan-groupedhyperframe.netlify.app/bioinformatics_btaf430.html}
 }
 
 }

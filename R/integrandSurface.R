@@ -141,7 +141,7 @@ integrandSurface <- function(
     proj_xz = TRUE,
     proj_beta = FALSE, # bug with my latest hyperframe !!!
     n = 501L,
-    newid = min(3L, .row_names_info(newdata, type = 2L)) |> seq_len(), 
+    newid = min(3L, nrow(newdata)) |> seq_len(), 
     qlim = range(X[is.finite(X)], newX[is.finite(newX)]), # removing NA, NaN, Inf
     #axis_col = c('dodgerblue', 'deeppink', 'darkolivegreen'),
     #axis_title = c('Probability (p)', 'Quantile (q)', 'Integrand (s)'),
