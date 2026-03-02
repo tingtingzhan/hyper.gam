@@ -8,10 +8,6 @@
 \description{
 Generalized additive models with a numeric hyper column. Sign-adjustment based on the correlation of model prediction and a selected slice of the hyper column. Visualization of the integrand surface over the hyper column.
 }
-\note{
-Help files of individual functions are intentionally suppressed in the \code{pdf} manual.
-Users are encouraged to get started with the vignettes.
-}
 \seealso{
 Useful links:
 \itemize{
@@ -30,3 +26,4 @@ Other contributors:
 }
 
 }
+\keyword{internal}

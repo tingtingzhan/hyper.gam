@@ -101,7 +101,7 @@
 #' 
 #' 
 #' @returns 
-#' Function [integrandSurface()] returns a pretty \CRANpkg{htmlwidgets} created by **R** package \CRANpkg{plotly}
+#' The function [integrandSurface()] returns a pretty \CRANpkg{htmlwidgets} created by **R** package \CRANpkg{plotly}
 #' to showcase the \link[graphics]{persp}ective plot of the
 #' estimated sign-adjusted integrand surface \eqn{\hat{S}(p,q)}.
 #' 
@@ -130,7 +130,6 @@
 #' @keywords internal
 #' @importFrom mgcv predict.gam
 #' @importFrom plotly plot_ly add_paths add_surface
-#' @importFrom stats asOneSidedFormula predict
 #' @export
 integrandSurface <- function(
     ...,

@@ -55,7 +55,7 @@ of \eqn{\hat{\beta(p)}}}
 color of the integrand surface(s), for lowest and highest surface values}
 }
 \value{
-Function \code{\link[=integrandSurface]{integrandSurface()}} returns a pretty \CRANpkg{htmlwidgets} created by \strong{R} package \CRANpkg{plotly}
+The function \code{\link[=integrandSurface]{integrandSurface()}} returns a pretty \CRANpkg{htmlwidgets} created by \strong{R} package \CRANpkg{plotly}
 to showcase the \link[graphics]{persp}ective plot of the
 estimated sign-adjusted integrand surface \eqn{\hat{S}(p,q)}.
 
