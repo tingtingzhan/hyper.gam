@@ -17,7 +17,7 @@
 #' 
 #' @param k \link[base]{integer} scalar
 #' 
-#' @param mc.cores \link[base]{integer} scalar, see function \link[parallel]{mclapply}
+#' @param mc.cores \link[base]{integer} scalar, see function \link[parallel]{detectCores}
 #' 
 #' @param ... additional parameters, currently not in use
 #' 
@@ -33,12 +33,12 @@
 #' 
 #' @keywords internal
 #' @importFrom caret createFolds
-#' @importFrom parallel mclapply
+#' @importFrom parallel detectCores mclapply
 #' @export
 kfoldPredict.hyper_gam <- function(
     object, 
     k, 
-    mc.cores = getOption('mc.cores'), 
+    mc.cores = detectCores(), 
     ...
 ) { 
   
@@ -55,6 +55,8 @@ kfoldPredict.hyper_gam <- function(
   ret <- # k-fold predictor (per-fold sign-adjusted)
     no_sadj <- # k-fold predictor (no sign-adjusted)
     rep(NA_real_, times = nr)
+  
+  if (.Platform$OS.type == 'windows') stop('multicore for windows!!!')
   
   tmp <- fld |> 
     mclapply(mc.cores = mc.cores, FUN = \(id) { #(id = fld[[1L]])

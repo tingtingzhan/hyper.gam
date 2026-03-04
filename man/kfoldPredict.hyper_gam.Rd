@@ -4,14 +4,14 @@
 \alias{kfoldPredict.hyper_gam}
 \title{\eqn{k}-Fold Prediction of \link{hyper_gam} Model}
 \usage{
-kfoldPredict.hyper_gam(object, k, mc.cores = getOption("mc.cores"), ...)
+kfoldPredict.hyper_gam(object, k, mc.cores = detectCores(), ...)
 }
 \arguments{
 \item{object}{a \link{hyper_gam} object}
 
 \item{k}{\link[base]{integer} scalar}
 
-\item{mc.cores}{\link[base]{integer} scalar, see function \link[parallel]{mclapply}}
+\item{mc.cores}{\link[base]{integer} scalar, see function \link[parallel]{detectCores}}
 
 \item{...}{additional parameters, currently not in use}
 }
