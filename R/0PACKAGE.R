@@ -1,9 +1,7 @@
 
 #' @keywords internal
-#' @import groupedHyperframe
 #' 
 #' @import cli
-#' 
 #' @import stats
 #' 
 '_PACKAGE'
