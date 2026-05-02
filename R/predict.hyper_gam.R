@@ -13,21 +13,7 @@
 #' tabulated on the same grid as the training hypercolumn \eqn{X}.
 #' If missing, the training data `object$data` will be used.
 #' 
-#' @param sign_adjusted \link[base]{logical} scalar, default `TRUE`
-#' 
-#' @param sgn (internal use) \link[base]{numeric} scalar, either `-1` or `1`, 
-#' the \link[base]{sign} of [cor_xy()] return, to be used in the sign adjustment 
-#' 
 #' @param ... additional parameters, currently not in use.
-#' 
-#' @details 
-#' 
-#' The `S3` method [predict.hyper_gam()] computes 
-#' the sign-adjusted \link[mgcv]{gam} model prediction.
-#' The sign-adjustment ensures
-#' that the return
-#' is positively associated with the **training** hypercolumn \eqn{X}
-#' at the selected tabulating grid.
 #' 
 #' @returns 
 #' The `S3` method [predict.hyper_gam()] returns a 
@@ -35,13 +21,10 @@
 #' 
 #' @keywords internal
 #' @importFrom mgcv predict.gam
-#' @export predict.hyper_gam
 #' @export
 predict.hyper_gam <- function(
     object, 
     newdata = object$data,
-    sign_adjusted = TRUE,
-    sgn = if (sign_adjusted) object |> cor_xy(probs = .5) |> sign() else 1,
     ...
 ) {
   
@@ -57,10 +40,8 @@ predict.hyper_gam <- function(
   if (!all.equal.numeric(newl, oldl)) stop()
   # what about `$x` ?
 
-  fv <- predict.gam(object = object, newdata = newdata) |> # mgcv::predict.gam returns 'array'
+  predict.gam(object = object, newdata = newdata) |> # mgcv::predict.gam returns 'array'
     as.double() # ?base::as.double much faster than ?base::c
-  
-  return(fv * sgn)
     
 }
 

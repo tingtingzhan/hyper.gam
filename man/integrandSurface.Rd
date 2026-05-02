@@ -2,11 +2,10 @@
 % Please edit documentation in R/integrandSurface.R
 \name{integrandSurface}
 \alias{integrandSurface}
-\title{Integrand Surface(s) of Sign-Adjusted Quantile Indices \link{hyper_gam}}
+\title{Integrand Surface(s) of \link{hyper_gam}}
 \usage{
 integrandSurface(
   ...,
-  sign_adjusted = TRUE,
   newdata = data,
   proj_xy = TRUE,
   proj_xz = TRUE,
@@ -21,8 +20,6 @@ integrandSurface(
 \arguments{
 \item{...}{one or more \link{hyper_gam} models
 based on \emph{a same data set}.}
-
-\item{sign_adjusted}{\link[base]{logical} scalar}
 
 \item{newdata}{see function \code{\link[=predict.hyper_gam]{predict.hyper_gam()}}.}
 
@@ -57,11 +54,11 @@ color of the integrand surface(s), for lowest and highest surface values}
 \value{
 The function \code{\link[=integrandSurface]{integrandSurface()}} returns a pretty \CRANpkg{htmlwidgets} created by \strong{R} package \CRANpkg{plotly}
 to showcase the \link[graphics]{persp}ective plot of the
-estimated sign-adjusted integrand surface \eqn{\hat{S}(p,q)}.
+estimated integrand surface \eqn{\hat{S}(p,q)}.
 
 If a set of training/test subjects is selected (via parameter \code{newid}), then
 \itemize{
-\item {the estimated \strong{sign-adjusted line integrand curve} \eqn{\hat{S}\big(p, Q_i(p)\big)}
+\item {the estimated \strong{line integrand curve} \eqn{\hat{S}\big(p, Q_i(p)\big)}
 of subject \eqn{i}
 is displayed on the surface \eqn{\hat{S}(p,q)};}
 \item {the quantile curve \eqn{Q_i(p)}
@@ -101,32 +98,6 @@ is
 \hat{F}(p,q) & \text{for nlQI}
 \end{cases}
 }
-}
-
-\section{Sign-Adjustment}{
-
-
-Ideally, we would wish that, \emph{in the training set}, the estimated linear and/or non-linear quantile indices
-\deqn{
-\widehat{\text{QI}}_i = \displaystyle\int_0^1 \hat{S}_0\big(p, Q_i(p)\big)dp
-}
-be \emph{positively correlated} with a more intuitive quantity, e.g., quantiles \eqn{Q_i(\tilde{p})} at a user-specified \eqn{\tilde{p}}, for the interpretation of downstream analysis,
-Therefore, we define the sign-adjustment term
-\deqn{
-\hat{c} = \text{sign}\left(\text{corr}\left(Q_i(\tilde{p}), \widehat{\text{QI}}_i\right)\right),\quad i =1,\cdots,n
-}
-as the \link[base]{sign} of the \link[stats]{cor}relation between
-the estimated quantile index \eqn{\widehat{\text{QI}}_i}
-and the quantile \eqn{Q_i(\tilde{p})},
-for training subjects \eqn{i=1,\cdots,n}.
-
-The estimated \strong{sign-adjusted integrand surface} is
-\eqn{\hat{S}(p,q) = \hat{c} \cdot \hat{S}_0(p,q)}.
-
-The estimated \strong{sign-adjusted quantile indices}
-\eqn{\int_0^1 \hat{S}\big(p, Q_i(p)\big)dp}
-are positively correlated with subject-specific sample medians
-(default \eqn{\tilde{p} = .5}) in the training set.
 }
 
 \keyword{internal}

@@ -30,7 +30,6 @@
 #' @keywords internal
 #' @name hyper_gam_graphics
 #' @importFrom graphics persp
-#' @export persp.hyper_gam
 #' @export
 persp.hyper_gam <- function(
     x, 
@@ -63,7 +62,6 @@ persp.hyper_gam <- function(
 #' 
 #' @importFrom graphics contour contour.default image.default
 #' @importFrom grDevices topo.colors
-#' @export contour.hyper_gam
 #' @export
 contour.hyper_gam <- function(
     x, 
@@ -130,15 +128,12 @@ get_mesh.hyper_gam <- function(x, newdata, n = 501L, ...) {
 #' @importFrom mgcv predict.gam
 z_hyper_gam <- function(
     x, # returned object from function [hyper_gam()]
-    sign_adjusted = TRUE,
-    sgn = if (sign_adjusted) x |> cor_xy(probs = .5) |> sign() else 1,
     ...
 ) {
   
   d <- get_mesh.hyper_gam(x, ...) 
   
-  z <- predict.gam(x, newdata = d, se.fit = FALSE, type = 'link') *
-    sgn
+  z <- predict.gam(x, newdata = d, se.fit = FALSE, type = 'link')
   n <- sqrt(length(z))
   dim(z) <- c(n, n)
   attr(z, which = 'xy') <- attr(d, which = 'xy', exact = TRUE)

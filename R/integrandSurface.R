@@ -1,5 +1,5 @@
 
-#' @title Integrand Surface(s) of Sign-Adjusted Quantile Indices [hyper_gam]
+#' @title Integrand Surface(s) of [hyper_gam]
 #' 
 #' @description
 #' An interactive \CRANpkg{htmlwidgets} of the 
@@ -9,8 +9,6 @@
 #' 
 #' @param ... one or more [hyper_gam] models
 #' based on *a same data set*.
-#' 
-#' @param sign_adjusted \link[base]{logical} scalar
 #' 
 #' @param newdata see function [predict.hyper_gam()].
 #' 
@@ -75,39 +73,14 @@
 #' \end{cases}
 #' }
 #' 
-#' @section Sign-Adjustment:
-#' 
-#' Ideally, we would wish that, *in the training set*, the estimated linear and/or non-linear quantile indices
-#' \deqn{
-#' \widehat{\text{QI}}_i = \displaystyle\int_0^1 \hat{S}_0\big(p, Q_i(p)\big)dp
-#' }
-#' be *positively correlated* with a more intuitive quantity, e.g., quantiles \eqn{Q_i(\tilde{p})} at a user-specified \eqn{\tilde{p}}, for the interpretation of downstream analysis, 
-#' Therefore, we define the sign-adjustment term
-#' \deqn{
-#' \hat{c} = \text{sign}\left(\text{corr}\left(Q_i(\tilde{p}), \widehat{\text{QI}}_i\right)\right),\quad i =1,\cdots,n
-#' }
-#' as the \link[base]{sign} of the \link[stats]{cor}relation between 
-#' the estimated quantile index \eqn{\widehat{\text{QI}}_i}
-#' and the quantile \eqn{Q_i(\tilde{p})},
-#' for training subjects \eqn{i=1,\cdots,n}.
-#' 
-#' The estimated **sign-adjusted integrand surface** is
-#' \eqn{\hat{S}(p,q) = \hat{c} \cdot \hat{S}_0(p,q)}.
-#' 
-#' The estimated **sign-adjusted quantile indices**
-#' \eqn{\int_0^1 \hat{S}\big(p, Q_i(p)\big)dp}
-#' are positively correlated with subject-specific sample medians
-#' (default \eqn{\tilde{p} = .5}) in the training set.
-#' 
-#' 
 #' @returns 
 #' The function [integrandSurface()] returns a pretty \CRANpkg{htmlwidgets} created by **R** package \CRANpkg{plotly}
 #' to showcase the \link[graphics]{persp}ective plot of the
-#' estimated sign-adjusted integrand surface \eqn{\hat{S}(p,q)}.
+#' estimated integrand surface \eqn{\hat{S}(p,q)}.
 #' 
 #' If a set of training/test subjects is selected (via parameter `newid`), then 
 #' \itemize{
-#' \item {the estimated **sign-adjusted line integrand curve** \eqn{\hat{S}\big(p, Q_i(p)\big)} 
+#' \item {the estimated **line integrand curve** \eqn{\hat{S}\big(p, Q_i(p)\big)} 
 #' of subject \eqn{i} 
 #' is displayed on the surface \eqn{\hat{S}(p,q)};}
 #' \item {the quantile curve \eqn{Q_i(p)} 
@@ -134,7 +107,6 @@
 integrandSurface <- function(
     ...,
     # xfom,
-    sign_adjusted = TRUE,
     newdata = data,
     proj_xy = TRUE, 
     proj_xz = TRUE,
@@ -168,13 +140,6 @@ integrandSurface <- function(
   if (length(data_) > 1L) stop('data not same')
   data <- data_[[1L]]
   
-  signs <- if (sign_adjusted) {
-    dots |> 
-      vapply(FUN = \(x) {
-        x |> cor_xy() |> sign()
-      }, FUN.VALUE = NA_real_)
-  } else rep(1, times = length(dots))
-  
   X <- data[[xname]]
   x. <- as.double(colnames(X))
   nx <- length(x.)
@@ -197,13 +162,13 @@ integrandSurface <- function(
   )
   names(d_xy)[2] <- as.character(xname)
   
-  zs <- mapply(FUN = \(x, sgn) { # (x = dots[[1L]])
+  zs <- mapply(FUN = \(x) { # (x = dots[[1L]])
     # essentially [z_hyper_gam]; not [predict.hyper_gam] !!!
-    y0 <- sgn * predict.gam(x, newdata = d_xy, se.fit = FALSE, type = 'link')
+    y0 <- predict.gam(x, newdata = d_xy, se.fit = FALSE, type = 'link')
     dim(y0) <- c(n, n)
     t.default(y0) # important!!!
     # plot_ly(, type = 'surface') lay out `z` differently from ?graphics::persp !!!
-  }, x = dots, sgn = signs, SIMPLIFY = FALSE)
+  }, x = dots, SIMPLIFY = FALSE)
   
   zmin <- zs |> unlist() |> min()
   zmax <- zs |> unlist() |> max()
@@ -258,9 +223,9 @@ integrandSurface <- function(
   
   d_ <- d
   names(d_)[2] <- as.character(xname)
-  z_subj <- mapply(FUN = \(x, sgn) {
-    sgn * predict.gam(x, newdata = d_, se.fit = FALSE, type = 'link')
-  }, x = dots, sgn = signs, SIMPLIFY = FALSE)
+  z_subj <- mapply(FUN = \(x) {
+    predict.gam(x, newdata = d_, se.fit = FALSE, type = 'link')
+  }, x = dots, SIMPLIFY = FALSE)
   
   if (proj_xz) {
     # projection on x-z plain, F(p, Q(p)) curve
@@ -287,9 +252,9 @@ integrandSurface <- function(
             L = l
           )
           names(d_beta)[2] <- as.character(xname)
-          z_beta <- mapply(FUN = \(x, sgn) {
-            sgn * predict.gam(x, newdata = d_beta, se.fit = FALSE, type = 'link')
-          }, x = dots, sgn = signs, SIMPLIFY = FALSE)
+          z_beta <- mapply(FUN = \(x) {
+            predict.gam(x, newdata = d_beta, se.fit = FALSE, type = 'link')
+          }, x = dots, SIMPLIFY = FALSE)
           p <- add_paths(
             p = p, data = d_beta, 
             x = ~ x, y = qlim[2L], z = z_beta[[i]], 

@@ -4,13 +4,7 @@
 \alias{predict.hyper_gam}
 \title{Prediction of \link{hyper_gam} Model}
 \usage{
-\method{predict}{hyper_gam}(
-  object,
-  newdata = object$data,
-  sign_adjusted = TRUE,
-  sgn = if (sign_adjusted) sign(cor_xy(object, probs = 0.5)) else 1,
-  ...
-)
+\method{predict}{hyper_gam}(object, newdata = object$data, ...)
 }
 \arguments{
 \item{object}{an \link{hyper_gam} model}
@@ -21,11 +15,6 @@ the \link[base]{double}-hypercolumn \eqn{X^{\text{new}}}
 tabulated on the same grid as the training hypercolumn \eqn{X}.
 If missing, the training data \code{object$data} will be used.}
 
-\item{sign_adjusted}{\link[base]{logical} scalar, default \code{TRUE}}
-
-\item{sgn}{(internal use) \link[base]{numeric} scalar, either \code{-1} or \code{1},
-the \link[base]{sign} of \code{\link[=cor_xy]{cor_xy()}} return, to be used in the sign adjustment}
-
 \item{...}{additional parameters, currently not in use.}
 }
 \value{
@@ -34,13 +23,5 @@ The \code{S3} method \code{\link[=predict.hyper_gam]{predict.hyper_gam()}} retur
 }
 \description{
 Prediction of \link{hyper_gam} model.
-}
-\details{
-The \code{S3} method \code{\link[=predict.hyper_gam]{predict.hyper_gam()}} computes
-the sign-adjusted \link[mgcv]{gam} model prediction.
-The sign-adjustment ensures
-that the return
-is positively associated with the \strong{training} hypercolumn \eqn{X}
-at the selected tabulating grid.
 }
 \keyword{internal}
