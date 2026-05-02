@@ -1,8 +1,7 @@
 
 #' @keywords internal
 #' 
-#' @import cli
-#' @import stats
+#' @importFrom cli col_magenta col_blue
 #' 
 '_PACKAGE'
 

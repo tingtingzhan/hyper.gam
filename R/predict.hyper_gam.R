@@ -21,6 +21,7 @@
 #' 
 #' @keywords internal
 #' @importFrom mgcv predict.gam
+#' @importFrom stats predict
 #' @export
 predict.hyper_gam <- function(
     object, 

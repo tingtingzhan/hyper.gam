@@ -75,6 +75,7 @@
 #' 
 #' @keywords internal
 #' @importFrom mgcv gam cox.ph s ti
+#' @importFrom stats binomial gaussian
 #' @export
 hyper_gam <- function(
     formula, data,
@@ -127,7 +128,7 @@ hyper_gam <- function(
     } else stop('not supported yet')
   }
   
-  ret <- eval(gam_cl) # 'gam' if `fit = TRUE`; 'gam.prefit' if `fit = FALSE`
+  ret <- eval(gam_cl)
   
   attr(ret, which = 'xname') <- xname
   if (inherits(ret, what = 'gam')) {
@@ -138,6 +139,11 @@ hyper_gam <- function(
   
 }
 
+
+
+# think of write
+# [hyper_ti()] from mgcv::ti and Erjia's code
+# [hyper_s()] from mgcv::s and Erjia's code
 
 
 
