@@ -1,16 +1,18 @@
 
-#' @title Integrand Surface(s) of [hyper_gam]
+#' @title Integrand Surface(s) of \link[mgcv]{gam} Model(s)
 #' 
 #' @description
 #' An interactive \CRANpkg{htmlwidgets} of the 
 #' \link[graphics]{persp}ective plot for 
-#' [hyper_gam] model(s)
+#' \link[mgcv]{gam} model(s)
 #' using package \CRANpkg{plotly}.
 #' 
-#' @param ... one or more [hyper_gam] models
+#' @param ... one or more \link[mgcv]{gam} models
 #' based on *a same data set*.
 #' 
-#' @param newdata see function [predict.hyper_gam()].
+#' @param formula one-sided \link[stats]{formula}
+#' 
+#' @param newdata (for future expansion)
 #' 
 #' @param proj_xy \link[base]{logical} scalar, whether to show 
 #' the projection of \eqn{\hat{S}\big(p, Q_i(p)\big)}
@@ -90,10 +92,10 @@
 #' if `proj_xy=TRUE` (default);}
 #' \item {\eqn{\hat{S}\big(p, Q_i(p)\big)}
 #' is projected on the \eqn{(p,s)}-plain of the 3-dimensional \eqn{(p,q,s)} cube, 
-#' if one and only one [hyper_gam] model is provided in in
+#' if one and only one \link[mgcv]{gam} model is provided in in
 #' put argument `...` and `proj_xz=TRUE` (default);}
 #' \item {the estimated *linear functional coefficient* \eqn{\hat{\beta}(p)} is shown on the \eqn{(p,s)}-plain of the 3D cube, 
-#' if one and only one *linear* [hyper_gam] model is provided in input argument `...` and `proj_beta=TRUE` (default).}
+#' if one and only one *linear* \link[mgcv]{gam} model is provided in input argument `...` and `proj_beta=TRUE` (default).}
 #' }
 #' 
 #' @note
@@ -103,10 +105,11 @@
 #' @keywords internal
 #' @importFrom mgcv predict.gam
 #' @importFrom plotly plot_ly add_paths add_surface
+#' @importFrom stats setNames
 #' @export
 integrandSurface <- function(
     ...,
-    # xfom,
+    formula, 
     newdata = data,
     proj_xy = TRUE, 
     proj_xz = TRUE,
@@ -132,24 +135,25 @@ integrandSurface <- function(
   dots <- list(...)
   if (!all(vapply(dots, FUN = inherits, what = 'gam', FUN.VALUE = NA))) stop('all input needs to be `gam.matrix`')
   
-  matrix_x_ <- dots |> lapply(FUN = attr, which = 'xname', exact = TRUE)
-  if (!all(duplicated.default(matrix_x_)[-1L])) stop()
-  xname <- matrix_x_[[1L]]
+  if (!is.call(formula) || formula[[1L]] != '~' || length(formula) != 2L) stop('`formula` must be one-sided formula')
+  xnm <- formula[[2L]] # right-hand-side
+  if (!is.symbol(xnm)) stop('Right-hand-side ', xnm |> deparse1() |> col_magenta(), ' must be a symbol')
   
   data_ <- dots |> lapply(FUN = \(i) i$data) |> unique()
   if (length(data_) > 1L) stop('data not same')
   data <- data_[[1L]]
   
-  X <- data[[xname]]
+  X <- data[[xnm]]
   x. <- as.double(colnames(X))
   nx <- length(x.)
   
-  newX <- newdata[[xname]]
+  newX <- newdata[[xnm]]
   if (!is.matrix(newX)) stop('`newdata` does not contain a matrix column of functional predictor values')
   newx. <- newX |> colnames() |> as.double()
   if (!all.equal.numeric(newx., x.)) stop('grid of training and test data must be exactly the same')
   
-  l <- unique.default(data$L)
+  #l <- unique.default(data$L)
+  l <- unique.default(data[[paste(xnm, 'L', sep = '.')]])
   if (length(l) != 1L) stop('wont happen')
   
   # plot!!
@@ -159,11 +163,14 @@ integrandSurface <- function(
   d_xy <- data.frame(
     expand.grid(x = x_, y_), # span `x_` first, then span `y_`
     L = l
-  )
-  names(d_xy)[2] <- as.character(xname)
+  ) |> 
+    setNames(nm = c(
+      paste(xnm, 'x', sep = '.'),
+      as.character(xnm),
+      paste(xnm, 'L', sep = '.')
+    ))
   
   zs <- mapply(FUN = \(x) { # (x = dots[[1L]])
-    # essentially [z_hyper_gam]; not [predict.hyper_gam] !!!
     y0 <- predict.gam(x, newdata = d_xy, se.fit = FALSE, type = 'link')
     dim(y0) <- c(n, n)
     t.default(y0) # important!!!
@@ -196,11 +203,11 @@ integrandSurface <- function(
   }
   
   #p <- p |> 
-    #layout(scene = list(
-    #  xaxis = list(title = axis_title[1L], tickformat = '.0%', color = axis_col[1L]), 
-    #  yaxis = list(title = axis_title[2L], color = axis_col[2L]),
-    #  zaxis = list(title = axis_title[3L], color = axis_col[3L])
-    #))
+  #layout(scene = list(
+  #  xaxis = list(title = axis_title[1L], tickformat = '.0%', color = axis_col[1L]), 
+  #  yaxis = list(title = axis_title[2L], color = axis_col[2L]),
+  #  zaxis = list(title = axis_title[3L], color = axis_col[3L])
+  #))
   
   if (!length(newid)) return(p)
   
@@ -221,8 +228,13 @@ integrandSurface <- function(
       )
   } # projection on x-y plain
   
-  d_ <- d
-  names(d_)[2] <- as.character(xname)
+  d_ <- d |>
+    setNames(nm = c(
+      paste(xnm, 'x', sep = '.'),
+      as.character(xnm),
+      'id',
+      paste(xnm, 'L', sep = '.')
+    ))
   z_subj <- mapply(FUN = \(x) {
     predict.gam(x, newdata = d_, se.fit = FALSE, type = 'link')
   }, x = dots, SIMPLIFY = FALSE)
@@ -250,8 +262,12 @@ integrandSurface <- function(
             x = x.,
             y = 1,
             L = l
-          )
-          names(d_beta)[2] <- as.character(xname)
+          ) |>
+            setNames(nm = c(
+              paste(xnm, 'x', sep = '.'),
+              as.character(xnm),
+              paste(xnm, 'L', sep = '.')
+            ))
           z_beta <- mapply(FUN = \(x) {
             predict.gam(x, newdata = d_beta, se.fit = FALSE, type = 'link')
           }, x = dots, SIMPLIFY = FALSE)
@@ -280,6 +296,10 @@ integrandSurface <- function(
   return(p)
   
 }
+
+
+
+
 
 
 

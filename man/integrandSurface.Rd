@@ -2,10 +2,11 @@
 % Please edit documentation in R/integrandSurface.R
 \name{integrandSurface}
 \alias{integrandSurface}
-\title{Integrand Surface(s) of \link{hyper_gam}}
+\title{Integrand Surface(s) of \link[mgcv]{gam} Model(s)}
 \usage{
 integrandSurface(
   ...,
+  formula,
   newdata = data,
   proj_xy = TRUE,
   proj_xz = TRUE,
@@ -18,10 +19,12 @@ integrandSurface(
 )
 }
 \arguments{
-\item{...}{one or more \link{hyper_gam} models
+\item{...}{one or more \link[mgcv]{gam} models
 based on \emph{a same data set}.}
 
-\item{newdata}{see function \code{\link[=predict.hyper_gam]{predict.hyper_gam()}}.}
+\item{formula}{one-sided \link[stats]{formula}}
+
+\item{newdata}{(for future expansion)}
 
 \item{proj_xy}{\link[base]{logical} scalar, whether to show
 the projection of \eqn{\hat{S}\big(p, Q_i(p)\big)}
@@ -68,16 +71,16 @@ if \code{proj_xy=TRUE} (default);}
 if \code{proj_xy=TRUE} (default);}
 \item {\eqn{\hat{S}\big(p, Q_i(p)\big)}
 is projected on the \eqn{(p,s)}-plain of the 3-dimensional \eqn{(p,q,s)} cube,
-if one and only one \link{hyper_gam} model is provided in in
+if one and only one \link[mgcv]{gam} model is provided in in
 put argument \code{...} and \code{proj_xz=TRUE} (default);}
 \item {the estimated \emph{linear functional coefficient} \eqn{\hat{\beta}(p)} is shown on the \eqn{(p,s)}-plain of the 3D cube,
-if one and only one \emph{linear} \link{hyper_gam} model is provided in input argument \code{...} and \code{proj_beta=TRUE} (default).}
+if one and only one \emph{linear} \link[mgcv]{gam} model is provided in input argument \code{...} and \code{proj_beta=TRUE} (default).}
 }
 }
 \description{
 An interactive \CRANpkg{htmlwidgets} of the
 \link[graphics]{persp}ective plot for
-\link{hyper_gam} model(s)
+\link[mgcv]{gam} model(s)
 using package \CRANpkg{plotly}.
 }
 \note{
