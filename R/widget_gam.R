@@ -76,7 +76,7 @@
 #' }
 #' 
 #' @returns 
-#' The function [integrandSurface()] returns a pretty \CRANpkg{htmlwidgets} created by **R** package \CRANpkg{plotly}
+#' The function [widget_gam()] returns a pretty \CRANpkg{htmlwidgets} created by **R** package \CRANpkg{plotly}
 #' to showcase the \link[graphics]{persp}ective plot of the
 #' estimated integrand surface \eqn{\hat{S}(p,q)}.
 #' 
@@ -107,7 +107,7 @@
 #' @importFrom plotly plot_ly add_paths add_surface
 #' @importFrom stats setNames
 #' @export
-integrandSurface <- function(
+widget_gam <- function(
     ...,
     formula, 
     newdata = data,
