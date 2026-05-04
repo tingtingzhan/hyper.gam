@@ -147,11 +147,11 @@ widget_gam <- function(
   if (length(data_) > 1L) stop('data not same')
   data <- data_[[1L]]
   
-  X <- data[[xnm]]
+  X <- data[[paste(xnm, 'y', sep = '.')]]
   x. <- as.double(colnames(X))
   nx <- length(x.)
   
-  newX <- newdata[[xnm]]
+  newX <- newdata[[paste(xnm, 'y', sep = '.')]]
   if (!is.matrix(newX)) stop('`newdata` does not contain a matrix column of functional predictor values')
   newx. <- newX |> colnames() |> as.double()
   if (!all.equal.numeric(newx., x.)) stop('grid of training and test data must be exactly the same')
@@ -170,7 +170,7 @@ widget_gam <- function(
   ) |> 
     setNames(nm = c(
       paste(xnm, 'x', sep = '.'),
-      as.character(xnm),
+      paste(xnm, 'y', sep = '.'),
       paste(xnm, 'L', sep = '.')
     ))
   
@@ -235,7 +235,7 @@ widget_gam <- function(
   d_ <- d |>
     setNames(nm = c(
       paste(xnm, 'x', sep = '.'),
-      as.character(xnm),
+      paste(xnm, 'y', sep = '.'),
       'id',
       paste(xnm, 'L', sep = '.')
     ))
@@ -269,7 +269,7 @@ widget_gam <- function(
           ) |>
             setNames(nm = c(
               paste(xnm, 'x', sep = '.'),
-              as.character(xnm),
+              paste(xnm, 'y', sep = '.'),
               paste(xnm, 'L', sep = '.')
             ))
           z_beta <- mapply(FUN = \(x) {
