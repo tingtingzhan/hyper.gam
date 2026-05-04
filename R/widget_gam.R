@@ -1,4 +1,8 @@
 
+# read ?mgcv::vis.gam carefully
+# why ?mgcv::vis.gam does not require (an equivalent of) the parameter `formula`
+
+
 #' @title Integrand Surface(s) of \link[mgcv]{gam} Model(s)
 #' 
 #' @description
