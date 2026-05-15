@@ -25,7 +25,7 @@
 #' the projection to the \eqn{(x,z)}-plain, default value is `TRUE`
 #' 
 #' @param n \link[base]{integer} scalar, fineness of visualization,
-#' default `501L`. See parameter `n.grid` of the function \link[mgcv]{vis.gam}.
+#' default value is `501L`. See parameter `n.grid` of the function \link[mgcv]{vis.gam}.
 #' 
 #' @param newid \link[base]{integer} scalar or \link[base]{vector},
 #' row indices of `newdata` to be visualized. 
@@ -44,6 +44,13 @@
 #' @note
 #' The maintainer is not aware of any functionality of projection of arbitrary curves in package \CRANpkg{plotly}.
 #' Currently, the projections are hard coded.
+#' 
+#' @examples
+#' library(mgcv)
+#' # ?gam
+#' set.seed(2)
+#' dat = gamSim(1, n = 400, dist = 'normal', scale = 2)
+#' gam(y ~ s(x0) + s(x1) + s(x2) + s(x3), data = dat)
 #' 
 #' @keywords internal
 #' @importFrom mgcv predict.gam
