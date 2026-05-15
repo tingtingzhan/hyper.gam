@@ -3,13 +3,13 @@
 # why ?mgcv::vis.gam does not require (an equivalent of) the parameter `formula`
 
 
-#' @title Integrand Surface(s) of \link[mgcv]{gam} Model(s)
+#' @title Alternative of \link[mgcv]{vis.gam}
 #' 
 #' @description
 #' An interactive \CRANpkg{htmlwidgets} of the 
 #' \link[graphics]{persp}ective plot for 
 #' \link[mgcv]{gam} model(s)
-#' using package \CRANpkg{plotly}.
+#' using the package \CRANpkg{plotly}.
 #' 
 #' @param ... one or more \link[mgcv]{gam} models
 #' based on *a same data set*.
@@ -19,92 +19,31 @@
 #' @param newdata (for future expansion)
 #' 
 #' @param proj_xy \link[base]{logical} scalar, whether to show 
-#' the projection of \eqn{\hat{S}\big(p, Q_i(p)\big)}
-#' (see sections **Details** and **Value**)
-#' to the \eqn{(p,q)}-plain, default `TRUE`
+#' the projection to the \eqn{(x,y)}-plain, default value is `TRUE`
 #' 
 #' @param proj_xz \link[base]{logical} scalar, whether to show
-#' the projection of \eqn{\hat{S}\big(p, Q_i(p)\big)} to the \eqn{(p,s)}-plain, default `TRUE`
-#' 
-#' @param proj_beta \link[base]{logical} scalar, whether to show
-#' \eqn{\hat{\beta}(p)} on the \eqn{(p,s)}-plain when applicable, default `TRUE`
+#' the projection to the \eqn{(x,z)}-plain, default value is `TRUE`
 #' 
 #' @param n \link[base]{integer} scalar, fineness of visualization,
-#' default `501L`. See parameter `n.grid` of function \link[mgcv]{vis.gam}.
+#' default `501L`. See parameter `n.grid` of the function \link[mgcv]{vis.gam}.
 #' 
 #' @param newid \link[base]{integer} scalar or \link[base]{vector},
 #' row indices of `newdata` to be visualized. 
 #' Default `1:2`, i.e., the first two test subjects.
-#' Use `newid = NULL` to disable visualization of `newdata`.
+#' Use `newid = NULL` to disable the visualization of `newdata`.
 #' 
-#' @param qlim \link[base]{length}-2 \link[base]{double} \link[base]{vector},
+#' @param ylim \link[base]{length}-2 \link[base]{double} \link[base]{vector},
 #' range on \eqn{q}-axis. Default is the range of \eqn{X} and \eqn{X^{\text{new}}} combined.
-#' 
-# @param axis_col \link[base]{length}-3 \link[base]{character} \link[base]{vector},
-# colors of the \eqn{(p,q,s)} axes
-#' 
-# @param axis_title description \link[base]{length}-3 \link[base]{character} \link[base]{vector},
-# title of the \eqn{(p,q,s)} axes
-#' 
-#' @param beta_col \link[base]{character} scalar, color 
-#' of \eqn{\hat{\beta(p)}}
 #' 
 #' @param surface_col \link[base]{length}-2 \link[base]{character} \link[base]{vector},
 #' color of the integrand surface(s), for lowest and highest surface values
 #' 
-#' @section Integrand Surface:
-#' 
-# The quantile index (QI), 
-# \deqn{\text{QI}=\displaystyle\int_0^1\beta(p)\cdot Q(p)\,dp}
-# with a linear functional coefficient \eqn{\beta(p)}
-# can be estimated by fitting a functional generalized linear model (FGLM, James, 2002) to exponential-family outcomes, 
-# or by fitting a linear functional Cox model (LFCM, Gellar et al., 2015) to survival outcomes. 
-# More flexible non-linear quantile index (nlQI)
-# \deqn{
-# \text{nlQI}=\displaystyle\int_0^1 F\big(p, Q(p)\big)\,dp
-# }
-# with a bivariate twice differentiable function \eqn{F(\cdot,\cdot)}
-# can be estimated by fitting a functional generalized additive model (FGAM, McLean et al., 2014) to exponential-family outcomes, 
-# or by fitting an additive functional Cox model (AFCM, Cui et al., 2021) to survival outcomes. 
-#' 
-#' The estimated **integrand surface** of quantile indices and non-linear quantile indices, defined on 
-#' \eqn{p\in[0,1]} and 
-#' \eqn{q\in\text{range}\big(Q_i(p)\big)} for all training subjects \eqn{i=1,\cdots,n}, 
-#' is
-#' \deqn{
-#' \hat{S}_0(p,q) = 
-#' \begin{cases}
-#' \hat{\beta}(p)\cdot q & \text{for QI}\\
-#' \hat{F}(p,q) & \text{for nlQI}
-#' \end{cases}
-#' }
-#' 
 #' @returns 
-#' The function [widget_gam()] returns a pretty \CRANpkg{htmlwidgets} created by **R** package \CRANpkg{plotly}
-#' to showcase the \link[graphics]{persp}ective plot of the
-#' estimated integrand surface \eqn{\hat{S}(p,q)}.
-#' 
-#' If a set of training/test subjects is selected (via parameter `newid`), then 
-#' \itemize{
-#' \item {the estimated **line integrand curve** \eqn{\hat{S}\big(p, Q_i(p)\big)} 
-#' of subject \eqn{i} 
-#' is displayed on the surface \eqn{\hat{S}(p,q)};}
-#' \item {the quantile curve \eqn{Q_i(p)} 
-#' is projected on the \eqn{(p,q)}-plain of the 3-dimensional \eqn{(p,q,s)} cube, 
-#' if `proj_xy=TRUE` (default);}
-#' \item {the user-specified \eqn{\tilde{p}} is marked on the \eqn{(p,q)}-plain of the 3D cube, 
-#' if `proj_xy=TRUE` (default);}
-#' \item {\eqn{\hat{S}\big(p, Q_i(p)\big)}
-#' is projected on the \eqn{(p,s)}-plain of the 3-dimensional \eqn{(p,q,s)} cube, 
-#' if one and only one \link[mgcv]{gam} model is provided in in
-#' put argument `...` and `proj_xz=TRUE` (default);}
-#' \item {the estimated *linear functional coefficient* \eqn{\hat{\beta}(p)} is shown on the \eqn{(p,s)}-plain of the 3D cube, 
-#' if one and only one *linear* \link[mgcv]{gam} model is provided in input argument `...` and `proj_beta=TRUE` (default).}
-#' }
+#' The function [widget_gam()] returns a pretty \CRANpkg{htmlwidgets} created by **R** package \CRANpkg{plotly}.
 #' 
 #' @note
 #' The maintainer is not aware of any functionality of projection of arbitrary curves in package \CRANpkg{plotly}.
-#' Currently, the projection to \eqn{(p,q)}-plain is hard coded on \eqn{(p,q,s=\text{min}(s))}-plain.
+#' Currently, the projections are hard coded.
 #' 
 #' @keywords internal
 #' @importFrom mgcv predict.gam
@@ -117,13 +56,9 @@ widget_gam <- function(
     newdata = data,
     proj_xy = TRUE, 
     proj_xz = TRUE,
-    proj_beta = FALSE, # bug with my latest hyperframe !!!
     n = 501L,
     newid = min(3L, nrow(newdata)) |> seq_len(), 
-    qlim = range(X[is.finite(X)], newX[is.finite(newX)]), # removing NA, NaN, Inf
-    #axis_col = c('dodgerblue', 'deeppink', 'darkolivegreen'),
-    #axis_title = c('Probability (p)', 'Quantile (q)', 'Integrand (s)'),
-    beta_col = 'purple',
+    ylim = range(X[is.finite(X)], newX[is.finite(newX)]), # removing NA, NaN, Inf
     surface_col = 
       # c('lightyellow', 'lightpink') # nice
       # c('beige', 'lightpink') # nice
@@ -163,7 +98,7 @@ widget_gam <- function(
   # plot!!
   # *surface* based on training model
   x_ <- seq.int(from = min(x.), to = max(x.), length.out = n)
-  y_ <- seq.int(from = qlim[1L], to = qlim[2L], length.out = n)
+  y_ <- seq.int(from = ylim[1L], to = ylim[2L], length.out = n)
   d_xy <- data.frame(
     expand.grid(x = x_, y_), # span `x_` first, then span `y_`
     L = l
@@ -184,7 +119,6 @@ widget_gam <- function(
   zmin <- zs |> unlist() |> min()
   zmax <- zs |> unlist() |> max()
   
-  #p <- plot_ly(x = x_, y = y_)
   p <- plot_ly()
   
   for (z_ in zs) {
@@ -205,13 +139,6 @@ widget_gam <- function(
         showscale = FALSE
       )
   }
-  
-  #p <- p |> 
-  #layout(scene = list(
-  #  xaxis = list(title = axis_title[1L], tickformat = '.0%', color = axis_col[1L]), 
-  #  yaxis = list(title = axis_title[2L], color = axis_col[2L]),
-  #  zaxis = list(title = axis_title[3L], color = axis_col[3L])
-  #))
   
   if (!length(newid)) return(p)
   
@@ -250,43 +177,13 @@ widget_gam <- function(
       for (i in seq_along(dots)) {
         p <- p |> 
           add_paths(
-            x = d$x, y = qlim[2L], z = z_subj[[i]], name = d$id, color = d$id,
+            x = d$x, y = ylim[2L], z = z_subj[[i]], name = d$id, color = d$id,
             showlegend = FALSE,
             line = list(width = 4)
           )
       }
     }
   } # projection on x-z plain
-  
-  if (proj_beta) {
-    if (length(dots) == 1L) { # will remove this bracket in future!!
-      for (i in seq_along(dots)) {
-        if (dots[[i]]$formula[[3L]][[1L]] == 's') {
-          d_beta <- data.frame(
-            x = x.,
-            y = 1,
-            L = l
-          ) |>
-            setNames(nm = c(
-              paste(xnm, 'x', sep = '.'),
-              paste(xnm, 'y', sep = '.'),
-              paste(xnm, 'L', sep = '.')
-            ))
-          z_beta <- mapply(FUN = \(x) {
-            predict.gam(x, newdata = d_beta, se.fit = FALSE, type = 'link')
-          }, x = dots, SIMPLIFY = FALSE)
-          p <- add_paths(
-            p = p, data = d_beta, 
-            x = ~ x, y = qlim[2L], z = z_beta[[i]], 
-            showlegend = FALSE,
-            line = list(
-              color = beta_col,
-              width = 4
-            ))  
-        }
-      }
-    }
-  } # projection of beta(p), for linear models
   
   for (i in seq_along(dots)) {
     p <- p |> 

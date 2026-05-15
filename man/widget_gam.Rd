@@ -2,7 +2,7 @@
 % Please edit documentation in R/widget_gam.R
 \name{widget_gam}
 \alias{widget_gam}
-\title{Integrand Surface(s) of \link[mgcv]{gam} Model(s)}
+\title{Alternative of \link[mgcv]{vis.gam}}
 \usage{
 widget_gam(
   ...,
@@ -10,11 +10,9 @@ widget_gam(
   newdata = data,
   proj_xy = TRUE,
   proj_xz = TRUE,
-  proj_beta = FALSE,
   n = 501L,
   newid = seq_len(min(3L, nrow(newdata))),
-  qlim = range(X[is.finite(X)], newX[is.finite(newX)]),
-  beta_col = "purple",
+  ylim = range(X[is.finite(X)], newX[is.finite(newX)]),
   surface_col = c("white", "lightgreen")
 )
 }
@@ -27,80 +25,36 @@ based on \emph{a same data set}.}
 \item{newdata}{(for future expansion)}
 
 \item{proj_xy}{\link[base]{logical} scalar, whether to show
-the projection of \eqn{\hat{S}\big(p, Q_i(p)\big)}
-(see sections \strong{Details} and \strong{Value})
-to the \eqn{(p,q)}-plain, default \code{TRUE}}
+the projection to the \eqn{(x,y)}-plain, default value is \code{TRUE}}
 
 \item{proj_xz}{\link[base]{logical} scalar, whether to show
-the projection of \eqn{\hat{S}\big(p, Q_i(p)\big)} to the \eqn{(p,s)}-plain, default \code{TRUE}}
-
-\item{proj_beta}{\link[base]{logical} scalar, whether to show
-\eqn{\hat{\beta}(p)} on the \eqn{(p,s)}-plain when applicable, default \code{TRUE}}
+the projection to the \eqn{(x,z)}-plain, default value is \code{TRUE}}
 
 \item{n}{\link[base]{integer} scalar, fineness of visualization,
-default \code{501L}. See parameter \code{n.grid} of function \link[mgcv]{vis.gam}.}
+default \code{501L}. See parameter \code{n.grid} of the function \link[mgcv]{vis.gam}.}
 
 \item{newid}{\link[base]{integer} scalar or \link[base]{vector},
 row indices of \code{newdata} to be visualized.
 Default \code{1:2}, i.e., the first two test subjects.
-Use \code{newid = NULL} to disable visualization of \code{newdata}.}
+Use \code{newid = NULL} to disable the visualization of \code{newdata}.}
 
-\item{qlim}{\link[base]{length}-2 \link[base]{double} \link[base]{vector},
+\item{ylim}{\link[base]{length}-2 \link[base]{double} \link[base]{vector},
 range on \eqn{q}-axis. Default is the range of \eqn{X} and \eqn{X^{\text{new}}} combined.}
-
-\item{beta_col}{\link[base]{character} scalar, color
-of \eqn{\hat{\beta(p)}}}
 
 \item{surface_col}{\link[base]{length}-2 \link[base]{character} \link[base]{vector},
 color of the integrand surface(s), for lowest and highest surface values}
 }
 \value{
-The function \code{\link[=widget_gam]{widget_gam()}} returns a pretty \CRANpkg{htmlwidgets} created by \strong{R} package \CRANpkg{plotly}
-to showcase the \link[graphics]{persp}ective plot of the
-estimated integrand surface \eqn{\hat{S}(p,q)}.
-
-If a set of training/test subjects is selected (via parameter \code{newid}), then
-\itemize{
-\item {the estimated \strong{line integrand curve} \eqn{\hat{S}\big(p, Q_i(p)\big)}
-of subject \eqn{i}
-is displayed on the surface \eqn{\hat{S}(p,q)};}
-\item {the quantile curve \eqn{Q_i(p)}
-is projected on the \eqn{(p,q)}-plain of the 3-dimensional \eqn{(p,q,s)} cube,
-if \code{proj_xy=TRUE} (default);}
-\item {the user-specified \eqn{\tilde{p}} is marked on the \eqn{(p,q)}-plain of the 3D cube,
-if \code{proj_xy=TRUE} (default);}
-\item {\eqn{\hat{S}\big(p, Q_i(p)\big)}
-is projected on the \eqn{(p,s)}-plain of the 3-dimensional \eqn{(p,q,s)} cube,
-if one and only one \link[mgcv]{gam} model is provided in in
-put argument \code{...} and \code{proj_xz=TRUE} (default);}
-\item {the estimated \emph{linear functional coefficient} \eqn{\hat{\beta}(p)} is shown on the \eqn{(p,s)}-plain of the 3D cube,
-if one and only one \emph{linear} \link[mgcv]{gam} model is provided in input argument \code{...} and \code{proj_beta=TRUE} (default).}
-}
+The function \code{\link[=widget_gam]{widget_gam()}} returns a pretty \CRANpkg{htmlwidgets} created by \strong{R} package \CRANpkg{plotly}.
 }
 \description{
 An interactive \CRANpkg{htmlwidgets} of the
 \link[graphics]{persp}ective plot for
 \link[mgcv]{gam} model(s)
-using package \CRANpkg{plotly}.
+using the package \CRANpkg{plotly}.
 }
 \note{
 The maintainer is not aware of any functionality of projection of arbitrary curves in package \CRANpkg{plotly}.
-Currently, the projection to \eqn{(p,q)}-plain is hard coded on \eqn{(p,q,s=\text{min}(s))}-plain.
+Currently, the projections are hard coded.
 }
-\section{Integrand Surface}{
-
-
-The estimated \strong{integrand surface} of quantile indices and non-linear quantile indices, defined on
-\eqn{p\in[0,1]} and
-\eqn{q\in\text{range}\big(Q_i(p)\big)} for all training subjects \eqn{i=1,\cdots,n},
-is
-\deqn{
-\hat{S}_0(p,q) = 
-\begin{cases}
-\hat{\beta}(p)\cdot q & \text{for QI}\\
-\hat{F}(p,q) & \text{for nlQI}
-\end{cases}
-}
-}
-
 \keyword{internal}
