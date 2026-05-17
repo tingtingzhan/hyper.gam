@@ -6,7 +6,7 @@
 \alias{hyper.gam-package}
 \title{hyper.gam: Generalized Additive Models with Hyper Column}
 \description{
-An alternative solution of the function mgcv::vis.gam().
+An interactive HTML widget of the perspective plot for generalized additive models. An alternative solution of the function mgcv::vis.gam().
 }
 \seealso{
 Useful links:
