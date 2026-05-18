@@ -13,7 +13,7 @@ widget_gam(
   n = 501L,
   newid = seq_len(min(3L, nrow(newdata))),
   ylim = range(X[is.finite(X)], newX[is.finite(newX)]),
-  surface_col = c("white", "lightgreen")
+  colorscale
 )
 }
 \arguments{
@@ -41,8 +41,7 @@ Use \code{newid = NULL} to disable the visualization of \code{newdata}.}
 \item{ylim}{\link[base]{length}-2 \link[base]{double} \link[base]{vector},
 range on \eqn{q}-axis. Default is the range of \eqn{X} and \eqn{X^{\text{new}}} combined.}
 
-\item{surface_col}{\link[base]{length}-2 \link[base]{character} \link[base]{vector},
-color of the integrand surface(s), for lowest and highest surface values}
+\item{colorscale}{see function \link[plotly]{add_surface}}
 }
 \value{
 The function \code{\link[=widget_gam]{widget_gam()}} returns a pretty \CRANpkg{htmlwidgets} created by \strong{R} package \CRANpkg{plotly}.
